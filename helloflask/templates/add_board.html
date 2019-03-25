@@ -1,0 +1,438 @@
+{% extends "layout.html" %}
+
+{% block section -%}
+<!-- Extended default form grid -->
+
+
+
+ 
+<!-- Modal -->
+
+
+
+
+<div class="col-lg-12 text-center border-bottom">
+<div class="text-center my-5">
+  <h3 class="font-weight-bold"> 게시글 등록하기 </h3>
+</div>
+
+<form id = "addboard"  method="POST" onsubmit="return checkselbar()">
+    <!------- Line 1 ------->
+
+    <div class="form-row my-2">
+        <div class="col-lg-1 mt-2 text-left font-weight-bold">제목</div>
+        <div class="form-group col-lg-11">
+            <input type="text" class="form-control" id="title" name ="title" placeholder="제목을 입력하여 주세요." required>
+        </div>
+    </div>
+    
+
+     <!------- Line 2 -------->
+    <div class="form-row my-2">
+      <div class="col-lg-1 mt-2 text-left font-weight-bold" >
+          기간
+      </div>
+      <div class="form-group col-lg-2.5">
+        <input type="text" class="form-control" id="duedate" name="duedate" placeholder="ex) 2019.03.15 까지" required>
+      </div>
+      <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
+          자격요건
+        </div>
+      <div class="col-lg-1.5" id ="slt-graduation">
+        <select id="slt_grad" class="browser-default custom-select">
+          <option value="" selected>-----------</option>
+          <option value="1">무관</option>
+          <option value="2">대학교 재학이상</option>
+          <option value="3">대졸 이상</option>
+        </select>
+      </div>
+      <div class="col-lg-0.5 mt-2 text-center mx-1 font-weight-bold">
+          성별
+      </div>
+      <div class="col-lg-1.5" id="slt-gen">
+        <select id="slt_gen" class="browser-default custom-select required" >
+            <option value="" selected>-----------</option>
+            <option value="1">무관</option>
+            <option value="2">남</option>
+            <option value="3">여</option>
+        </select>
+      </div>
+      <div class="col-lg-1 mt-2 text-center font-weight-bold">
+          금액
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+            <input type="text" class="form-control" id="money" name="money" placeholder="0원" required> 
+        </div>
+      </div>
+    </div>
+
+    <!------- Line 3 ------->
+    <div class="form-row my-2">
+        <div class="col-lg-1 mt-2 text-left font-weight-bold">
+            연습
+        </div>
+        <div class="col-lg-1">
+          <div class="form-group">
+            <input type="text" class="form-control" id="practice" name="practice" required> 
+          </div>
+        </div>
+        <div class="col-lg-1 text-left my-2">
+          <span>회 &nbsp;&nbsp;</span>
+          <span class="font-weight-bold">연주</span>
+        </div>
+        <div class="col-lg-1">
+          <div class="form-group">
+            <input type="text" class="form-control" id="perform" name="perform" required> 
+          </div>
+        </div>
+        <div class="col-lg-0.5 text-left  my-2">
+          회
+        </div>
+        <div class="col-lg-1.5 text-left">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">날짜선택</button>
+        </div>
+        <div id="getradio" style="display: inline-flex">
+          <div class="col-lg-0.5 my-2 mx-3 font-weight-bold">
+            복장
+          </div>
+          <div class="col-lg-2.5 my-2 ml-1">
+            <div class="form-check form-check-inline">
+                <input id="radiobox1" onclick="handlegd()" type="radio" class="form-check-input" name="radiogd1" value="1">
+                <label class="form-check-label" for="materialInline1">추후공지</label>
+            </div>
+            <div class="form-check form-check-inline ml-4">
+                <input id="radiobox2" onclick="handlegd()" type="radio" class="form-check-input"  name="radiogd1" checked>
+                <label class="form-check-label" for="materialInline2">복장선택</label>
+            </div>
+          </div>
+          <div class="col-lg-4 ml-2" >
+              <select id="slt_gd" class="browser-default custom-select">
+                  <option value="" selected>-----------</option>
+                  <option value="2">자유</option>
+                  <option value="3">정장(흰셔츠)</option>
+                  <option value="4">정장(올블랙</option>
+              </select>
+          </div>
+        </div>
+      </div>
+
+      <!------- Line 4 ------->
+      <div class="form-row my-2">
+          <div class="col-lg-1 mt-2 text-center font-weight-bold">
+              연습장소
+          </div>
+          <div class="col-lg-3 ml-4">
+            <div class="form-group">
+              <input type="text" class="form-control" id="prac_address" name="prac_address" required> 
+            </div>
+          </div>
+          <div class="col-lg-1.5">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button>
+          </div>
+          <div class="col-lg-1 mt-2 text-center font-weight-bold ml-3">
+              연주장소
+          </div>
+          <div class="col-lg-3 ml-4">
+            <div class="form-group">
+              <input type="text" class="form-control" id="perf_address" name="perf_address" required> 
+            </div>
+          </div>
+          <div class="col-lg-1.5">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button>
+          </div>
+      </div>
+      <div class="row my-4">
+        <div class="col-lg-2 text-left  text-primary" style="font-size : 20px; font-weight:700">
+          선택된 파트
+        </div>
+        <div id="selpart_box" class="col-lg-10">
+        
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-1 text-primary" style="font-size : 30px; font-weight: 700">
+          파트선택
+        </div>
+        <div id="choice_box" class="col-lg-11">
+          
+      
+
+        </div>
+      </div>
+      <div class="form-row mt-4">
+        <div class="col-lg-7">
+          <div class="form-group text-left">
+              <label for="detail_textarea"><h3 class="font-weight-bold ">상세내용</h3></label>
+              <textarea class="form-control" id="detail_textarea" name="detail_textarea" rows="7"></textarea>
+          </div>
+        </div>
+        <div class="col-lg-5 ">
+            <div class="form-group text-left">
+                <label for="song_textarea"><h3 class="font-weight-bold ">곡 정보</h3></label>
+                <textarea class="form-control" id="song_textarea" name="song_textarea" rows="7"></textarea>
+            </div>
+        </div>
+      </div>
+      
+      <div class="form-row my-4">
+      </div>
+      <div class="form-row my-4">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4">
+          <button type="button" class="btn btn-outline-danger waves-effect mr-3">닫기</button>
+          <button  id="submit" onsubmit="return false" onclick ="send_all()" type="button"  class="btn btn-outline-success waves-effect ml-2">등록하기</button>
+        </div>
+        <div class="col-lg-4">
+        </div>
+        <input action="" type="hidden" id="selist" name="hidden_form" value="">
+      </div>
+  </form>
+
+</div>   
+
+
+<script>
+
+function send_all() {
+  var alldata = send_data();
+  alldata["costume"] = radio_value()
+  instruments =  send_hiddenform()
+  alldata["instruments"] = instruments
+  console.log (">>>>>>>>>>>>>>>",alldata,"\n", ">>>>>>>>>>>>>>>>>>>>>", instruments)
+  console.log("typeofgen>>>>>>",typeof(alldata["gen"]))
+  // $.ajax({
+  //   url : "http://localhost:5000/sendboard",
+  //   data : alldata,
+  //   type : 'POST',
+  //   dataType : 'json'
+  // })
+  $.ajax({
+    url : "http://localhost:5000/sendboard",
+    data : JSON.stringify(alldata),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+  })
+}
+
+
+
+// $(document).ready(function() {
+//   $('#submit').on("click", function(event) {
+//     $.ajax({
+//         url: "http://localhost:5000/sendboard",
+//         data: send_data(),
+//         type: 'POST',
+//         dataType: 'json'
+//     })
+//   });
+// });
+
+
+
+  function handlegd() { 
+    if ($('#radiobox1:checked').length == '1') {
+      $("select[id='slt_gd']").attr("disabled",true);
+    }
+    else $("select[id='slt_gd']").attr("disabled",false);
+  }
+  // a.val() === a[0].options[0].innerText
+
+  function checkselbar() {
+    var slt_gd = $('#slt_gd').val()
+    var slt_gen = $('#slt_gen').val()
+    var slt_grad = $('#slt_grad').val()
+    var isgd = $('#radiobox1:checked').length
+
+    if (slt_grad === "") {
+      alert ("자격요건 항목을 선택하여 주세요.")
+      return false
+    } 
+    if (slt_gen === "") {
+      alert ("성별 항목을 선택하여 주세요.")
+      return false
+    }
+    if (slt_gd === "" && isgd != '1' ) {
+      alert("복장 항목을 선택하여 주세요.")
+      return false
+    }
+      
+  }
+
+  function send_ajax(url, method, data, dataType, fn) {
+    $.ajax({
+        url: url,
+        data: data,
+        type: method,
+        dataType: dataType
+    }).done(function (res) {
+        if (fn)
+            fn(res)
+    }).fail(function (xhr, status, errorThrown) {
+        console.error("Sorry, there was a problem!", xhr, status, errorThrown);
+    }).always(function (xhr, status) {
+        console.log("The request is complete!");
+    });
+  }
+
+  var inst_url = "http://localhost:5000/instrument"
+
+  send_ajax (inst_url, 'GET', '', '', function (res) {
+    console.log("res>>", res)
+    for (i = 0, len = res.length; i<len; i++){
+      var inst_id = res[i]['instrument_id']
+      var inst_name = res[i]['instrument_name']
+      var choice_inst = $('<button>');
+
+      
+      choice_inst.attr('id', "inst_" + inst_id);
+      choice_inst.attr("inst_num", inst_id)
+      choice_inst.attr('type','button')
+      choice_inst.addClass('btn').addClass('btn-outline-success').addClass('col-lg-2').addClass('ml-2');
+      choice_inst.css("padding","7px");
+      choice_inst.text(inst_name);
+      choice_inst.attr("onclick", "add_part($(this).text(),$(this).attr('inst_num'))");
+      
+      $('#choice_box').append(choice_inst)
+    }     
+    if (!res || !res.length) return;
+  })
+  
+  function add_part (instrument, inst_num){
+    var has_selected = $('<button>')
+    var instrument_name = $("<span>")
+    var close_button = $('<span>')  
+    var bg_add = $('<span>')
+      
+      close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
+      close_button.css("font-weight","500")
+      close_button.text('X')
+
+      instrument_name.addClass("get_instrument")
+
+      instrument_name.text(instrument)
+
+
+
+
+      has_selected.attr("id", "sel_" + instrument);
+      has_selected.attr("name", instrument);
+      has_selected.attr("type", "button");
+      has_selected.attr("data-id", inst_num)
+      has_selected.addClass("btn").addClass("btn-sm").addClass("btn-outline-primary").addClass("col-lg-2").addClass("float-left")
+      has_selected.css('padding', '5px');
+      has_selected.attr("onclick", 'del_part($(this).attr("name"))')
+
+      bg_add.addClass('badge').addClass('clicknum').addClass('badge-primary').addClass('badge-pill').addClass('ml-2');
+      bg_add.attr("id", "bg" + instrument)
+      bg_add.text('1')
+
+    if ( $('#sel_' + instrument).length >= 1) {
+      var before_num = $('#sel_' + instrument).text()
+      // var result = before_num.slice(instrument.length+1 , -2)
+      // num = Number(result) + 1
+      var a = $('#bg' + instrument).text()
+      $('#bg' + instrument).text(Number(a) + 1)
+
+
+
+    }
+    else {
+      $('#selpart_box').append(has_selected)
+      $('#sel_' + instrument).append(instrument_name)
+      $('#sel_' + instrument).append(close_button)
+
+      $('#sel_' + instrument).append(bg_add)
+
+    // $('#selpart_box').append( "<button id=sel_" + instrument 
+    // + " name=" + instrument + " type='button'  class='btn btn-sm btn-outline-primary col-lg-2 float-left'  style='padding : 5px;'>" 
+    // + (instrument + '(' + 1 + ')') + "</button>")
+    // $('#sel_' + instrument).attr('onclick', 'del_part($(this).attr("name"))')
+    }
+    
+    // console.log("ADD FFFFFFFFFFFFFFFFFFFFFf", instrument)
+
+  }
+
+  function del_part (inst_name) {
+    var close_button = $('<span>') 
+      
+      close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
+      close_button.css("font-weight","500")
+      close_button.text('X')
+    
+    var before_num = $('#sel_'+ inst_name).text()
+    var a = $('#bg' + inst_name).text()
+
+    // var result = before_num.slice(inst_name.length+1 , -2)
+    // num = Number(result) - 1
+    
+    if (a == 1) {
+      $('#sel_' + inst_name).remove()
+    }
+    else {
+    $('#bg' + inst_name).text(Number(a) -1)
+    }
+  }
+
+  function send_hiddenform () {
+    var partbox = $("#selpart_box").children()
+    var arr = []
+    
+    partbox.each(i => { var name = partbox.children('.get_instrument')[i].textContent;
+      var data_id =  $("#sel_"+ name).attr("data-id"); 
+      var person = partbox.children('.clicknum')[i].textContent;
+      arr.push ({"iid": data_id, "person" : person})
+    })
+    return arr
+      
+  }
+
+  function radio_value() {
+    if ($('input[name=radiogd1]:checked').val() == '1') {
+      return '1'
+      }
+
+    else {
+      return $('#slt_gd').val();
+    }
+
+  }
+
+  function send_data () {
+    
+    // if ($('input[name=radiogd1]:checked').val() == '1') {
+    //   var costume = '1';
+    //   }
+
+    // else {
+    //   var costume = ('#slt_gd').val();
+    // }
+    
+    var qualification = $('#slt_grad').val()
+    var gen = $('#slt_gen').val()
+
+    var data = {"title" : $('#title').val(),
+              "duedate" : $('#duedate').val(),
+              "qualification" :$("#slt_grad").val(),
+              "gen" : $('#slt_gen').val(),
+              "money" : $('#money').val(),
+              "practice_time" : $('#practice').val(),
+              "perform_time" : $('#perform').val(),
+              // "costume" : $('#slt_gd').val(),
+              "practice_address" : $('#prac_address').val(),
+              "perform_address" : $('#perf_address').val(),
+              "detail_info" : $('#detail_textarea').val(),
+              "song_info" : $('#song_textarea').val()
+              }
+    return data
+  }
+  
+  
+</script>
+
+
+{%- endblock %}}

@@ -1,0 +1,26 @@
+{% macro l_card(user_img, user_name, part, address, title, money) -%}
+
+
+
+<div class="col-lg-4 col-md-4 mb-5 ">
+    <a href="#">
+    <div class="card card-cascade wider mb-4" style="height:29rem">
+        <!--Card image-->
+            <img src="../static/img/user_img/{{user_img}}.jpg" class="card-img-top mb-4" style="height:14rem;">
+            <div class="mask rgba-white-slight"></div>
+        <div class="card-body card-body-cascade text-center">
+        <!--Title-->
+        <h4 class="card-title"><strong>{{user_name}}</strong></h4>
+        <h5 class="indigo-text"><strong>{{part}}</strong></h5>
+        <h6 class="indigo-text text-primary"><strong>{{address}}</strong></h6>
+        <p class="card-text"> {{title}}
+        </p>
+        <!--Linkedin-->
+        <p class="text-danger font-weight-bold ">{{money}} 원</p>
+        </div>
+    </div>
+    </a>    
+</div>
+
+
+{%- endmacro %}

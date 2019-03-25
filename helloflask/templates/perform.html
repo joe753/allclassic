@@ -1,0 +1,208 @@
+{% import "macro/pf_card.html" as pc %}
+{% extends "layout.html" %}
+
+{% block section %}
+    <div class="col-lg-6 col-md-6 mb-5 ">
+    <!--Card-->
+      <div class="card" style="height: 26rem">
+          <!-- <div class="col-lg-4 col-md-4 border-right  border-light">
+            <div class="view overlay" style="height:21rem;">
+              <img src="{{ url_for('static', filename='img/trombone.jpg') }}"  class="card-img-left top_row"
+                alt="" style="height: 16rem; width:15rem">
+                <a>
+                  <div class="mask rgba-white-slight ">
+                  </div>
+                </a>
+            </div>
+              <div class="text-center ml-1">
+                  <h3>
+                    <a>
+                    <i class="far fa-star text-warning mx-4">
+                    </i>
+                    </a>
+                    <a>
+                      <i class="fas fa-share-alt text-muted mx-4">
+                      </i>
+                    </a>
+                    <a>
+                      <i class="fas fa-user-tag text-primary mx-4">
+                      </i>
+                    </a>
+                  </h3>
+              </div>
+          </div> -->
+          <div class="col-lg-12 col-md-4">
+            <div class="text-center my-3 dark-grey-text border-bottom ">
+              <h5>
+                <strong class="font-weight-bold" style="font-size : 17px">
+                아이들과 함께 연주해주실 객원 선생님 구합니다.
+                </strong>
+              </h5>
+            </div>
+            <div class="row grey-text">
+              <div class="col-lg-4 text-left text-dark">
+                <h5>
+                  <a>
+                    <img src="{{ url_for('static', filename='img/user_img/user01.jpg') }}" style="height:2rem" class="rounded-circle">
+                    <strong class="ml-2 text-dark">User01</strong>
+                  </a>
+                </h5>
+              </div>
+              <div class="col-lg-8 text-right">
+                <h6 class="mr-3">
+                    2019-03-05 &nbsp오후 3시 24분
+                </h6>
+              </div>
+              
+            </div>
+            <div class="row">
+                <div class="c_part col-lg-3">
+                 <span class=" text-primary">
+                   Flute
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" grey-text">
+                   Oboe
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" grey-text">
+                   Clarinet
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" text-primary">
+                    Bassoon
+                 </span>
+                </div>
+            </div>
+            <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Saxophone
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Horn
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Trumpet
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                  Trombone
+               </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Tuba
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Percussion
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Violin
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                Viola
+               </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Cello
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Contrabass
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Vocal
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                Conductor/ &nbsp Composer
+               </span>
+              </div>
+            </div>
+                <div class="row mt-4">
+                  <div class="col-lg-12  grey-text text-center">
+                    <h5 class="font-weight-bold">
+                      2019.03.07 (목) 오후 02:00
+                    </h5>
+                  </div>
+                  <div class="col-lg-12 text-center">
+                      <h5 class="dark-grey-text font-weight-bold">
+                        서울시 노원구 더조은아트홀
+                      </h5>
+                  </div>
+                  <div class="col-lg-12 text-dark text-center">
+                      <h5 class="text-danger">
+                        <strong class="font-weight-bold">100,000</strong> 원
+                      </h5>
+
+                        <div class="text-right mr-4">
+                            <button type="button" class="btn btn-outline-default waves-effect float-left">
+                              지원하기
+                            </button>
+                            <a href="perform/detail/board01">
+                              <button type="button" class="btn btn-outline-info waves-effect">
+                                  상세보기
+                              </button>
+                            </a>
+                            <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            ...
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                        </div>
+                  </div>
+                </div>
+            
+          </div>
+
+
+      </div>
+    </div>
+    {{ pc.p_card('결혼식 피아노트리오 연주자 구합니다.' , 'User02', url_for ('static', filename='img/user_img/user02.jpg'), 
+    '2019-03-07 오후 08시 34분', '2019.03.09 (토) 오전 11:00', '서울시 강남구 역삼동 마리드블랑', '100,000', 'board02') }}
+    
+      {{ pc.p_card('바이올린 레슨선생님 구해요.' , 'User03', url_for ('static', filename='img/user_img/user03.jpg'), 
+      '2019-03-07 오후 06시 21분', '2019.03.11 (월) 오후 05:00', '경기도 안양시 평촌동', '40,000', 'board03') }}
+      {{ pc.p_card('예일초등학교 예배 반주자 급구합니다.' , 'User04', url_for ('static', filename='img/user_img/user04.jpg'), 
+    '2019-03-06 오전 11시 19분', '매주 월요일 9시 ~ 9시 40분', '구산역 예일초등학교', '20,000', 'board04') }}
+{% endblock %}

@@ -1,0 +1,7 @@
+{% macro modal(id, title, icon='', type='') -%}
+    <div class="md-form mb-5">
+    <i class="{{icon}} prefix grey-text"></i>
+    <input type='{{type}}' id='{{id}}' class="form-control validate">
+    <label data-error="wrong" data-success="right" for='{{id}}'>{{title}}</label>
+    </div>
+{% endmacro %}

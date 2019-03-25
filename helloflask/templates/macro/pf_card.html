@@ -1,0 +1,155 @@
+{% macro p_card(title, user_nick, user_img, up_time, do_time, do_address, money, link ) -%}
+{% import "macro/pc_modal.html" as pc_m %}
+
+<div class="col-lg-6 col-md-6 mb-5 ">
+    <!--Card-->
+      <div class="card" style="height: 26rem">
+          <div class="col-lg-12 col-md-4">
+            <div class="text-center my-3 dark-grey-text border-bottom ">
+              <h5>
+                <strong class="font-weight-bold" style="font-size : 17px">
+                {{title}}
+                </strong>
+              </h5>
+            </div>
+            <div class="row grey-text">
+              <div class="col-lg-4 text-left text-dark">
+                <h5>
+                  <a>
+                    <img src="{{user_img}}" style="height:2rem; width:2rem;" class="rounded-circle">
+                    <strong class="ml-2 text-dark">{{user_nick}}</strong>
+                  </a>
+                </h5>
+              </div>
+              <div class="col-lg-8 text-right">
+                <h6 class="mr-3">
+                    {{up_time}}
+                </h6>
+              </div>
+              
+            </div>
+            <div class="row">
+                <div class="c_part col-lg-3">
+                 <span class=" text-primary">
+                   Flute
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" grey-text">
+                   Oboe
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" grey-text">
+                   Clarinet
+                 </span>
+                </div>
+                <div class="c_part col-lg-3">
+                 <span class=" text-primary">
+                    Bassoon
+                 </span>
+                </div>
+            </div>
+            <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Saxophone
+               </span>
+                </div>
+                <div class="c_part col-lg-3">
+                <span class=" grey-text">
+                  Horn
+                </span>
+                </div>
+                <div class="c_part col-lg-3">
+                <span class=" grey-text">
+                  Trumpet
+                </span>
+                </div>
+                <div class="c_part col-lg-3">
+                <span class=" text-primary">
+                    Trombone
+                </span>
+                </div>
+              </div>
+              <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Tuba
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Percussion
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Violin
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                Viola
+               </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                 Cello
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Contrabass
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" grey-text">
+                 Vocal
+               </span>
+              </div>
+              <div class="c_part col-lg-3">
+               <span class=" text-primary">
+                Conductor/ &nbsp Composer
+               </span>
+              </div>
+            </div>
+                <div class="row mt-4">
+                  <div class="col-lg-12  grey-text text-center">
+                    <h5 class="font-weight-bold">
+                      {{do_time}}
+                    </h5>
+                  </div>
+                  <div class="col-lg-12 text-center">
+                      <h5 class="dark-grey-text font-weight-bold">
+                        {{do_address}}
+                      </h5>
+                  </div>
+                  <div class="col-lg-12 text-dark text-center">
+                      <h5 class="text-danger">
+                        <strong class="font-weight-bold">{{money}}</strong> 원
+                      </h5>
+
+                        <div class="text-right mr-4">
+                            <button type="button" class="btn btn-outline-default waves-effect float-left">
+                              지원하기
+                            </button>
+                            <a href="perform/detail/{{link}}"> 
+                              <button type="button" class="btn btn-outline-info waves-effect">
+                                   
+                                상세보기
+                                
+                              </button>
+                            </a>
+                        </div>
+                  </div>
+                </div>
+            
+          </div>
+
+
+      </div>
+    </div>
+{%- endmacro %}
