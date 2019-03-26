@@ -81,26 +81,39 @@ def signup_modal():
 
 @app.route('/sendboard', methods=['GET', 'POST'])
 def sendboard():
-    print ("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOKKKKKKKKKKKKKKKKKKKKKKKKKKK")
-    title = request.form.get('title')
-    duedate = request.form.get('duedate')
-    money = request.form.get('money')
-    practice = request.form.get('practice_time')
-    perform = request.form.get('perform_time')
-    prac_address = request.form.get('practice_address')
-    perf_address = request.form.get('perform_address')
-    detail_textarea = request.form.get('detail_info')
-    song_textarea = request.form.get('song_info')
-    costume = request.form.get('costume')
-    qualification = request.form.get("qualification")
-    gender = request.form.get("gen")
-    instruments = request.form.get("instruments")
-    # instruments = request.get_json("instruments")
-    a = request.json
-    print(a['title'])
+    all_data = request.json
+
+    title = all_data['title']
+    duedate = all_data['duedate']
+    money = all_data['money']
+    practice = all_data['practice_time']
+    perform = all_data['perform_time']
+    prac_address = all_data['practice_address']
+    perf_address = all_data['perform_address']
+    detail_textarea = all_data['detail_info']
+    song_textarea = all_data['song_info']
+    costume = all_data['costume']
+    qualification =all_data["qualification"]
+    gender = all_data["gen"]
+    instruments = all_data["instruments"]
 
 
-    # print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments)
+    print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments)
+    
+    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, perf_address, detail_textarea, song_textarea, '2')
+        
+    try:
+        db_session.add(b)
+        db_session.commit()
+    
+    except Exception as err:
+        print (err)
+        db_session.rollback()
+
+    return render_template('/perform')
+# for instrument in instruments:
+
+        
     # if password != cfpassword :
     #     flash("암호를 입력주세요!!!")
 

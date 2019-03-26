@@ -22,7 +22,7 @@
     <div class="form-row my-2">
         <div class="col-lg-1 mt-2 text-left font-weight-bold">제목</div>
         <div class="form-group col-lg-11">
-            <input type="text" class="form-control" id="title" name ="title" placeholder="제목을 입력하여 주세요." required>
+            <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." required>
         </div>
     </div>
     
@@ -74,7 +74,7 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="text" class="form-control" id="practice" name="practice" required> 
+            <input type="number" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
           </div>
         </div>
         <div class="col-lg-1 text-left my-2">
@@ -83,7 +83,7 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="text" class="form-control" id="perform" name="perform" required> 
+            <input type="number" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
           </div>
         </div>
         <div class="col-lg-0.5 text-left  my-2">
@@ -165,13 +165,13 @@
         <div class="col-lg-7">
           <div class="form-group text-left">
               <label for="detail_textarea"><h3 class="font-weight-bold ">상세내용</h3></label>
-              <textarea class="form-control" id="detail_textarea" name="detail_textarea" rows="7"></textarea>
+              <textarea class="form-control" maxlength="999" oninput="control_textlength(this)" id="detail_textarea" name="detail_textarea" rows="7"></textarea>
           </div>
         </div>
         <div class="col-lg-5 ">
             <div class="form-group text-left">
                 <label for="song_textarea"><h3 class="font-weight-bold ">곡 정보</h3></label>
-                <textarea class="form-control" id="song_textarea" name="song_textarea" rows="7"></textarea>
+                <textarea class="form-control" maxlength="999" oninput="control_textlength(this)" id="song_textarea" name="song_textarea" rows="7"></textarea>
             </div>
         </div>
       </div>
@@ -195,6 +195,26 @@
 
 
 <script>
+
+function control_textlength (object){
+  var len = object.value.length
+  if (len == object.maxLength) {
+    object.value = object.value.slice(0, len)
+    alert("글자수를 초과하셨습니다. (최대 " + len + " 자)")
+    $(object).focus()
+  }
+}
+
+
+function control_lennumber (object){
+  var len = object.value.length
+  if (len > object.maxLength) {
+    object.value = object.value.slice(0, (len - 1))
+    alert("글자수를 초과하셨습니다. (최대 " + (len - 1) + " 자)")
+    $(object).focus()
+  }
+}
+
 
 function send_all() {
   var alldata = send_data();
@@ -231,7 +251,7 @@ function send_all() {
 //   });
 // });
 
-
+  
 
   function handlegd() { 
     if ($('#radiobox1:checked').length == '1') {
