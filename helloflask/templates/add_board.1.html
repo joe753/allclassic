@@ -22,7 +22,7 @@
     <div class="form-row my-2">
         <div class="col-lg-1 mt-2 text-left font-weight-bold">제목</div>
         <div class="form-group col-lg-11">
-            <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." value="테스트 " required>
+            <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." required>
         </div>
     </div>
     
@@ -33,7 +33,7 @@
           기간
       </div>
       <div class="form-group col-lg-2.5">
-        <input type="text" class="form-control" id="duedate" name="duedate" value="2019.05.05" placeholder="ex) 2019.03.15 까지" required>
+        <input type="text" class="form-control" id="duedate" name="duedate" placeholder="ex) 2019.03.15 까지" required>
       </div>
       <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
           자격요건
@@ -62,7 +62,7 @@
       </div>
       <div class="col-lg-2">
         <div class="form-group">
-            <input type="text" value="200000" class="form-control" id="money" name="money" placeholder="0원" required> 
+            <input type="text" class="form-control" id="money" name="money" placeholder="0원" required> 
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="number" value="3" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
+            <input type="number" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
           </div>
         </div>
         <div class="col-lg-1 text-left my-2">
@@ -83,7 +83,7 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="number" value="4" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
+            <input type="number" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
           </div>
         </div>
         <div class="col-lg-0.5 text-left  my-2">
@@ -125,38 +125,30 @@
           <div class="col-lg-1 mt-2 text-center font-weight-bold">
               연습장소
           </div>
-          <div class="col-lg-3 ml-2">
+          <div class="col-lg-3 ml-4">
             <div class="form-group">
-              <!-- <input type="text" class="form-control" id="prac_address" name="prac_address" required>  -->
-              <input value="서울동" type="text" class="form-control" id="prac_address" name = "prac_address" placeholder="주소" required>
+              <input type="text" class="form-control" id="prac_address" name="prac_address" required> 
             </div>
           </div>
           <div class="col-lg-1.5">
-              <!-- <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button> -->
-              <input type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold" onclick="sample5_execDaumPostcode('prac_address', 'prac_map')" value="주소 검색">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button>
           </div>
 
 
           <div class="col-lg-1 mt-2 text-center font-weight-bold ml-3">
               연주장소
           </div>
-          <div class="col-lg-3 ml-2">
+          <div class="col-lg-3 ml-4">
             <div class="form-group">
-              <input value="신내동" type="text" class="form-control" id="perf_address" name="perf_address" required> 
+              <input type="text" class="form-control" id="perf_address" name="perf_address" required> 
             </div>
           </div>
           <div class="col-lg-1.5">
-              <!-- <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button> -->
-              <input type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold" onclick="sample5_execDaumPostcode('perf_address', 'perf_map')" value="주소 검색">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button>
           </div>
       </div>
       <div class="row">
-        <div class="col-lg-6">
-          <div id="prac_map" style="width:400px;height:300px;margin-top:10px;display:none"></div>
-        </div>
-        <div class="col-lg-6">
-          <div id="perf_map" style="width:400px;height:300px;margin-top:10px;display:none"></div>
-        </div>
+
       </div>
 
 
@@ -203,7 +195,7 @@
         </div>
         <div class="col-lg-4">
           <button type="button" class="btn btn-outline-danger waves-effect mr-3">닫기</button>
-          <button  id="submit" onclick ="send_all()" type="button"  class="btn btn-outline-success waves-effect ml-2">등록하기</button>
+          <button  id="submit" onsubmit="return false" onclick ="send_all()" type="button"  class="btn btn-outline-success waves-effect ml-2">등록하기</button>
         </div>
         <div class="col-lg-4">
         </div>
@@ -225,6 +217,7 @@ function control_textlength (object){
   }
 }
 
+
 function control_lennumber (object){
   var len = object.value.length
   if (len > object.maxLength) {
@@ -234,22 +227,43 @@ function control_lennumber (object){
   }
 }
 
+
 function send_all() {
   var alldata = send_data();
   alldata["costume"] = radio_value()
   instruments =  send_hiddenform()
   alldata["instruments"] = instruments
-
+  console.log (">>>>>>>>>>>>>>>",alldata,"\n", ">>>>>>>>>>>>>>>>>>>>>", instruments)
+  console.log("typeofgen>>>>>>",typeof(alldata["gen"]))
+  // $.ajax({
+  //   url : "http://localhost:5000/sendboard",
+  //   data : alldata,
+  //   type : 'POST',
+  //   dataType : 'json'
+  // })
   $.ajax({
     url : "http://localhost:5000/sendboard",
     data : JSON.stringify(alldata),
     type : 'POST',
     contentType: 'application/json',
     dataType : 'json'
-  }).done(function (res) {
-    window.location.href = 'http://localhost:5000/perform/detail/board' + res
   })
 }
+
+
+
+// $(document).ready(function() {
+//   $('#submit').on("click", function(event) {
+//     $.ajax({
+//         url: "http://localhost:5000/sendboard",
+//         data: send_data(),
+//         type: 'POST',
+//         dataType: 'json'
+//     })
+//   });
+// });
+
+  
 
   function handlegd() { 
     if ($('#radiobox1:checked').length == '1') {
@@ -295,6 +309,7 @@ function send_all() {
         console.log("The request is complete!");
     });
   }
+
   var inst_url = "http://localhost:5000/instrument"
 
   send_ajax (inst_url, 'GET', '', '', function (res) {
@@ -303,6 +318,7 @@ function send_all() {
       var inst_id = res[i]['instrument_id']
       var inst_name = res[i]['instrument_name']
       var choice_inst = $('<button>');
+
       
       choice_inst.attr('id', "inst_" + inst_id);
       choice_inst.attr("inst_num", inst_id)
@@ -328,7 +344,11 @@ function send_all() {
       close_button.text('X')
 
       instrument_name.addClass("get_instrument")
+
       instrument_name.text(instrument)
+
+
+
 
       has_selected.attr("id", "sel_" + instrument);
       has_selected.attr("name", instrument);
@@ -348,15 +368,25 @@ function send_all() {
       // num = Number(result) + 1
       var a = $('#bg' + instrument).text()
       $('#bg' + instrument).text(Number(a) + 1)
+
+
+
     }
     else {
       $('#selpart_box').append(has_selected)
       $('#sel_' + instrument).append(instrument_name)
       $('#sel_' + instrument).append(close_button)
+
       $('#sel_' + instrument).append(bg_add)
+
+    // $('#selpart_box').append( "<button id=sel_" + instrument 
+    // + " name=" + instrument + " type='button'  class='btn btn-sm btn-outline-primary col-lg-2 float-left'  style='padding : 5px;'>" 
+    // + (instrument + '(' + 1 + ')') + "</button>")
+    // $('#sel_' + instrument).attr('onclick', 'del_part($(this).attr("name"))')
     }
     
-  
+    // console.log("ADD FFFFFFFFFFFFFFFFFFFFFf", instrument)
+
   }
 
   function del_part (inst_name) {
@@ -439,58 +469,7 @@ function send_all() {
 
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
-<script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=발급받은 API KEY를 사용하세요&libraries=services"></script>
 
-
-//주소-좌표 변환 객체를 생성
-var geocoder1 = new daum.maps.services.Geocoder();
-
-
-function sample5_execDaumPostcode(paddress, pmap) {
-  new daum.Postcode({
-    oncomplete: function(data) {
-      var addr = data.address; // 최종 주소 변수
-
-      // 주소 정보를 해당 필드에 넣는다.
-      document.getElementById(paddress).value = addr;
-      // 주소로 상세 정보를 검색
-      geocoder1.addressSearch(data.address, function(results, status) {
-          // 정상적으로 검색이 완료됐으면
-        if (status === daum.maps.services.Status.OK) {
-
-          var result = results[0]; //첫번째 결과의 값을 활용
-
-          // 해당 주소에 대한 좌표를 받아서
-          var coords = new daum.maps.LatLng(result.y, result.x);
-          // var pmape = paddress.slice(0,4) + "_map";
-          // console.log(pmape);
-          // 지도를 보여준다.
-          var mapContainer1 = document.getElementById(pmap)
-          var mapOption = {
-              center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-              level: 5 // 지도의 확대 레벨
-          };
-          
-          var map1 = new daum.maps.Map(mapContainer1, mapOption);
-
-          var marker1 = new daum.maps.Marker({
-              position: new daum.maps.LatLng(37.537187, 127.005476),
-              map: map1
-              });
-          // mapContainer1.style.display = "block";
-          mapContainer1.style.display = "block";
-
-          map1.relayout();
-          // 지도 중심을 변경한다.
-          map1.setCenter(coords);
-          // 마커를 결과값으로 받은 위치로 옮긴다.
-          marker1.setPosition(coords)
-        }
-      });
-    }
-  }).open();
-}
-</script>
 
 {%- endblock %}}

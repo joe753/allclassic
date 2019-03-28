@@ -92,4 +92,15 @@ class Instrument(Base):
         return j
     #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
+class BoardInstrument(Base):
+    __tablename__ = "BoardInstrument"
 
+    def __init__ (self, board_id, instrument_id, person):
+        self.board_id = board_id
+        self.instrument_id = instrument_id
+        self.person = person
+
+    id = Column(Integer, primary_key = True)
+    board_id = Column(Integer)
+    instrument_id = Column(Integer)
+    person = Column(Integer)

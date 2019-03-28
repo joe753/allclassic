@@ -2,14 +2,17 @@ from flask import Flask, g, request, Response, make_response, flash, redirect, j
 import json
 from flask import session, render_template, Markup
 from datetime import date, datetime
-from helloflask.db_tables import User, Board, Instrument
+from helloflask.db_tables import User, Board, Instrument, BoardInstrument
 from helloflask.init_db import db_session
 from sqlalchemy.orm import subqueryload, joinedload
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql import func
 
+
+
 app = Flask(__name__)
 app.debug = True
+app.config['JSON_AS_ASCII'] = False
 # app.jinja_env.trim_blocks = True
 
 
@@ -30,19 +33,31 @@ def add_pboard():
 def perform():
     return render_template('perform.html')
 
-@app.route('/ch_user')
-def cg_premium():
-    return render_template('cg_premium.html')
 
-
-@app.route('/test333')
-def practice_handlebars() :
-    return render_template('test333.html') 
-
-@app.route('/perform/board/<boardid>', methods=["GET"])
+@app.route('/perform/detail/board<boardid>', methods=["GET"])
 def board (boardid) : 
-    boardtb = Board.query.params(
-        boardid=boardid).order_by(Board.board_id.desc()).all()
+    
+    print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
+    return render_template('board01.html', boardid=boardid)
+
+@app.route('/boards', methods=["GET"])
+def boards_json () : 
+    # boardtb = Board.query.filter(Board.board_id == boardid).all()
+    boardtb = Board.query.all()
+        
+    for s in boardtb:
+        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
+    
+    return jsonify([s.json() for s in boardtb])
+
+@app.route('/board/<boardid>', methods=["GET"])
+def board_json (boardid) : 
+    boardtb = Board.query.filter(Board.board_id == boardid).all()
+    # boardtb = Board.query.all()
+        
+    for s in boardtb:
+        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
+    
     return jsonify([s.json() for s in boardtb])
 
 @app.route('/instrument', methods=["GET"])
@@ -105,33 +120,24 @@ def sendboard():
     try:
         db_session.add(b)
         db_session.commit()
+        
+        for j in instruments:
+            iid = j['iid']
+            person = j['person']
+
+            inst = BoardInstrument(b.board_id, iid, person)
+            db_session.add(inst)
+            db_session.commit()
+        # inst = BoardInstrument(b.board_id, instruments.in)
     
     except Exception as err:
         print (err)
         db_session.rollback()
 
-    return render_template('/perform')
-# for instrument in instruments:
+    
+    print ("-=======>>>>>>>>>>>>>>>>>>>>>>>>>>>",b.board_id)
+    return str(b.board_id)
 
-        
-    # if password != cfpassword :
-    #     flash("암호를 입력주세요!!!")
-
-    # else :
-    #     u = User( email, password, name, phone_number, nickname, address)
-    #     print (u)
-    #     try:
-    #         db_session.add(u)
-    #         db_session.commit()
-        
-    #     except Exception as err:
-    #         print (err)
-    #         db_session.rollback()
-
-    #     return redirect('/add/perform/pboard01')
-
-# @app.route('/sendboard', methods = ['POST'])
-# def sendboard():
 
 @app.route('/<username>')
 def show_user(username):

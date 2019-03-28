@@ -5,19 +5,19 @@
     <!-- Line 1 -->
     <div class="col-lg-12 text-center border-bottom">
         <h4>
-           {{lst[0]}}
+           제목
         </h4>
     </div>
 
     <!-- Line 2 -->
     <div class="col-lg-6 text-left border-bottom my-2">
         <span class="detail_grey grey-text">기간 &emsp;</span> 
-        <span class="text-primary"> {{lst[1]}} </span>
+        <span id="test" class="text-primary"> 2019.03.25 </span>
     </div>
     <div class="col-lg-3  border-bottom text-left my-2">
         <a >
         <img src="{{ url_for('static', filename='img/user_img/user01.jpg') }}" style="height:2rem; width:2rem;" class="rounded-circle mb-1">
-        <strong class="ml-2 text-dark ">{{lst[2]}}</strong>
+        <strong class="ml-2 text-dark ">user01</strong>
         </a> 
     </div> 
     <div class="col-lg-3 border-bottom text-right my-2">
@@ -110,6 +110,46 @@
     </div>
 
     
+<script>
+function send_ajax(url, method, data, dataType, fn) {
+    $.ajax({
+        url: url,
+        data: data,
+        type: method,
+        dataType: dataType
+    }).done(function (res) {
+        if (fn)
+            fn(res)
+    }).fail(function (xhr, status, errorThrown) {
+        console.error("Sorry, there was a problem!", xhr, status, errorThrown);
+    }).always(function (xhr, status) {
+        console.log("The request is complete!");
+    });
+}
+
+
+var data_url = "http://localhost:5000/board/{{boardid}}"
+
+$(document).ready(function(){
+    send_ajax(data_url, "GET", "", "", function(res){
+        var data = res[0]
+        document.getElementById('test').innerHTML = data.board_id;
+        moment.locale('ko')
+        var kdue_date = moment(data.due_date)
+        var kupload_time = moment(data.upload_time)
+
+        console.log(kdue_date.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
+        console.log(kupload_time.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
+        console.log(moment().subtract(10, 'days').calendar())
+        // console.log(data.due_date.slice(5,-7), typeof(data.due_date))
+        // var datestr = data.due_date.slice(5,-7)
+        // var datelst = datestr.
+    })
+})
+
+
+
+</script>
 
 
 
