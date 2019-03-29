@@ -4,9 +4,10 @@ from flask import session, render_template, Markup
 from datetime import date, datetime
 from helloflask.db_tables import User, Board, Instrument, BoardInstrument
 from helloflask.init_db import db_session
-from sqlalchemy.orm import subqueryload, joinedload
+from sqlalchemy.orm import subqueryload, joinedload, relationship, backref
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.sql import func
+from sqlalchemy import ForeignKey
 
 
 
@@ -40,30 +41,6 @@ def board (boardid) :
     print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
     return render_template('board01.html', boardid=boardid)
 
-@app.route('/boards', methods=["GET"])
-def boards_json () : 
-    # boardtb = Board.query.filter(Board.board_id == boardid).all()
-    boardtb = Board.query.all()
-        
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
-    
-    return jsonify([s.json() for s in boardtb])
-
-@app.route('/board/<boardid>', methods=["GET"])
-def board_json (boardid) : 
-    boardtb = Board.query.filter(Board.board_id == boardid).all()
-    # boardtb = Board.query.all()
-        
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
-    
-    return jsonify([s.json() for s in boardtb])
-
-@app.route('/instrument', methods=["GET"])
-def get_instrument () : 
-    instruments = Instrument.query.all()
-    return jsonify([inst.json() for inst in instruments])
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -94,6 +71,8 @@ def signup_modal():
 
 
 
+
+
 @app.route('/sendboard', methods=['GET', 'POST'])
 def sendboard():
     all_data = request.json
@@ -111,11 +90,14 @@ def sendboard():
     qualification =all_data["qualification"]
     gender = all_data["gen"]
     instruments = all_data["instruments"]
+    practice_mapx = all_data["practice_mapx"]
+    practice_mapy = all_data["practice_mapy"]
+    perform_mapx = all_data["perform_mapx"]
+    perform_mapy = all_data["perform_mapy"]
 
-
-    print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments)
+    print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy)
     
-    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, perf_address, detail_textarea, song_textarea, '2')
+    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, perform_mapx, perform_mapy, detail_textarea, song_textarea, '2')
         
     try:
         db_session.add(b)
@@ -139,7 +121,34 @@ def sendboard():
     return str(b.board_id)
 
 
-@app.route('/<username>')
-def show_user(username):
-    return username
+#### DB API ########################################3
 
+@app.route('/boards', methods=["GET"])
+def boards_json () : 
+    # boardtb = Board.query.filter(Board.board_id == boardid).all()
+    boardtb = Board.query.all()
+        
+    for s in boardtb:
+        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
+    
+    return jsonify([s.json() for s in boardtb])
+
+@app.route('/boards/<boardid>', methods=["GET"])
+def board_json (boardid) : 
+    boardtb = Board.query.filter(Board.board_id == boardid).all()
+        
+    for s in boardtb:
+        print (">>>>>>>>>>>>>>>>", s.json())
+    
+    return jsonify([s.json() for s in boardtb])
+
+@app.route('/instrument', methods=["GET"])
+def get_instrument () : 
+    instruments = Instrument.query.all()
+    return jsonify([inst.json() for inst in instruments])
+
+@app.route('/boardinstruments/<boardid>', methods=["GET"])
+def get_boardinst(boardid) :
+    boardinst = BoardInstrument.query.filter(BoardInstrument.board_id == boardid).order_by(BoardInstrument.instrument_id).all()
+
+    return jsonify([s.json() for s in boardinst])

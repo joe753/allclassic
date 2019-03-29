@@ -35,7 +35,7 @@ class User(Base):
 class Board(Base):
     __tablename__ = 'Board'
 
-    def __init__ (self, board_title, due_date, qualification , gender, money, practice_time, perform_time, costume, practice_address,perform_address, detail_info, song_info, user_id) :
+    def __init__ (self, board_title, due_date, qualification , gender, money, practice_time, perform_time,  costume, practice_address, practice_mapx,  practice_mapy, perform_address, perform_mapx, perform_mapy,  detail_info, song_info, user_id) :
         self.board_title = board_title
         self.due_date = due_date
         self.qualification = qualification
@@ -45,10 +45,15 @@ class Board(Base):
         self.perform_time = perform_time
         self.costume = costume
         self.practice_address = practice_address
+        self.practice_mapx = practice_mapx
+        self.practice_mapy = practice_mapy
         self.perform_address = perform_address
+        self.perform_mapx = perform_mapx
+        self.perform_mapy = perform_mapy
         self.detail_info = detail_info
         self.song_info = song_info
         self.user_id = user_id
+        
 
 
 
@@ -63,11 +68,17 @@ class Board(Base):
     perform_time = Column(Integer)
     costume = Column(Integer)
     practice_address = Column(String)
+    practice_mapx = Column(String)
+    practice_mapy = Column(String)
     perform_address = Column(String)
+    perform_mapx = Column(String)
+    perform_mapy = Column(String)
     detail_info = Column(String)
     song_info = Column(String)
     user_id = Column(Integer)
     upload_time = Column(TIMESTAMP)
+   
+
 
     def json(self):
         j = {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -101,6 +112,13 @@ class BoardInstrument(Base):
         self.person = person
 
     id = Column(Integer, primary_key = True)
-    board_id = Column(Integer)
-    instrument_id = Column(Integer)
+    board_id = Column(Integer, ForeignKey('Board.board_id'), nullable=False)
+    instrument_id = Column(Integer,  ForeignKey('Instrument.instrument_id'), nullable=False)
     person = Column(Integer)
+    board = relationship("Board")
+    instrument = relationship('Instrument')
+
+    def json(self):
+        j = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        j['instrument_name'] = self.instrument.instrument_name
+        return j

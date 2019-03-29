@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 # Declare connection
 mysql_url = "mysql+pymysql://root:gusdnr75@localhost/allclassic?charset=utf8"
-engine = create_engine(mysql_url, echo=True, convert_unicode=True)
+engine = create_engine(mysql_url, echo=True, convert_unicode=True, pool_size=20, max_overflow=0)
 # Declare & create Session
 db_session = scoped_session( sessionmaker(autocommit=False, autoflush=False, bind=engine) )
 # Create SqlAlchemy Base Instance

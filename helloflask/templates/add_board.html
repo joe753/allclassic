@@ -111,7 +111,7 @@
                   <option value="" selected>-----------</option>
                   <option value="2">자유</option>
                   <option value="3">정장(흰셔츠)</option>
-                  <option value="4">정장(올블랙</option>
+                  <option value="4">정장(올블랙)</option>
               </select>
           </div>
         </div>
@@ -428,7 +428,11 @@ function send_all() {
               "practice_address" : $('#prac_address').val(),
               "perform_address" : $('#perf_address').val(),
               "detail_info" : $('#detail_textarea').val(),
-              "song_info" : $('#song_textarea').val()
+              "song_info" : $('#song_textarea').val(),
+              "practice_mapx" : mapdata[0].x,
+              "practice_mapy" : mapdata[0].y,
+              "perform_mapx" : mapdata[1].x,
+              "perform_mapy" : mapdata[1].y
               }
     return data
   }
@@ -447,6 +451,9 @@ function send_all() {
 var geocoder1 = new daum.maps.services.Geocoder();
 
 
+var mapdata = []
+
+
 function sample5_execDaumPostcode(paddress, pmap) {
   new daum.Postcode({
     oncomplete: function(data) {
@@ -460,7 +467,7 @@ function sample5_execDaumPostcode(paddress, pmap) {
         if (status === daum.maps.services.Status.OK) {
 
           var result = results[0]; //첫번째 결과의 값을 활용
-
+          mapdata.push(result)
           // 해당 주소에 대한 좌표를 받아서
           var coords = new daum.maps.LatLng(result.y, result.x);
           // var pmape = paddress.slice(0,4) + "_map";
@@ -486,6 +493,7 @@ function sample5_execDaumPostcode(paddress, pmap) {
           map1.setCenter(coords);
           // 마커를 결과값으로 받은 위치로 옮긴다.
           marker1.setPosition(coords)
+          
         }
       });
     }

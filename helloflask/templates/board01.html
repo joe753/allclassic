@@ -4,93 +4,93 @@
 
     <!-- Line 1 -->
     <div class="col-lg-12 text-center border-bottom">
-        <h4>
+        <h3 id = "title" >
            제목
-        </h4>
+        </h3>
     </div>
 
     <!-- Line 2 -->
     <div class="col-lg-6 text-left border-bottom my-2">
         <span class="detail_grey grey-text">기간 &emsp;</span> 
-        <span id="test" class="text-primary"> 2019.03.25 </span>
+        <span id="due_date" class="text-primary"> 2019.03.25 </span>
     </div>
     <div class="col-lg-3  border-bottom text-left my-2">
         <a >
         <img src="{{ url_for('static', filename='img/user_img/user01.jpg') }}" style="height:2rem; width:2rem;" class="rounded-circle mb-1">
-        <strong class="ml-2 text-dark ">user01</strong>
+        <strong id="user" class="ml-2 text-dark ">user01</strong>
         </a> 
     </div> 
     <div class="col-lg-3 border-bottom text-right my-2">
-        <span class="detail_grey grey-text"> 2019-03-05 &nbsp오후 3시 24분 </span>
+        <span id ="upload_date" class="detail_grey grey-text"> 2019-03-05 &nbsp오후 3시 24분 </span>
     </div>
 
     <!-- Line 3 -->
     <div class="col-lg-6 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text">파트 &emsp;</span> 
-        <span class="text-primary"> Clarinet &nbsp Trombone &nbsp Bassoon </span>
+        <span id="part" class="text-primary"></span>
     </div>
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text">성별 &emsp;</span> 
-        <span class="text-primary"> 무관 </span>
+        <span id ="gen" class="text-primary"> 무관 </span>
     </div>
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text">금액 &emsp;</span> 
-        <span class="text-danger font-weight-bold"> 100,000원 </span>
+        <span id = "money" class="text-danger font-weight-bold"> 100,000원 </span>
     </div>
 
     <!-- Line 4 -->
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
-        <span class="detail_grey grey-text">연습 | 연주 회수 &emsp;</span> 
-        <span class="text-primary">2회 | 1회 </span>
+        <span class="detail_grey grey-text">연습 회수</span> 
+        <span id="prac_time" class="text-primary ml-2">2회 </span>
+        <span class="detail_grey grey-text ml-2">연주 회수 </span> 
+        <span id="perf_time" class="text-primary ml-2">2회 </span>
     </div>
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
         <span class="text-primary font-weight-bold"> 날짜보기 </span>
     </div>
     <div class="col-lg-6 text-left border-bottom my-2" style="height:2rem;">
-        <span class="detail_grey grey-text">연습 | 연주 장소 &emsp;</span> 
-        <span class="text-primary "> 서울시 노원구 상계동 &nbsp |&nbsp 서울시 강남구 서초동  </span>
+        <span class="detail_grey grey-text">연습 장소 </span> 
+        <span class="text-primary ml-1"> 서울시 노원구 상계동 </span>
+        <span class="detail_grey grey-text ml-2">연주 장소 </span> 
+        <span class="text-primary ml-1"> 서울시 강남구 서초동  </span>
     </div>    
 
     <!-- Line 5 -->
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text"> 자격요건 &emsp;</span> 
-        <span class="text-primary"> 대졸 이상 </span>
+        <span id="graduated" class="text-primary"> 대졸 이상 </span>
     </div>
     <div class="col-lg-3 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text"> 복장 &emsp;</span> 
-        <span class="text-primary"> 추후 공지 </span>
+        <span id="costume" class="text-primary"> 추후 공지 </span>
     </div>
     <div class="col-lg-6 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text"> 곡 &emsp;</span> 
-        <span class="text-primary "> 동요 3곡 &nbsp (도레미송, 올챙이와개구리, 뽀로로)  </span>
+        <span id="songs" class="text-primary "> 동요 3곡 &nbsp (도레미송, 올챙이와개구리, 뽀로로)  </span>
     </div>    
     
     <!-- Line 6 -->
     <div class="col-lg-12 text-left border-bottom my-2">
         <span class="grey-text font-weight-bold mb-5" style="font-size : 24px;"> 상세정보 &emsp;</span> 
-        <div class="mx-3 my-4" style="font-size : 15px;"> 아이들과 잘 지낼 수 있는 선생님이 지원해 주셨으면 좋겠습니다. <br>
+        <div id="detail_info" class="mx-3 my-4" style="font-size : 15px;"> 아이들과 잘 지낼 수 있는 선생님이 지원해 주셨으면 좋겠습니다. <br>
             지각 절대 안되고요, 곡은 어렵지 않으니 많이 지원해주셨으면 좋겠습니다.
         </div>
     </div>
 
     <!-- Line 7 -->
-    <div class="col-lg-6 text-left border-bottom border-right mb-1">
-        <span class="grey-text font-weight-bold" style="font-size : 24px;"> 연습실 지도 보기 &emsp;</span> 
+    <div class="col-lg-5 mx-4 text-center mb-2">
+        <span class="grey-text font-weight-bold" style="font-size : 24px;"> 연습실 지도 보기</span> 
     </div>
-    <div class="col-lg-6 text-left border-bottom mb-1">
-            <span class="grey-text font-weight-bold" style="font-size : 24px;"> 연주장 지도 보기 &emsp;</span> 
+    <div class="col-lg-5  ml-5 text-center mb-2">
+            <span class="grey-text font-weight-bold" style="font-size : 24px;"> 연주장 지도 보기 </span> 
     </div>
     
     <!-- Line 8 -->
-    <div class="col-lg-6 text-center border-bottom border-right">
-        <br><br><br><br><br><br><br>
-        지도
-        <br><br><br><br><br><br><br>
+    <div id="prac_map" style="width:500px;height:400px;"class="col-lg-5  mx-4 ">
+       
     </div>
-    <div class="col-lg-6 text-center border-bottom border-right">
-            <br><br><br><br><br><br><br>
-            지도
-            <br><br><br><br><br><br><br>
+    <div id="perf_map" style="width:500px;height:400px;"class="col-lg-5  ml-5">
+           
     </div>
 
     <!-- Line 9 -->
@@ -111,12 +111,12 @@
 
     
 <script>
-function send_ajax(url, method, data, dataType, fn) {
+function send_ajax(url, method, board, boardType, fn) {
     $.ajax({
         url: url,
-        data: data,
+        board: board,
         type: method,
-        dataType: dataType
+        boardType: boardType
     }).done(function (res) {
         if (fn)
             fn(res)
@@ -128,28 +128,145 @@ function send_ajax(url, method, data, dataType, fn) {
 }
 
 
-var data_url = "http://localhost:5000/board/{{boardid}}"
+
+
+function gender(data) {
+    if (data == '1') {
+        return '성별 무관'
+    }
+    else if (data == "2") {
+        return "남"
+    }
+    else {
+        return "여"
+    }
+} 
+
+function qualification(data) {
+    if (data == "1"){
+        return "학력 무관"
+    }
+    else if (data == "2") {
+        return "대학교 재학 이상"
+    }
+    else {
+        return "대졸 이상"
+    }
+}
+
+function get_costume (data) {
+    if (data == "1"){
+        return "추후공지"
+    }
+    else if (data == "2") {
+        return "자유"
+    }
+    else if (data == "3") {
+        return "정장(흰셔츠)"
+    }
+    else {
+        return "정장(올블랙)"
+    }
+}
+
+
+
+
+var board_url = "http://localhost:5000/boards/{{boardid}}"
+function xx() {
+    send_ajax(board_url, "GET", "", "", function(res){
+        console.log("11111111111111>>", res)
+        var board = res[0]
+        var costume = get_costume(board.costume)
+        var gen = gender(board.gen)
+        var graduated = qualification(board.qualification)
+        moment.locale('ko')
+        var kdue_date = moment(board.due_date)
+        var kupload_time = moment(board.upload_time)
+
+        $.ajax({
+            url : "/boardinstruments/" + board.board_id,
+            type : "get"   
+        }).done(function(res) {
+            console.log("22222222222222222")
+            var boardinst = res[1];
+            for (i = 0;  i < res.length; i++) {
+                var boardinst = res[i]
+                $('#part').append(boardinst.instrument_name + "(" + boardinst.person +")" + "&emsp;")
+                console.log(boardinst.instrument_name)
+            }
+        })
+
+        document.getElementById('due_date').innerHTML = kdue_date.tz('UTC').format('YYYY년 MMMM Do a h시mm분 ')
+        document.getElementById('title').innerHTML = board.board_title
+        document.getElementById('user').innerHTML = "User" + board.user_id
+        document.getElementById('upload_date').innerHTML = kupload_time.tz('UTC').format('YYYY년 MMMM Do a h시mm분')
+        document.getElementById('gen').innerHTML = gen
+        document.getElementById('money').innerHTML = board.money
+        document.getElementById('prac_time').innerHTML = board.practice_time + "회" 
+        document.getElementById('perf_time').innerHTML = board.perform_time + "회"
+        document.getElementById('graduated').innerHTML = graduated
+        document.getElementById('costume').innerHTML = costume
+        document.getElementById('detail_info').innerHTML = board.detail_info
+        document.getElementById('songs').innerHTML = board.song_info
+        console.log("OOOOOOOOOOOOOOOKKKKKKKKKKK")
+
+
+        // console.log(kdue_date.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
+        // console.log(kupload_time.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
+        // console.log(moment().subtract(10, 'days').calendar())
+        // console.log(board.due_date.slice(5,-7), typeof(board.due_date))
+        // var datestr = board.due_date.slice(5,-7)
+        // var datelst = datestr.
+
+        drawing_map("prac_map",  board.practice_mapx, board.practice_mapy)
+        drawing_map("perf_map",  board.perform_mapx, board.perform_mapy)
+    })
+}
+
+
 
 $(document).ready(function(){
-    send_ajax(data_url, "GET", "", "", function(res){
-        var data = res[0]
-        document.getElementById('test').innerHTML = data.board_id;
-        moment.locale('ko')
-        var kdue_date = moment(data.due_date)
-        var kupload_time = moment(data.upload_time)
+    xx();
+});
 
-        console.log(kdue_date.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
-        console.log(kupload_time.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))
-        console.log(moment().subtract(10, 'days').calendar())
-        // console.log(data.due_date.slice(5,-7), typeof(data.due_date))
-        // var datestr = data.due_date.slice(5,-7)
-        // var datelst = datestr.
-    })
-})
 
 
 
 </script>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3e18f19ec363e7b25ab2208e8dff2fc0"></script>
+
+
+
+
+<script>
+
+
+function drawing_map (mapid, x_loc, y_loc) {
+   // 이미지 지도에서 마커가 표시될 위치입니다 
+    var markerPosition  = new daum.maps.LatLng(y_loc, x_loc); 
+
+    // 이미지 지도에 표시할 마커입니다
+    // 이미지 지도에 표시할 마커는 Object 형태입니다
+    var marker = new daum.maps.Marker({
+        position: markerPosition
+        });
+
+    
+
+    var container = document.getElementById(mapid); //지도를 담을 영역의 DOM 레퍼런스
+    var options = { //지도를 생성할 때 필요한 기본 옵션
+        center: new daum.maps.LatLng(y_loc, x_loc), //지도의 중심좌표.
+        level: 5, //지도의 레벨(확대, 축소 정도)
+    };
+
+    // 이미지 지도를 생성합니다
+    var map = new daum.maps.Map(container, options); 
+    marker.setMap(map);
+}
+</script>
+
 
 
 
