@@ -1,0 +1,229 @@
+  <!-- 회원가입 모달-->
+  <div class="modal fade" id="sign_up" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <form class="" method="POST" action="/signup">
+        <div class="modal-header text-center info-color">
+          <h4 class="modal-title w-100 font-weight-bold text-white">Sign up</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body mx-1">
+            <div class="md-form mt-4" style="margin:0px;">
+                <i class="fas fa-user prefix grey-text"></i>
+                <input type='text' id='name' name = 'name' class="form-control validate"value="이현욱" style="margin-bottom:10px;" required>
+                <label  for='name'>Your name</label>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="md-form" style="margin-bottom:0px;">
+                    <i class="far fa-envelope prefix grey-text"></i>
+                    <input type='email' id='email' name='email' class="form-control validate"value="joe753@naver.com" required>
+                    <label  for='email'>Your id (e-mail)</label>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="md-form" style="margin-bottom:0px;">
+                  <i class="fas fa-phone prefix grey-text" ></i>
+                  <input type='text' id='phone' name='phone' class="form-control validate" value = "01012345678"  style="display:inline-block;" required>
+                  <label for='phone'>Your phone-number</label>
+                  <!-- <span style="font-size: 20px;">-</span>
+                  <input type="tel"class="form-control col-lg-2"  style="display:inline-block;"> -->
+                </div>
+              </div>
+
+            </div>
+            <div class="md-form mb-3">
+                <i class="fas fa-lock prefix grey-text"></i>
+                <input type='password' id='password' name= 'password' class="form-control validate" value="1234" required>
+                <label  for='password'>Your password</label>
+            </div>
+            <div class="md-form">
+                <i class="fas fa-lock prefix grey-text"></i>
+                <input type='password' id='cfpassword' name='cfpassword' class="form-control validate" value="1234" required>
+                <label  for='cfpassword'>Confirm password</label>
+            </div>
+            {% for message in get_flashed_messages() %}
+            <div>
+              <p class="text-danger">{{message}}</p>
+            </div>
+            {% endfor %}
+            <div class="row">
+              <div class="col-lg-9">
+                <div class="md-form">
+                  <i class="far fa-address-card prefix grey-text"></i>
+                  <input type='text' id='nickname' name='nickname' class="form-control validate" value="코딩1" required>
+                  <label for='nickname'>Your nickname</label>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <button onclick="check_nick()" type="button" class="btn btn-info btn-rounded">중복확인</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-9">
+                <div class="md-form ">
+                  <i class="fas fa-map-marked-alt prefix grey-text"></i>
+                  <input type='text' id='address' name='address' class="form-control validate"  value="서울 중랑구" required>
+                  <label  for='address'>Your address</label>
+                </div>
+              </div>
+              <div class="col-lg-3">
+                  <button  type="button" onclick="sample5_execDaumPostcode()" class="btn btn-info btn-rounded">주소 찾기</button>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <button onclick="show_login()" class="btn btn-info mr-3" type="button">Sign up</button>
+              <button onclick="hide()" type="button" class="btn btn-cancel  ml-3">cancel</button>
+            </div>
+            <div class="float-right mr-2">
+              <span>
+                이미 이 사이트의 회원이신가요? 
+                <a onclick="changemodal()" class="ml-3 text-primary font-weight-bold">
+                  로그인 하러가기
+                </a>
+              </span>
+            </div>
+            
+        </div>
+      </div>
+  </div>
+</form>
+</div> 
+
+<script>
+
+
+function hide (){
+  $('#sign_up').modal("hide")
+}
+
+function changemodal() {
+  $('#sign_up').modal('hide')
+  $('#log_in').modal('show')
+  $("#log_in").focusout(function(){
+      $( "#log_in" ).dialog( "close" );
+  });
+}
+
+
+var oknick = 0
+function check_nick (){
+
+
+  if ($('#nickname').val() == ""){
+    alert("닉네임을 입력해주세요.")
+    return $('#nickname').focus()
+  }
+  var nick = $("#nickname").val()
+  $.ajax({
+    url : "/signup_nick",
+    data : JSON.stringify(nick),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'text'
+    }).done(function (res) {
+      if (res >= 1) {
+        alert ("존재하는 닉네임 입니다.")
+        $('#nickname').val("")
+        $('#nickname').focus()
+      }
+      else {
+        oknick ++;
+        alert ("사용하실 수 있는 닉네임 입니다.")
+      }
+    })
+}
+
+function sample5_execDaumPostcode() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      var addr = data.address; // 최종 주소 변수
+
+      // 주소 정보를 해당 필드에 넣는다.
+      document.getElementById("address").value = addr;
+    }
+  }).open();
+}
+
+
+
+function show_login (){
+  var phone =  $("#phone").val()
+  if (phone.indexOf("-") == -1) {
+    var phone1 = phone.slice(0,3)
+    var phone2 = phone.slice(3,7)
+    var phone3 = phone.slice(7,11)
+    var phone = phone1 + "-" + phone2 + "-" + phone3
+
+  } 
+  var userform = {'name':  $("#name").val(),
+                  'email' : $("#email").val(),
+                  'phone' : phone,
+                  'password' : $("#password").val(),
+                  'cfpassword' : $("#cfpassword").val(),
+                  'nickname' : $("#nickname").val(),
+                  'address' : $("#address").val()
+                }
+  
+  if (userform.password != userform.cfpassword) {
+    alert("비밀번호가 일치하지 않습니다.")
+    
+    $("#password").val("")
+    $("#cfpassword").val("");
+    $("#password").focus();
+    return 
+    }
+  if (oknick == 0) {
+    alert("닉네임 중복확인을 해주세요.")
+    return
+  }
+  
+
+  $.ajax({
+    url : "/signup",
+    data : JSON.stringify(userform),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+    // success : function(res) {
+    //   alert("회원가입이 완료되었습니다.\n 로그인 페이지로 이동합니다.");
+    //   $('#sign_up').modal('hide');
+    //   $('#log_in').modal('show');
+    // },error:function(request, status, error) {
+    // }
+    }).done(function (res) {
+      console.log(res)
+      if (res.error) {
+        alert("이미 가입되어있는 이메일주소 입니다.")
+        $('#email').val("")
+        $('#email').focus()
+        return ""
+      }
+      else {
+        alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.")
+        $('#sign_up').modal('hide');
+        reset_modal();
+        $('#log_in').modal('show');   
+        return
+  }}).fail(function (request, status, error) {
+    console.log ("request")
+  })
+}
+
+function reset_modal () {
+  $("#name").val("");
+  $("#email").val("");
+  $("#phone").val("");
+  $("#password").val("");
+  $("#cfpassword").val("")
+  $("#nickname").val("")
+  $("#address").val("")
+}
+</script>
+
+
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>

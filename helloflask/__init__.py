@@ -1,13 +1,12 @@
 from flask import Flask, g, request, Response, make_response, flash, redirect, jsonify
 import json
 from flask import session, render_template, Markup
-from datetime import date, datetime
-from helloflask.db_tables import User, Board, Instrument, BoardInstrument
+from datetime import date, datetime, timedelta
+from helloflask.db_tables import Users, Board, Instrument, BoardInstrument
 from helloflask.init_db import db_session
 from sqlalchemy.orm import subqueryload, joinedload, relationship, backref
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.sql import func
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, func
 
 
 
@@ -17,14 +16,17 @@ app.config['JSON_AS_ASCII'] = False
 # app.jinja_env.trim_blocks = True
 
 
+app.config.update(
+	SECRET_KEY='ABCDEFG!@#$%^&',
+	SESSION_COOKIE_NAME='pyweb_flask_session',
+	PERMANENT_SESSION_LIFETIME=timedelta(31)      # 31 days
+)
+
+
 @app.route('/lesson')
 def lesson():
     return render_template('lesson.html')
 
-@app.route('/perform/detail/board01')
-def p_bbs01():
-    row = ["title","기간","user0222"]
-    return render_template('board01.html', lst=row)
 
 @app.route('/add/perform/pboard01')
 def add_pboard():
@@ -41,34 +43,44 @@ def board (boardid) :
     print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
     return render_template('board01.html', boardid=boardid)
 
+@app.route('/signup_nick', methods=['GET', 'POST'])
+def checknick () :
+    nick = request.json
+    result = Users.query.filter(Users.nickname == nick).all()
+    print (len(result))
 
+    return str(len(result))
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup_modal():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    cfpassword = request.form.get('cfpassword')
-    name = request.form.get('name')
-    phone_number = request.form.get('phone')
-    nickname = request.form.get('nickname')
-    address = request.form.get('address')
+    form_data = request.json
 
-    if password != cfpassword :
-        flash("암호를 입력주세요!!!")
+    email = form_data['email']
+    password = form_data['password']
+    cfpassword = form_data['cfpassword']
+    name = form_data['name']
+    phone_number = form_data['phone']
+    nickname = form_data['nickname']
+    address = form_data['address']
 
-    else :
-        u = User( email, password, name, phone_number, nickname, address)
-        print (u)
-        try:
-            db_session.add(u)
-            db_session.commit()
-        
-        except Exception as err:
-            print (err)
-            db_session.rollback()
+    u = Users( email, password, name, phone_number, nickname, address)
+    print (u)
+    try:
+        db_session.add(u)
+        db_session.commit()
+    
+    except Exception as err:
+        print (err)
+        db_session.rollback()
+        if "Duplicate" in str(err) :
+            data = {}
+            data['error'] = 'error'
+            data['email'] = u.email
+            print (data)
+            return jsonify(data)
 
-        return redirect('/perform')
-
+    print (u.email)
+    return jsonify(u.email)
 
 
 
@@ -152,3 +164,36 @@ def get_boardinst(boardid) :
     boardinst = BoardInstrument.query.filter(BoardInstrument.board_id == boardid).order_by(BoardInstrument.instrument_id).all()
 
     return jsonify([s.json() for s in boardinst])
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    login_data = request.json
+    
+    email = login_data['email']
+    passwd = login_data['password']
+    print ("PPPPPP", passwd, func.sha2(passwd, 256))
+    # u = Users.query.filter('email = :email and `password` = sha2(:passwd, 256)').params(email=email, passwd=passwd).first()
+    # u = Users.query.filter(Users.email == email and Users.password == func.sha2(passwd, 256)).first()
+    u = Users.query.filter(Users.email == email).filter(Users.password == func.sha2(passwd, 256)).first()
+    print (">>>>>>", u)
+    if u is not None:
+        session['loginUser'] = { 'userid': u.user_no, 'name': u.nickname, 'premium' : u.premium}
+        if session.get('next'):
+            next = session.get('next')
+            del session['next']
+            print ("OOOOOOOOOKKKKKKKKKKKK")
+            return redirect(next)
+        print ("YEEESSS")
+        return jsonify ('ok')
+    else:
+        return jsonify('error')
+
+
+
+@app.route('/logout')
+def logout():
+    if session.get('loginUser'):
+        del session['loginUser']
+
+    return redirect('/perform')

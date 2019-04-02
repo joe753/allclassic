@@ -2,8 +2,8 @@ from helloflask.init_db import Base
 from sqlalchemy import Column, Integer, String, TIMESTAMP, Float, ForeignKey, PrimaryKeyConstraint, func, Date
 from sqlalchemy.orm import relationship, backref
 
-class User(Base):
-    __tablename__ = 'User'
+class Users(Base):
+    __tablename__ = 'Users'
 
     user_no = Column(Integer, primary_key = True)
     email = Column(String)
@@ -12,8 +12,15 @@ class User(Base):
     phone_number = Column(String)
     nickname = Column(String)
     address = Column(String)
-
-    def __init__ (self, email, password, name, phone_number, nickname, address, makesha=False):
+    premium = Column(Integer)
+    profile_img = Column(String)
+    user_video = Column(String)
+    user_account = Column(String)
+    qualification = Column(Integer)
+    reward = Column(String)
+    user_detail = Column(String)
+    # premium, profile_img, user_video, user_account, qualification, reward, user_detail,
+    def __init__ (self, email, password, name, phone_number, nickname, address,  makesha=False):
 
         if makesha:
             self.password = password
@@ -26,7 +33,13 @@ class User(Base):
         self.name = name
         self.nickname = nickname
         self.address = address
-
+        # self.premium = premium
+        # self.profile_img = profile_img
+        # self.user_video = user_video
+        # self.user_account = user_account
+        # self.qualification = qualification
+        # self.reward = reward
+        # self.user_detail = user_detail
 
     def __repr__(self):
         return '%s, %s, %s, %s, %s, %s' %( self.email , self.password, self.name , self.phone_number, self.nickname, self.address)

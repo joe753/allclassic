@@ -1,0 +1,91 @@
+{% include "inc/regist.html" %}
+
+
+{% include "inc/sign_in.html" %}
+ 
+  <!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="/perform" target="_self">
+        <strong class="blue-text">All Classic</strong>
+        </a>
+
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+            <a class="nav-link waves-effect" href="/perform" target="_self">Perform</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link waves-effect" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
+                target="_blank">Video</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link waves-effect" href="/lesson" target="_self">Lesson</a>
+            </li>
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+            <li class="nav-item">
+            <a class="nav-link waves-effect">
+                <span class="badge red z-depth-1 align-top"> 1 </span>
+                <i class="fas fa-bell blue-text"></i>
+                <span class="clearfix d-none d-sm-inline-block font-weight-bold"> 알림 </span>
+            </a>
+            </li>
+            <li class="nav-item ml-2">
+            <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect" target="_blank">
+                <span class="badge red z-depth-1 align-top"> 3 </span>
+                <i class="fas fa-comments blue-text"></i>
+                <span class="clearfix d-none d-sm-inline-block font-weight-bold"> 채팅 </span>
+            </a>
+            </li>
+            
+            <li class="nav-item">
+            
+            <a id ="regist" href="" class="nav-link mx-3 font-weight-bold" data-toggle="modal" data-target="#sign_up">
+                회원가입
+            </a>
+            <a id = "logout" href="/logout" class="nav-link mx-3 font-weight-bold" >
+                로그아웃
+            </a>
+
+            </li>
+
+            {% if session.loginUser %}
+                <li class="nav-item">
+                    <a href="" class="nav-link waves-effect">
+                        <i class="fas fa-user"></i> <span class="font-weight-bold text-primary">{{session.loginUser.name}}</span>
+                    </a>
+                </li>
+                <script>
+                $('#regist').hide()
+                </script>
+            {% else %}
+                <li class="nav-item">
+                    <a href="" class="nav-link border border-light rounded waves-effect" data-toggle="modal" data-target="#log_in">
+                    <i class="fas fa-user"></i>Log-IN
+                    </a>
+                </li>
+                <script>
+                $('#logout').hide()
+                </script>
+            {% endif %}
+
+        </ul>
+
+        </div>
+
+    </div>
+</nav>

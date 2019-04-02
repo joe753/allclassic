@@ -1,0 +1,74 @@
+<!-- 로그인 모달 -->
+
+<div class="modal fade modal-center" id="log_in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <form action="/login" method="POST" >
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="email" name="log_email" id="log_email" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="log_email">Your email</label>
+        </div>
+
+        <div class="md-form mb-4">
+          <i class="fas fa-lock prefix grey-text"></i>
+          <input type="password" name="log_passwd" id="log_password" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="log_password">Your password</label>
+        </div>
+      
+        <div class="mt-5" style="font-size:15px;">
+          <span>아직 회원가입을 하지 않으셨나요?</span>
+          <span class="ml-2 text-primary">
+            <a onclick="show_regist()">회원가입</a>
+          </span>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button onclick="send_data()" type="button" class="btn btn-default">Login</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+
+<script>
+function show_regist() {
+  $('#log_in').modal('hide')
+  $('#sign_up').modal('show')
+  $("#sign_up").focusout(function(){
+    $( "#sign_up" ).dialog( "close" );
+  });
+}
+
+function send_data() {
+  var login_data = {'email' :  $('#log_email').val(),
+                    'password' : $('#log_password').val()
+                    }
+
+  $.ajax({
+    url : "/login",
+    data : JSON.stringify(login_data),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+    }).done(function (res) {
+      if (res == "ok") {
+        $("#log_in").modal('hide');
+        location.reload();
+      }
+      else if (res == "error"){
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다.")
+        $('#log_password').val("");
+        $('#log_password').focus();
+      }
+    })
+}
+</script>
