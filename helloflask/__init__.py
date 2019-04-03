@@ -22,7 +22,10 @@ app.config.update(
 	PERMANENT_SESSION_LIFETIME=timedelta(31)      # 31 days
 )
 
+##### function #######################3\
 
+
+#######################3 route ######################33
 @app.route('/lesson')
 def lesson():
     return render_template('lesson.html')
@@ -85,7 +88,7 @@ def signup_modal():
 
 
 
-@app.route('/sendboard', methods=['GET', 'POST'])
+@app.route('/sendboard', methods=['POST'])
 def sendboard():
     all_data = request.json
 
@@ -138,8 +141,8 @@ def sendboard():
 @app.route('/boards', methods=["GET"])
 def boards_json () : 
     # boardtb = Board.query.filter(Board.board_id == boardid).all()
-    boardtb = Board.query.all()
-        
+    boardtb = Board.query.order_by(Board.board_id.desc()).all()
+    
     for s in boardtb:
         print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
     
@@ -197,3 +200,34 @@ def logout():
         del session['loginUser']
 
     return redirect('/perform')
+
+
+@app.route('/test')
+def test():
+    data = {}
+    boardinst = json_boardinst()
+    instruments = json_instruments()
+    boardtb = json_boards()    
+    bjson = jsonify([b.json() for b in boardinst])
+    ijson = jsonify([i.json() for i in instruments])
+    tjson = jsonify([t.json() for t in boardtb])
+    data['bjson'] = bjson
+    print(">>>>",bjson, ijson, tjson)
+    return jsonify(data)
+
+def json_boardinst() :
+    boardinst = BoardInstrument.query.order_by(BoardInstrument.instrument_id).all()
+    return boardinst
+
+def json_instruments() :
+    instruments = Instrument.query.all()
+    return instruments
+
+def json_boards () : 
+    # boardtb = Board.query.filter(Board.board_id == boardid).all()
+    boardtb = Board.query.order_by(Board.board_id.desc()).all()
+    
+    return boardtb
+
+
+    # return jsonify([s.json() for s in boardtb])

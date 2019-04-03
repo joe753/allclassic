@@ -2,6 +2,9 @@
 {% extends "layout.html" %}
 
 {% block section %}
+<div id="card-form"></div>
+
+  <script id="card-template" type="text/x-handlebars-template">
     <div class="col-lg-6 col-md-6 mb-5 ">
     <!--Card-->
       <div class="card" style="height: 26rem">
@@ -34,24 +37,30 @@
           <div class="col-lg-12 col-md-4">
             <div class="text-center my-3 dark-grey-text border-bottom ">
               <h5>
-                <strong class="font-weight-bold" style="font-size : 17px">
-                아이들과 함께 연주해주실 객원 선생님 구합니다.
+                {% raw %}
+                <strong class="font-weight-bold" style="font-size : 17px ">
+                    {{board_title}}
                 </strong>
+                {% endraw %}
               </h5>
             </div>
             <div class="row grey-text">
               <div class="col-lg-4 text-left text-dark">
                 <h5>
                   <a>
-                    <img src="{{ url_for('static', filename='img/user_img/user01.jpg') }}" style="height:2rem" class="rounded-circle">
-                    <strong class="ml-2 text-dark">User01</strong>
+                    <img src="{{ url_for('static', filename='img/user_img/user6.png') }}" style="height:2rem" class="rounded-circle">
+                    {% raw %}
+                    <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">user{{user_id}}</strong>
+                    {% endraw %}
                   </a>
                 </h5>
               </div>
               <div class="col-lg-8 text-right">
-                <h6 class="mr-3">
-                    2019-03-05 &nbsp오후 3시 24분
+                {% raw %}
+                <h6 class="mr-2">
+                    {{upload_date}}
                 </h6>
+                {% endraw %}
               </div>
               
             </div>
@@ -198,6 +207,7 @@
 
       </div>
     </div>
+  </script>
     {{ pc.p_card('결혼식 피아노트리오 연주자 구합니다.' , 'User02', url_for ('static', filename='img/user_img/user02.jpg'), 
     '2019-03-07 오후 08시 34분', '2019.03.09 (토) 오전 11:00', '서울시 강남구 역삼동 마리드블랑', '100,000', 'board02') }}
     
@@ -205,4 +215,40 @@
       '2019-03-07 오후 06시 21분', '2019.03.11 (월) 오후 05:00', '경기도 안양시 평촌동', '40,000', 'board03') }}
       {{ pc.p_card('예일초등학교 예배 반주자 급구합니다.' , 'User04', url_for ('static', filename='img/user_img/user04.jpg'), 
     '2019-03-06 오전 11시 19분', '매주 월요일 9시 ~ 9시 40분', '구산역 예일초등학교', '20,000', 'board04') }}
+
+<script>
+var data;
+function getBoarddata() {
+
+  $.ajax({
+    url : "/boards",
+    data : "",
+    type : 'GET',
+    dataType : ''
+    }).done(function (res){
+      data = res
+     
+      for (i=0; i < data.length; i++) {
+        console.log(data[i])
+        moment.locale('ko')
+        var kupload_time = moment(data[i].upload_date)
+        data[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
+        console.log(data[i].upload_date)
+      hbs("card-template", data[i], "card-form")
+    }
+  })
+}
+
+getBoarddata()
+
+function hbs(sourceId, data, resultId) {
+  var source = document.getElementById(sourceId).innerHTML;
+  var template = Handlebars.compile(source);
+  var html = template(data);
+  document.getElementById(resultId).innerHTML = html;
+}
+
+
+</script>
+
 {% endblock %}

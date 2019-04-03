@@ -235,6 +235,9 @@ function control_lennumber (object){
 }
 
 function send_all() {
+  if (checkselbar() == false) {
+    return false
+  }
   var alldata = send_data();
   alldata["costume"] = radio_value()
   instruments =  send_hiddenform()
@@ -405,15 +408,6 @@ function send_all() {
   }
 
   function send_data () {
-    
-    // if ($('input[name=radiogd1]:checked').val() == '1') {
-    //   var costume = '1';
-    //   }
-
-    // else {
-    //   var costume = ('#slt_gd').val();
-    // }
-    
     var qualification = $('#slt_grad').val()
     var gen = $('#slt_gen').val()
 

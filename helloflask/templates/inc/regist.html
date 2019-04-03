@@ -159,8 +159,22 @@ function show_login (){
     var phone = phone1 + "-" + phone2 + "-" + phone3
 
   } 
+  var email = $("#email").val()
+  var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+  if(exptext.test(email)==false){
+
+  //이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우			
+
+  alert("이메일형식이 올바르지 않습니다.");
+
+  $('#phone').focus();
+
+    return false;
+  }
+
+
   var userform = {'name':  $("#name").val(),
-                  'email' : $("#email").val(),
+                  'email' : email,
                   'phone' : phone,
                   'password' : $("#password").val(),
                   'cfpassword' : $("#cfpassword").val(),
