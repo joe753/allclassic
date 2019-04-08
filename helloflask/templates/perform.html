@@ -1,13 +1,11 @@
-{% import "macro/pf_card.html" as pc %}
 {% extends "layout.html" %}
 
 {% block section %}
-<div id="card-form"></div>
+<div id="cards" class="row"> </div>
 
   <script id="card-template" type="text/x-handlebars-template">
-    <div class="col-lg-6 col-md-6 mb-5 ">
     <!--Card-->
-      <div class="card" style="height: 26rem">
+      <div class="card" style="height: 28rem">
           <!-- <div class="col-lg-4 col-md-4 border-right  border-light">
             <div class="view overlay" style="height:21rem;">
               <img src="{{ url_for('static', filename='img/trombone.jpg') }}"  class="card-img-left top_row"
@@ -35,42 +33,38 @@
               </div>
           </div> -->
           <div class="col-lg-12 col-md-4">
-            <div class="text-center my-3 dark-grey-text border-bottom ">
+            <div class="text-center my-3  border-bottom ">
               <h5>
                 {% raw %}
-                <strong class="font-weight-bold" style="font-size : 17px ">
+                <strong class="font-weight-bold" style="font-size : 24px ">
                     {{board_title}}
                 </strong>
                 {% endraw %}
               </h5>
             </div>
             <div class="row grey-text">
-              <div class="col-lg-4 text-left text-dark">
+              <div class="col-lg-6 text-left text-dark">
                 <h5>
                   <a>
-                    <img src="{{ url_for('static', filename='img/user_img/user6.png') }}" style="height:2rem" class="rounded-circle">
+                    <img src="{{ url_for('static', filename='img/user_img/user6.png') }}" style="height:2rem;  " class="rounded-circle">
                     {% raw %}
-                    <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">user{{user_id}}</strong>
+                    <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">{{user_nickname}}</strong>
                     {% endraw %}
                   </a>
                 </h5>
               </div>
-              <div class="col-lg-8 text-right">
+              <div class="col-lg-6 text-right">
                 {% raw %}
                 <h6 class="mr-2">
                     {{upload_date}}
                 </h6>
-                {% endraw %}
+                
               </div>
               
             </div>
-            <div class="row">
-                <div class="c_part col-lg-3">
-                 <span class=" text-primary">
-                   Flute
-                 </span>
-                </div>
-                <div class="c_part col-lg-3">
+            <div id="inst{{board_id}}" class="row" style="height: 8rem;">
+              
+                <!-- <div class="c_part col-lg-3">
                  <span class=" grey-text">
                    Oboe
                  </span>
@@ -150,33 +144,32 @@
                <span class=" text-primary">
                 Conductor/ &nbsp Composer
                </span>
-              </div>
-            </div>
+              </div> -->
+            </div> 
                 <div class="row mt-4">
                   <div class="col-lg-12  grey-text text-center">
                     <h5 class="font-weight-bold">
-                      2019.03.07 (목) 오후 02:00
+                      {{due_date}}
                     </h5>
                   </div>
                   <div class="col-lg-12 text-center">
                       <h5 class="dark-grey-text font-weight-bold">
-                        서울시 노원구 더조은아트홀
+                        {{perform_address}}
                       </h5>
                   </div>
                   <div class="col-lg-12 text-dark text-center">
                       <h5 class="text-danger">
-                        <strong class="font-weight-bold">100,000</strong> 원
+                        <strong class="font-weight-bold">{{money}}</strong> 원
                       </h5>
 
-                        <div class="text-right mr-4">
+                        <div class="text-right">
                             <button type="button" class="btn btn-outline-default waves-effect float-left">
                               지원하기
                             </button>
-                            <a href="perform/detail/board01">
-                              <button type="button" class="btn btn-outline-info waves-effect">
+                              <button id="detail{{board_id}}" type="button" class="btn btn-outline-info waves-effect" onclick="pf_detail()">
                                   상세보기
                               </button>
-                            </a>
+                            {% endraw %}
                             <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -208,47 +201,105 @@
       </div>
     </div>
   </script>
-    {{ pc.p_card('결혼식 피아노트리오 연주자 구합니다.' , 'User02', url_for ('static', filename='img/user_img/user02.jpg'), 
-    '2019-03-07 오후 08시 34분', '2019.03.09 (토) 오전 11:00', '서울시 강남구 역삼동 마리드블랑', '100,000', 'board02') }}
-    
-      {{ pc.p_card('바이올린 레슨선생님 구해요.' , 'User03', url_for ('static', filename='img/user_img/user03.jpg'), 
-      '2019-03-07 오후 06시 21분', '2019.03.11 (월) 오후 05:00', '경기도 안양시 평촌동', '40,000', 'board03') }}
-      {{ pc.p_card('예일초등학교 예배 반주자 급구합니다.' , 'User04', url_for ('static', filename='img/user_img/user04.jpg'), 
-    '2019-03-06 오전 11시 19분', '매주 월요일 9시 ~ 9시 40분', '구산역 예일초등학교', '20,000', 'board04') }}
+   
 
 <script>
-var data;
-function getBoarddata() {
 
+
+function addComma(num) {
+  var regexp = /\B(?=(\d{3})+(?!\d))/g;
+  return num.toString().replace(regexp, ',');
+}
+
+var alldata;
+var boardinst_json = {}
+
+function getall () {
   $.ajax({
-    url : "/boards",
+    url : "/alldata",
     data : "",
     type : 'GET',
     dataType : ''
     }).done(function (res){
-      data = res
-     
-      for (i=0; i < data.length; i++) {
-        console.log(data[i])
+      alldata = res
+      var board_len = res.boardtb.length
+      for (i=0; i < board_len; i++) {
         moment.locale('ko')
-        var kupload_time = moment(data[i].upload_date)
-        data[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
-        console.log(data[i].upload_date)
-      hbs("card-template", data[i], "card-form")
-    }
-  })
-}
+        var kupload_time = moment(res.boardtb[i].upload_date)
+        res.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
+        res.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        res.boardtb[i].money = addComma(res.boardtb[i].money)
+        var cardform = $('<div>')
+        var cardnum = "card" + (board_len - i)
+        cardform.addClass("col-lg-6").addClass("mb-3")
+        cardform.attr("id", cardnum) 
+        $("#cards").append(cardform)
+        eee("card-template", res.boardtb[i], cardnum)
+        var a = res.boardinst
+        var result = a.filter( function (j) {
+          return  j["board_id"] == (board_len - i)
+        })
+          boardinst_json["boardinst"] = result
+          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
+        
+        $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
+      }
+    })
+} 
 
-getBoarddata()
+getall()
+</script>
 
-function hbs(sourceId, data, resultId) {
-  var source = document.getElementById(sourceId).innerHTML;
+
+<script id="hb_instsrc" type="text/x-handlebars-template">
+  {% raw %}
+  {{# each boardinst}}
+  <div class="c_part col-lg-4" style="padding : 0px;">
+    <span class=" text-primary my-4" style="font-size:16px">
+      {{instrument_name}} ({{person}})
+    </span>
+  </div>
+  {{/each}}
+  {% endraw %}
+</script>
+
+
+
+<script>
+function eee(sourceId, data, resultId){
+  var source = document.getElementById(sourceId).innerHTML
   var template = Handlebars.compile(source);
   var html = template(data);
   document.getElementById(resultId).innerHTML = html;
 }
 
+function log_in (button_id) {
+    if(confirm("로그인이 필요한 페이지 입니다.\n로그인하시겠습니까?") == true){
+        $('#log_in').modal('show')
+    }
+    else{
+        return ""
+    }
+}
+
+function pf_detail (board_id) {
+  var button_id= "#detail" + board_id
+  $.ajax({ 
+    url : "/perform/detail/board" + board_id,
+    data : "",
+    type : 'GET',
+    dataType : ''
+    }).done(function (res){
+      if (res == "notlogin") {
+        log_in(button_id)
+      }
+      else {
+        window.location.href = 'http://localhost:5000/perform/detail/board' + board_id
+      }
+  })
+}
 
 </script>
+
 
 {% endblock %}

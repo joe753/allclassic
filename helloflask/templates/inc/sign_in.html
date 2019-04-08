@@ -14,13 +14,13 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <i class="fas fa-envelope prefix grey-text"></i>
-          <input type="email" name="log_email" id="log_email" class="form-control validate">
+          <input type="email" name="log_email" id="log_email" class="form-control validate" onkeyup="enterkey()">
           <label data-error="wrong" data-success="right" for="log_email">Your email</label>
         </div>
 
         <div class="md-form mb-4">
           <i class="fas fa-lock prefix grey-text"></i>
-          <input type="password" name="log_passwd" id="log_password" class="form-control validate">
+          <input type="password" name="log_passwd" id="log_password" class="form-control validate" onkeyup="enterkey()">
           <label data-error="wrong" data-success="right" for="log_password">Your password</label>
         </div>
       
@@ -36,7 +36,6 @@
       </div>
     </div>
   </div>
-</form>
 </div>
 
 <script>
@@ -49,9 +48,25 @@ function show_regist() {
 }
 
 function send_data() {
+  var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
   var login_data = {'email' :  $('#log_email').val(),
                     'password' : $('#log_password').val()
                     }
+  if ($('#log_email').val() == "" ) {
+    alert("아이디를 입력하여 주세요.")
+    return ""
+  }
+  else if ( $('#log_password').val() == "") {
+    alert("비밀번호를 입력하여 주세요.")
+    return ""
+  }
+  else if (exptext.test($('#log_email').val())==false){
+    alert("이메일형식이 올바르지 않습니다.")
+    return ""
+  }    
+  //이메일 형식이 알파벳+숫자@알파벳+숫자.알파벳+숫자 형식이 아닐경우			
+
+
 
   $.ajax({
     url : "/login",
@@ -60,9 +75,12 @@ function send_data() {
     contentType: 'application/json',
     dataType : 'json'
     }).done(function (res) {
-      if (res == "ok") {
+      console.log("res>>", res)
+      if (res.res == "ok") {
         $("#log_in").modal('hide');
-        location.reload();
+        $(".hideLogin").hide();
+        $(".showLogin").show();
+        $('#loginUserName').text(res.user)
       }
       else if (res == "error"){
         alert("아이디 혹은 비밀번호가 일치하지 않습니다.")
@@ -71,4 +89,15 @@ function send_data() {
       }
     })
 }
+
+
+
+
+function enterkey() {
+  if (window.event.keyCode == 13) {
+        send_data();
+  }
+}
+
+
 </script>

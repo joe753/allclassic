@@ -53,35 +53,26 @@
             </li>
             
             <li class="nav-item">
-            
-            <a id ="regist" href="" class="nav-link mx-3 font-weight-bold" data-toggle="modal" data-target="#sign_up">
-                회원가입
-            </a>
-            <a id = "logout" href="/logout" class="nav-link mx-3 font-weight-bold" >
-                로그아웃
-            </a>
-
+                <a id ="regist" href="" class="nav-link mx-3 font-weight-bold hideLogin" data-toggle="modal" data-target="#sign_up"
+                 style="display:{%if session.loginUser%}none{%else%}block{%endif%};">
+                    회원가입
+                </a>
+                <a id = "logout" href="/logout" class="nav-link mx-3 font-weight-bold showLogin" style="display:{%if session.loginUser%}block{%else%}none{%endif%};">
+                    로그아웃
+                </a>
             </li>
 
-            {% if session.loginUser %}
-                <li class="nav-item">
+                <li class="nav-item showLogin" style="display:{%if session.loginUser%}block{%else%}none{%endif%};">
                     <a href="" class="nav-link waves-effect">
-                        <i class="fas fa-user"></i> <span class="font-weight-bold text-primary">{{session.loginUser.name}}</span>
+                        <i class="fas fa-user"></i> <span id="loginUserName" class="font-weight-bold text-primary">{%if session.loginUser %}{{session.loginUser.name}}{%endif%}</span>
                     </a>
                 </li>
-                <script>
-                $('#regist').hide()
-                </script>
-            {% else %}
-                <li class="nav-item">
+
+                <li class="nav-item hideLogin" style="display:{%if session.loginUser%}none{%else%}block{%endif%};">
                     <a href="" class="nav-link border border-light rounded waves-effect" data-toggle="modal" data-target="#log_in">
                     <i class="fas fa-user"></i>Log-IN
                     </a>
                 </li>
-                <script>
-                $('#logout').hide()
-                </script>
-            {% endif %}
 
         </ul>
 

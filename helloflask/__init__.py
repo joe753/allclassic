@@ -28,6 +28,7 @@ app.config.update(
 #######################3 route ######################33
 @app.route('/lesson')
 def lesson():
+  
     return render_template('lesson.html')
 
 
@@ -42,9 +43,13 @@ def perform():
 
 @app.route('/perform/detail/board<boardid>', methods=["GET"])
 def board (boardid) : 
-    
-    print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
-    return render_template('board01.html', boardid=boardid)
+    if not session.get('loginUser') :
+        print ("GGGGG")
+        return str("notlogin")
+    else :    
+        print ("No")
+        print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
+        return render_template('board01.html', boardid=boardid)
 
 @app.route('/signup_nick', methods=['GET', 'POST'])
 def checknick () :
@@ -175,6 +180,8 @@ def login_post():
     
     email = login_data['email']
     passwd = login_data['password']
+
+    rt_data = {}
     print ("PPPPPP", passwd, func.sha2(passwd, 256))
     # u = Users.query.filter('email = :email and `password` = sha2(:passwd, 256)').params(email=email, passwd=passwd).first()
     # u = Users.query.filter(Users.email == email and Users.password == func.sha2(passwd, 256)).first()
@@ -187,8 +194,10 @@ def login_post():
             del session['next']
             print ("OOOOOOOOOKKKKKKKKKKKK")
             return redirect(next)
-        print ("YEEESSS")
-        return jsonify ('ok')
+        rt_data["user"] = u.nickname
+        rt_data["res"] = "ok"
+        print (">>>>rt rt rtrt", rt_data)
+        return jsonify (rt_data)
     else:
         return jsonify('error')
 
@@ -202,18 +211,18 @@ def logout():
     return redirect('/perform')
 
 
-@app.route('/test')
+@app.route('/alldata')
 def test():
     data = {}
-    boardinst = json_boardinst()
     instruments = json_instruments()
     boardtb = json_boards()    
-    bjson = jsonify([b.json() for b in boardinst])
-    ijson = jsonify([i.json() for i in instruments])
-    tjson = jsonify([t.json() for t in boardtb])
-    data['bjson'] = bjson
-    print(">>>>",bjson, ijson, tjson)
-    return jsonify(data)
+    boardinst = json_boardinst()
+    # data['boardinst'] = bjson
+    # data['instruments'] = bjson
+    # data['bjson'] = bjson
+    # print(">>>>",bjson, ijson, tjson)
+    # return jsonify(data)
+    return jsonify({'boardinst': [b.json() for b in boardinst], 'instruments':[i.json() for i in instruments], 'boardtb' : [t.json() for t in boardtb]})
 
 def json_boardinst() :
     boardinst = BoardInstrument.query.order_by(BoardInstrument.instrument_id).all()
