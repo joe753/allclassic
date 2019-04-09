@@ -1,1 +1,437 @@
--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>All Classic</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{{ url_for('static', filename='css/mdb.min.css') }}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{{ url_for('static', filename='css/style.min.css') }} " rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/handlebars.js') }}"></script>
+
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+    .btn-cancel {
+      background-color : #6c757d;
+    }
+    .c_part {
+      font-size : 13px; 
+    }
+
+    .detail_grey {
+      font-size : 13px;
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+<!--=========================================== LogIn ====================================================-->
+<div class="modal fade modal-center" id="log_in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Sign in</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body mx-3">
+                <div class="md-form mb-5">
+                    <i class="fas fa-envelope prefix grey-text"></i>
+                    <input type="email" name="log_email" id="log_email" class="form-control validate" onkeyup="enterkey()">
+                    <label data-error="wrong" data-success="right" for="log_email">Your email</label>
+                </div>
+
+                <div class="md-form mb-4">
+                    <i class="fas fa-lock prefix grey-text"></i>
+                    <input type="password" name="log_passwd" id="log_password" class="form-control validate" onkeyup="enterkey()">
+                    <label data-error="wrong" data-success="right" for="log_password">Your password</label>
+                </div>
+            
+                <div class="mt-5" style="font-size:15px;">
+                    <span>아직 회원가입을 하지 않으셨나요?</span>
+                    <span class="ml-2 text-primary">
+                        <a onclick="show_regist()">회원가입</a>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+            <button id="btn_submit" onclick="send_data()" type="button" class="btn btn-default">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--======================================== EndLogIn ===========================================================-->
+
+
+
+<!--================================================ Regist ===============================================-->
+<div class="modal fade" id="sign_up" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form class="" method="POST" action="/signup">
+                <div class="modal-header text-center info-color">
+                    <h4 class="modal-title w-100 font-weight-bold text-white">Sign up</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body mx-1">
+                    <div class="md-form mt-4" style="margin:0px;">
+                        <i class="fas fa-user prefix grey-text"></i>
+                        <input type='text' id='name' name = 'name' class="form-control validate"value="이현욱" style="margin-bottom:10px;" required>
+                        <label  for='name'>Your name</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="md-form" style="margin-bottom:0px;">
+                                <i class="far fa-envelope prefix grey-text"></i>
+                                <input type='email' id='email' name='email' class="form-control validate"value="joe753@naver.com" required>
+                                <label  for='email'>Your id (e-mail)</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="md-form" style="margin-bottom:0px;">
+                                <i class="fas fa-phone prefix grey-text" ></i>
+                                <input type='text' id='phone' name='phone' class="form-control validate" value = "01012345678"  style="display:inline-block;" required>
+                                <label for='phone'>Your phone-number</label>
+                                <!-- <span style="font-size: 20px;">-</span>
+                                <input type="tel"class="form-control col-lg-2"  style="display:inline-block;"> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md-form mb-3">
+                        <i class="fas fa-lock prefix grey-text"></i>
+                        <input type='password' id='password' name= 'password' class="form-control validate" value="1234" required>
+                        <label  for='password'>Your password</label>
+                    </div>
+                    <div class="md-form">
+                        <i class="fas fa-lock prefix grey-text"></i>
+                        <input type='password' id='cfpassword' name='cfpassword' class="form-control validate" value="1234" required>
+                        <label  for='cfpassword'>Confirm password</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="md-form">
+                                <i class="far fa-address-card prefix grey-text"></i>
+                                <input type='text' id='nickname' name='nickname' class="form-control validate" value="코딩1" required>
+                                <label for='nickname'>Your nickname</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <button onclick="check_nick()" type="button" class="btn btn-info btn-rounded">중복확인</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="md-form ">
+                                <i class="fas fa-map-marked-alt prefix grey-text"></i>
+                                <input type='text' id='address' name='address' class="form-control validate"  value="서울 중랑구" required>
+                                <label  for='address'>Your address</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <button  type="button" onclick="sample5_execDaumPostcode()" class="btn btn-info btn-rounded">주소 찾기</button>
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button onclick="show_login()" class="btn btn-info mr-3" type="button">Sign up</button>
+                        <button onclick="hide()" type="button" class="btn btn-cancel  ml-3">cancel</button>
+                    </div>
+                    <div class="float-right mr-2">
+                        <span>
+                        이미 이 사이트의 회원이신가요? 
+                        <a onclick="changemodal()" class="ml-3 text-primary font-weight-bold">
+                            로그인 하러가기
+                        </a>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 
+
+<script>
+var clicknum = 0
+
+$(document).ready(function (){
+    if(confirm("로그인이 필요한 페이지 입니다.\n로그인하시겠습니까?") == true){ 
+        $('#log_in').modal('show')
+        $("#log_in").focusout(function(){
+            if ( $("#log_in").attr("aria-hidden") && $("#sign_up").attr("aria-hidden") && clicknum == 0 ) {
+                alert("메인화면으로 이동합니다.")
+                window.location.href = "/perform"
+                }
+        })
+        $("#sign_up").focusout(function(){
+            if ( $("#sign_up").attr("aria-hidden") && $("#sign_up").attr("aria-hidden")  && clicknum == 0 ) {
+                alert("메인화면으로 이동합니다.")
+                window.location.href = "/perform"
+                }
+        })
+        // if ( $( "#log_in" ).dialog( "close" ) ) {
+        //     alert("메인화면으로 이동합니다.")
+        //     window.location.href = "/perform"
+        // }
+        // $("#sign_up").focusout(function(){
+        //     alert("메인화면으로 이동합니다.")
+        //     window.location.href = "/perform"
+        // })
+    }
+        
+    else{
+        alert("메인화면으로 이동합니다.")
+        window.location.href="/perform"
+    }
+})
+</script>
+
+<!--======= Login Script =======-->
+<script>
+function show_regist() {
+    $('#log_in').modal('hide')
+    $('#sign_up').modal('show')
+    // $("#sign_up").focusout(function(){
+    // $( "#sign_up" ).dialog( "close" );
+    // });
+}
+function send_data() {
+    
+    var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+    var login_data = {'email' :  $('#log_email').val(),
+                    'password' : $('#log_password').val()
+                    }
+    clicknum ++;
+    if ($('#log_email').val() == "" ) {
+    alert("아이디를 입력하여 주세요.")
+    return ""
+    }
+    else if ( $('#log_password').val() == "") {
+    alert("비밀번호를 입력하여 주세요.")
+    return ""
+    }
+    else if (exptext.test($('#log_email').val())==false){
+    alert("이메일형식이 올바르지 않습니다.")
+    return ""
+    }    
+    $.ajax({
+    url : "/login",
+    data : JSON.stringify(login_data),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+    }).done(function (res) {
+        console.log("res>>", res)
+        if (res.res == "ok") {
+        $("#log_in").modal('hide');
+        $(".hideLogin").hide();
+        $(".showLogin").show();
+        $('#loginUserName').text(res.user)
+        window.location.href = res.next
+        }
+        else if (res == "error"){
+            clicknum = 0;
+        alert("아이디 혹은 비밀번호가 일치하지 않습니다.")
+        $('#log_password').val("");
+        $('#log_password').focus();
+        }
+    })
+}
+    
+function enterkey() {
+    if (window.event.keyCode == 13) {
+        send_data();
+    }
+}
+</script>
+
+
+<!-- Regist Script -->
+<script>
+function hide (){
+    $('#sign_up').modal("hide")
+}
+
+function changemodal() {
+    $('#sign_up').modal('hide')
+    $('#log_in').modal('show')
+    $("#log_in").focusout(function(){
+        $( "#log_in" ).dialog( "close" );
+    });
+}
+
+var oknick = 0
+function check_nick (){
+    if ($('#nickname').val() == ""){
+    alert("닉네임을 입력해주세요.")
+    return $('#nickname').focus()
+    }
+    var nick = $("#nickname").val()
+    $.ajax({
+    url : "/signup_nick",
+    data : JSON.stringify(nick),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'text'
+    }).done(function (res) {
+        if (res >= 1) {
+        alert ("존재하는 닉네임 입니다.")
+        $('#nickname').val("")
+        $('#nickname').focus()
+        }
+        else {
+        oknick ++;
+        alert ("사용하실 수 있는 닉네임 입니다.")
+        }
+    })
+}
+
+function sample5_execDaumPostcode() {
+    new daum.Postcode({
+    oncomplete: function(data) {
+        var addr = data.address; // 최종 주소 변수
+        document.getElementById("address").value = addr;
+        }
+    }).open();
+}
+
+function show_login (){
+    var phone =  $("#phone").val()
+    if (phone.indexOf("-") == -1) {
+    var phone1 = phone.slice(0,3)
+    var phone2 = phone.slice(3,7)
+    var phone3 = phone.slice(7,11)
+    var phone = phone1 + "-" + phone2 + "-" + phone3
+    } 
+    var email = $("#email").val()
+    var exptext = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+    if(exptext.test(email)==false){
+        alert("이메일형식이 올바르지 않습니다.");
+        $('#phone').focus();
+        return false;
+    }
+    var userform = {'name':  $("#name").val(),
+                    'email' : email,
+                    'phone' : phone,
+                    'password' : $("#password").val(),
+                    'cfpassword' : $("#cfpassword").val(),
+                    'nickname' : $("#nickname").val(),
+                    'address' : $("#address").val()
+                }
+    if (userform.password != userform.cfpassword) {
+        alert("비밀번호가 일치하지 않습니다.")
+        
+        $("#password").val("")
+        $("#cfpassword").val("");
+        $("#password").focus();
+        return 
+        }
+    if (oknick == 0) {
+        alert("닉네임 중복확인을 해주세요.")
+        return
+    }
+
+    $.ajax({
+    url : "/signup",
+    data : JSON.stringify(userform),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+    }).done(function (res) {
+        console.log(res)
+        if (res.error) {
+            alert("이미 가입되어있는 이메일주소 입니다.")
+            $('#email').val("")
+            $('#email').focus()
+            return ""
+        }
+        else {
+            alert("회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.")
+            $('#sign_up').modal('hide');
+            reset_modal();
+            $('#log_in').modal('show');   
+            return
+        }}).fail(function (request, status, error) {
+            console.log ("request")
+            })
+}
+
+function reset_modal () {
+    $("#name").val("");
+    $("#email").val("");
+    $("#phone").val("");
+    $("#password").val("");
+    $("#cfpassword").val("")
+    $("#nickname").val("")
+    $("#address").val("")
+}
+
+</script>
+        
+        
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
+
+
+
+
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/mdb.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/moment.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/momenttz.js') }}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+  </script>
+</body>
+
+</html>

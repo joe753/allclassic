@@ -45,11 +45,7 @@
                 <input type='password' id='cfpassword' name='cfpassword' class="form-control validate" value="1234" required>
                 <label  for='cfpassword'>Confirm password</label>
             </div>
-            {% for message in get_flashed_messages() %}
-            <div>
-              <p class="text-danger">{{message}}</p>
-            </div>
-            {% endfor %}
+            
             <div class="row">
               <div class="col-lg-9">
                 <div class="md-form">
@@ -78,7 +74,7 @@
               <button onclick="show_login()" class="btn btn-info mr-3" type="button">Sign up</button>
               <button onclick="hide()" type="button" class="btn btn-cancel  ml-3">cancel</button>
             </div>
-            <div class="float-right mr-2">
+            <div class="float-right mr-2 mb-3">
               <span>
                 이미 이 사이트의 회원이신가요? 
                 <a onclick="changemodal()" class="ml-3 text-primary font-weight-bold">

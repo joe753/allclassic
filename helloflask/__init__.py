@@ -28,12 +28,17 @@ app.config.update(
 #######################3 route ######################33
 @app.route('/lesson')
 def lesson():
-  
+    
     return render_template('lesson.html')
 
 
 @app.route('/add/perform/pboard01')
 def add_pboard():
+    if not session.get('loginUser') :
+        session['next'] = request.url
+        print ("GGGGG")
+        return render_template('notlogin.html')
+
     return render_template('add_board.html')
 
 @app.route('/perform')
@@ -44,8 +49,9 @@ def perform():
 @app.route('/perform/detail/board<boardid>', methods=["GET"])
 def board (boardid) : 
     if not session.get('loginUser') :
+        session['next'] = request.url
         print ("GGGGG")
-        return str("notlogin")
+        return render_template('notlogin.html')
     else :    
         print ("No")
         print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
@@ -177,12 +183,9 @@ def get_boardinst(boardid) :
 @app.route('/login', methods=['POST'])
 def login_post():
     login_data = request.json
-    
     email = login_data['email']
     passwd = login_data['password']
-
     rt_data = {}
-    print ("PPPPPP", passwd, func.sha2(passwd, 256))
     # u = Users.query.filter('email = :email and `password` = sha2(:passwd, 256)').params(email=email, passwd=passwd).first()
     # u = Users.query.filter(Users.email == email and Users.password == func.sha2(passwd, 256)).first()
     u = Users.query.filter(Users.email == email).filter(Users.password == func.sha2(passwd, 256)).first()
@@ -191,9 +194,12 @@ def login_post():
         session['loginUser'] = { 'userid': u.user_no, 'name': u.nickname, 'premium' : u.premium}
         if session.get('next'):
             next = session.get('next')
+            rt_data["user"] = u.nickname
+            rt_data["res"] = "ok"
+            rt_data["next"] = next
             del session['next']
             print ("OOOOOOOOOKKKKKKKKKKKK")
-            return redirect(next)
+            return jsonify(rt_data)
         rt_data["user"] = u.nickname
         rt_data["res"] = "ok"
         print (">>>>rt rt rtrt", rt_data)

@@ -166,9 +166,11 @@
                             <button type="button" class="btn btn-outline-default waves-effect float-left">
                               지원하기
                             </button>
-                              <button id="detail{{board_id}}" type="button" class="btn btn-outline-info waves-effect" onclick="pf_detail()">
+                            <a id="link{{board_id}}">
+                              <button id="detail{{board_id}}" type="button" class="btn btn-outline-info waves-effect">
                                   상세보기
                               </button>
+                            </a>
                             {% endraw %}
                             <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                             aria-hidden="true">
@@ -242,7 +244,8 @@ function getall () {
           boardinst_json["boardinst"] = result
           eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
         
-        $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
+        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
       }
     })
 } 
