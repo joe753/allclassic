@@ -135,6 +135,10 @@ def sendboard():
     print ("-=======>>>>>>>>>>>>>>>>>>>>>>>>>>>",b.board_id)
     return str(b.board_id)
 
+@app.route('/premium')
+def premiumregist():
+    return render_template("premiumRegist.html")
+
 
 #### DB API ########################################3
 

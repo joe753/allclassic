@@ -2,31 +2,20 @@
 
 {% block section -%}
 <!-- Extended default form grid -->
-
-
-
  
 <!-- Modal -->
-
-
-
-
 <div class="col-lg-12 text-center border-bottom">
 <div class="text-center my-5">
   <h3 class="font-weight-bold"> 게시글 등록하기 </h3>
 </div>
-
 <form id = "addboard"  method="POST" onsubmit="return checkselbar()">
     <!------- Line 1 ------->
-
     <div class="form-row my-2">
         <div class="col-lg-1 mt-2 text-left font-weight-bold">제목</div>
         <div class="form-group col-lg-11">
             <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." value="테스트 " required>
         </div>
     </div>
-    
-
      <!------- Line 2 -------->
     <div class="form-row my-2">
       <div class="col-lg-1 mt-2 text-left font-weight-bold" >
@@ -117,9 +106,6 @@
         </div>
       </div>
 
-
-
-
       <!------- Line 4 ------->
       <div class="form-row my-2">
           <div class="col-lg-1 mt-2 text-center font-weight-bold">
@@ -158,27 +144,18 @@
           <div id="perf_map" style="width:400px;height:300px;margin-top:10px;display:none"></div>
         </div>
       </div>
-
-
-
-
       <div class="row my-4">
         <div class="col-lg-2 text-left  text-primary" style="font-size : 20px; font-weight:700">
           선택된 파트
         </div>
         <div id="selpart_box" class="col-lg-10">
-        
         </div>
       </div>
-
       <div class="row">
         <div class="col-lg-1 text-primary" style="font-size : 30px; font-weight: 700">
           파트선택
         </div>
         <div id="choice_box" class="col-lg-11">
-          
-      
-
         </div>
       </div>
       <div class="form-row mt-4">
@@ -195,7 +172,6 @@
             </div>
         </div>
       </div>
-      
       <div class="form-row my-4">
       </div>
       <div class="form-row my-4">
@@ -210,12 +186,9 @@
         <input action="" type="hidden" id="selist" name="hidden_form" value="">
       </div>
   </form>
-
 </div>   
 
-
 <script>
-
 function control_textlength (object){
   var len = object.value.length
   if (len == object.maxLength) {
@@ -224,7 +197,6 @@ function control_textlength (object){
     $(object).focus()
   }
 }
-
 function control_lennumber (object){
   var len = object.value.length
   if (len > object.maxLength) {
@@ -233,7 +205,6 @@ function control_lennumber (object){
     $(object).focus()
   }
 }
-
 function send_all() {
   if (checkselbar() == false) {
     return false
@@ -253,7 +224,6 @@ function send_all() {
     window.location.href = 'http://localhost:5000/perform/detail/board' + res
   })
 }
-
   function handlegd() { 
     if ($('#radiobox1:checked').length == '1') {
       $("select[id='slt_gd']").attr("disabled",true);
@@ -280,9 +250,7 @@ function send_all() {
       alert("복장 항목을 선택하여 주세요.")
       return false
     }
-      
   }
-
   function send_ajax(url, method, data, dataType, fn) {
     $.ajax({
         url: url,
@@ -358,8 +326,6 @@ function send_all() {
       $('#sel_' + instrument).append(close_button)
       $('#sel_' + instrument).append(bg_add)
     }
-    
-  
   }
 
   function del_part (inst_name) {
@@ -431,10 +397,7 @@ function send_all() {
     return data
   }
   
-  
 </script>
-
-
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
@@ -443,11 +406,7 @@ function send_all() {
 
 //주소-좌표 변환 객체를 생성
 var geocoder1 = new daum.maps.services.Geocoder();
-
-
 var mapdata = []
-
-
 function sample5_execDaumPostcode(paddress, pmap) {
   new daum.Postcode({
     oncomplete: function(data) {
