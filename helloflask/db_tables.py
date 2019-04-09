@@ -88,13 +88,16 @@ class Board(Base):
     perform_mapy = Column(String)
     detail_info = Column(String)
     song_info = Column(String)
-    user_id = Column(Integer)
+    user_id = Column(Integer, ForeignKey('Users.user_no') , nullable=False)
     upload_time = Column(TIMESTAMP)
+    users = relationship("Users")
    
 
 
     def json(self):
         j = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        j["user_nickname"] = self.users.nickname
+        # j["user_img"] = self.users.profile_img
         return j
     #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 

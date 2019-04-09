@@ -2,6 +2,13 @@
 
 {% block section -%}
 <!-- Extended default form grid -->
+<<<<<<< HEAD
+=======
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
+
+
+>>>>>>> f94633b49d363a264bc24dba8262baabcfe44134
  
 <!-- Modal -->
 <div class="col-lg-12 text-center border-bottom">
@@ -21,9 +28,14 @@
       <div class="col-lg-1 mt-2 text-left font-weight-bold" >
           기간
       </div>
-      <div class="form-group col-lg-2.5">
-        <input type="text" class="form-control" id="duedate" name="duedate" value="2019.05.05" placeholder="ex) 2019.03.15 까지" required>
+      <div id="detail" class="form-row my-2">
+        <!-- <span id="datstr"></span> -->
       </div>
+    </div>
+
+
+    <!----------------- Line 3  ------------------------->
+    <div class="form-row my-2">
       <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
           자격요건
         </div>
@@ -40,10 +52,10 @@
       </div>
       <div class="col-lg-1.5" id="slt-gen">
         <select id="slt_gen" class="browser-default custom-select required" >
-            <option value="" selected>-----------</option>
-            <option value="1">무관</option>
-            <option value="2">남</option>
-            <option value="3">여</option>
+          <option value="" selected>-----------</option>
+          <option value="1">무관</option>
+          <option value="2">남</option>
+          <option value="3">여</option>
         </select>
       </div>
       <div class="col-lg-1 mt-2 text-center font-weight-bold">
@@ -54,9 +66,10 @@
             <input type="text" value="200000" class="form-control" id="money" name="money" placeholder="0원" required> 
         </div>
       </div>
+      <div id="paycheck" class="col-lg-3.5 text-left ml-3"></div>
     </div>
 
-    <!------- Line 3 ------->
+    <!------- Line 4 ------->
     <div class="form-row my-2">
         <div class="col-lg-1 mt-2 text-left font-weight-bold">
             연습
@@ -189,6 +202,103 @@
 </div>   
 
 <script>
+<<<<<<< HEAD
+=======
+function nth(number){
+  if (number == 1){
+    return '일'
+  } else if (number == 2){
+    return '이'
+  } else if (number == 3){
+    return '삼'
+  } else if (number == 4){
+    return '사'
+  } else if (number == 5){
+    return '오'
+  } else if (number == 6){
+    return '육'
+  } else if (number == 7){
+    return '칠'
+  } else if (number == 8){
+    return '팔'
+  } else if (number == 9){
+    return '구'
+  } else if (number == 0){
+    return ''
+  }
+}
+
+var previous_res;
+$('#money').keyup(function paycheck(){
+  var checknum = /^[0-9]+$/;
+  var paynum = $(this).val();
+  console.log (paynum)
+  // if (checknum.test(paynum) == false) {
+  if (paynum != '' && checknum.test(paynum) == false){
+    alert("숫자를 입력하여 주세요.")
+    $("#money").val(previous_res);
+    $("#money").focus();
+    $("#paycheck").text(paystr)
+  }
+  else {
+    previous_res = $(this).val()
+  var $paycheck = $('#paycheck')
+  var paystr = ' 원'
+  paylen = paynum.length
+  for (i=0; i<paylen; i ++){
+    var pidx = paylen - (i + 1)
+    aa = paynum.charAt(pidx)
+    if (aa != 0){
+      if (i == 0 ){
+        paystr = nth(aa) + paystr
+      }
+      if (i == 1){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 2){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 3){
+        paystr = nth(aa)+ "천" + paystr
+      }
+      if ( i == 4){
+        paystr = nth(aa)+ "만" + paystr
+      }
+      if ( i == 5){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 6){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 7){
+        paystr = nth(aa)+ "천" + paystr
+      }
+      if ( i == 8){
+        paystr = nth(aa)+ "억" + paystr
+      }
+      if ( i == 9){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 10){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 11){
+        paystr = nth(aa)+ "천" + paystr
+      }
+    } else{
+      if ( i == 4){
+        paystr = nth(aa)+ "만" + paystr
+      }
+      if ( i == 8){
+        paystr = nth(aa)+ "억" + paystr
+      }
+    }
+  }
+}
+  $paycheck.text(paystr)
+});
+
+>>>>>>> f94633b49d363a264bc24dba8262baabcfe44134
 function control_textlength (object){
   var len = object.value.length
   if (len == object.maxLength) {
@@ -378,7 +488,7 @@ function send_all() {
     var gen = $('#slt_gen').val()
 
     var data = {"title" : $('#title').val(),
-              "duedate" : $('#duedate').val(),
+              "duedate" : inputdate,
               "qualification" :$("#slt_grad").val(),
               "gen" : $('#slt_gen').val(),
               "money" : $('#money').val(),
@@ -399,10 +509,235 @@ function send_all() {
   
 </script>
 
+<<<<<<< HEAD
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
-<script>
+=======
 
+<!-- ============================ Handle Bar Year========================================== ========================-->
+<script id="yscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pyear" class="browser-default custom-select mr-2" onchange="makeDays()">
+          <option value="none" selected>연</option>
+          {% raw %}
+          {{#each years}}
+          <option value={{year}}>{{year}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+</script>
+<script id="mscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pmonth" class="browser-default custom-select mr-2" onchange="makeDays()">
+          <option value="none" selected>월</option>
+          {% raw %}
+          {{#each months}}
+          <option value={{month}}>{{month}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+</script>
+<script id="dscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pday" class="browser-default custom-select mr-2">
+          <option value="none" selected>일</option>
+      </select>
+  </div>
+</script>
+<script id="hscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="phour" class="browser-default custom-select mr-2">
+          <option value="none" selected>시</option>
+          {% raw %}
+          {{#each hours}}
+          <option value={{hour}}>{{hour}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+</script>
+<script id="Mscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pmin" class="browser-default custom-select mr-2">
+          <option value="none" selected>분</option>
+          {% raw %}
+          {{#each minutes}}
+          <option value={{minute}}>{{minute}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+  <button type="button" class="col-lg-0.5 ml-2 btn btn-outline-info waves-effect btn-md font-weight-bold mt-0" onclick="dts()">확정</button>
+</script>
+<script id="qscr" type="text/x-handlebars-template">
+  <option value="none" selected>일</option>
+  {% raw %}
+  {{#each days}}
+  <option value={{day}}>{{day}}</option>
+  {{/each}}
+  {% endraw %}
+</script>
+
+
+
+>>>>>>> f94633b49d363a264bc24dba8262baabcfe44134
+<script>
+  var d = new Date();
+  var thisyear = d.getFullYear()
+  var data = {
+      years: [],
+      months: [],
+      days: [],
+      hours: [],
+      minutes: []
+  };
+  for (i=0; i<3; i++){
+      data.years.push({year: thisyear+i})
+  }
+  for (i=0; i<12; i++){
+      data.months.push({month: i+1})
+  }
+  for (i=0; i<24; i++){
+      data.hours.push({hour:i})
+  }
+  for (i=0; i<4; i++){
+      data.minutes.push({minute: i*15})
+  }
+  function leafYearCheck(){
+      var int_year;
+      var selectyear = document.getElementById('pyear');
+      var selectyvalue = selectyear.options[selectyear.selectedIndex].value;
+      int_year = Number(selectyvalue);
+      console.log(int_year)
+      var lyc = 0
+      if( int_year%4 == 0 )
+      {
+          if( int_year%100 == 0 )
+          {
+              if( int_year%400 == 0 )
+              {
+                  return true; 
+              }
+              return false;
+          }
+          return true;        
+      }
+      return false;
+  }
+  function makeDays (){
+      data.days = []
+      var selectmonth = document.getElementById('pmonth');
+      var selectvalue = selectmonth.options[selectmonth.selectedIndex].value;
+      selectvalue = Number(selectvalue)
+      console.log(selectvalue)
+      var arr1 = [4, 6, 9, 11];
+      leafYearCheck()
+      console.log(">>>>>>>>>>>>>>>>>>>>>>",leafYearCheck())
+      if (leafYearCheck() == false){
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=28; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      } else{
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=29; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      }
+      repele("qscr", data, "pday")
+  }
+  function repele(sourceId, data, resultId){
+      var source = document.getElementById(sourceId).innerHTML
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      document.getElementById(resultId).innerHTML = html;
+  }
+  function mkele(sourceId, data, resultId){
+      var source = document.getElementById(sourceId).innerHTML
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      document.getElementById(resultId).innerHTML += html;
+  }
+  mkele("yscr", data, "detail")
+  mkele("mscr", data, "detail")
+  mkele("dscr", data, "detail")
+  mkele("hscr", data, "detail")
+  mkele("Mscr", data, "detail")
+  // selected date => string
+  var inputdate
+  function dts(){
+      var selectyear = selectvalue('pyear');
+      var selectmonth = selectvalue('pmonth');
+      var selectday = selectvalue('pday');
+      var selecthour = selectvalue('phour');
+      var selectmin = selectvalue('pmin');
+      if (selectyear == 'none' || selectmonth == 'none' || selectday == 'none' || selecthour == 'none' || selectmin == 'none'){
+          alert("정확한 시기를 선택해 주세요.")
+      }else{
+          var datstr = selectyear + "-" + selectmonth + "-" + selectday + "  " + selecthour + ":" +selectmin
+          var dtstr = selectyear + "년 " + selectmonth + "월 " + selectday + "일 " + selecthour + ":" +selectmin
+          var days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+          datestr = new Date(datstr)
+          inputdate = datstr
+          day = days[datestr.getDay()]
+          datestring = dtstr + " " + day
+          if (document.getElementById('datstr') != null) {
+              var $datstr = $('#datstr') 
+              fixeddate($datstr)
+          } else {
+              html = "<span id='datstr'>" + datestring + "</span>"
+              $('#detail').append(html)
+              $datstr = $('#datstr')
+              fixeddate($datstr)
+          }
+      }
+  }
+function fixeddate(datestr){
+  datestr.addClass("col-lg-1.5").addClass("float-right").addClass("mx-3").addClass("mt-2")
+  datestr.css("font-weight","400").css("color", "grey").css("display", "inline-block")
+  datestr.text(datestring)
+  return;
+}
+function selectvalue(tagid){
+  var selecttag = document.getElementById(tagid);
+  var selectoption = selecttag.options[selecttag.selectedIndex].value;
+  return selectoption
+}
+</script>
+
+
+
+<!-- ============================ End Handle Bar Year ========================-->
+
+
+
+<script>
 
 //주소-좌표 변환 객체를 생성
 var geocoder1 = new daum.maps.services.Geocoder();
