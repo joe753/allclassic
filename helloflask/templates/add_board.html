@@ -68,7 +68,7 @@
       </div>
       <div class="col-lg-2">
         <div class="form-group">
-            <input type="text" value="200000" class="form-control" id="money" name="money" placeholder="0원" required> 
+            <input type="text" value="0" class="form-control" id="money" name="money" placeholder="0원" required> 
         </div>
       </div>
       <div id="paycheck" class="col-lg-3.5 text-left ml-3"></div>
@@ -259,7 +259,7 @@ $('#money').keyup(function paycheck(){
     $("#paycheck").text(paystr)
   }
   else {
-    previous_res = $(this).val()
+  previous_res = $(this).val()
   var $paycheck = $('#paycheck')
   var paystr = ' 원'
   paylen = paynum.length
@@ -410,8 +410,8 @@ function send_all() {
       choice_inst.attr('id', "inst_" + inst_id);
       choice_inst.attr("inst_num", inst_id)
       choice_inst.attr('type','button')
-      choice_inst.addClass('btn').addClass('btn-outline-success').addClass('col-lg-2').addClass('ml-2');
-      choice_inst.css("padding","7px");
+      choice_inst.addClass("btn").addClass("waves-effect").addClass("float-left").addClass("col-lg-2").addClass("float-left");
+      choice_inst.css('padding', '9px 28px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
       choice_inst.text(inst_name);
       choice_inst.attr("onclick", "add_part($(this).text(),$(this).attr('inst_num'))");
       
@@ -436,12 +436,12 @@ function send_all() {
       has_selected.attr("id", "sel_" + instrument);
       has_selected.attr("name", instrument);
       has_selected.attr("type", "button");
-      has_selected.attr("data-id", inst_num)
-      has_selected.addClass("btn").addClass("btn-sm").addClass("btn-outline-primary").addClass("col-lg-2").addClass("float-left")
-      has_selected.css('padding', '5px');
-      has_selected.attr("onclick", 'del_part($(this).attr("name"))')
+      has_selected.attr("data-id", inst_num);
+      has_selected.addClass("badge").addClass("my-1");
+      has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','135px');
+      has_selected.attr("onclick", 'del_part($(this).attr("name"))');
 
-      bg_add.addClass('badge').addClass('clicknum').addClass('badge-primary').addClass('badge-pill').addClass('ml-2');
+      bg_add.addClass('badge').addClass('ml-2').css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
       bg_add.attr("id", "bg" + instrument)
       bg_add.text('1')
 
@@ -539,7 +539,7 @@ function send_all() {
 <script id="yscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pyear" class="browser-default custom-select mr-2" onchange="makeDays()">
-          <option value="none" selected>연</option>
+          <option value="none" selected>----</option>
           {% raw %}
           {{#each years}}
           <option value={{year}}>{{year}}</option>
@@ -547,11 +547,12 @@ function send_all() {
           {% endraw %}
       </select>
   </div>
+  <div class="mt-2 mr-1">년</div>
 </script>
 <script id="mscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pmonth" class="browser-default custom-select mr-2" onchange="makeDays()">
-          <option value="none" selected>월</option>
+          <option value="none" selected>--</option>
           {% raw %}
           {{#each months}}
           <option value={{month}}>{{month}}</option>
@@ -559,18 +560,20 @@ function send_all() {
           {% endraw %}
       </select>
   </div>
+  <div class="mt-2 mr-1">월</div>
 </script>
 <script id="dscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pday" class="browser-default custom-select mr-2">
-          <option value="none" selected>일</option>
+          <option value="none" selected>--</option>
       </select>
   </div>
+  <div class="mt-2 mr-1">일</div>
 </script>
 <script id="hscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="phour" class="browser-default custom-select mr-2">
-          <option value="none" selected>시</option>
+          <option value="none" selected>--</option>
           {% raw %}
           {{#each hours}}
           <option value={{hour}}>{{hour}}</option>
@@ -578,11 +581,12 @@ function send_all() {
           {% endraw %}
       </select>
   </div>
+  <div class="mt-2 mr-1">시</div>
 </script>
 <script id="Mscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pmin" class="browser-default custom-select mr-2">
-          <option value="none" selected>분</option>
+          <option value="none" selected>--</option>
           {% raw %}
           {{#each minutes}}
           <option value={{minute}}>{{minute}}</option>
@@ -590,10 +594,11 @@ function send_all() {
           {% endraw %}
       </select>
   </div>
-  <button type="button" class="col-lg-0.5 ml-2 btn btn-outline-info waves-effect btn-md font-weight-bold mt-0" onclick="dts()">확정</button>
+  <div class="mt-2 mr-1">분</div>
+  <button type="button" class="col-lg-0.5 ml-1 btn btn-outline-info waves-effect btn-md font-weight-bold mt-0" onclick="dts()">확정</button>
 </script>
 <script id="qscr" type="text/x-handlebars-template">
-  <option value="none" selected>일</option>
+  <option value="none" selected>--</option>
   {% raw %}
   {{#each days}}
   <option value={{day}}>{{day}}</option>
@@ -720,6 +725,9 @@ function send_all() {
       if (selectyear == 'none' || selectmonth == 'none' || selectday == 'none' || selecthour == 'none' || selectmin == 'none'){
           alert("정확한 시기를 선택해 주세요.")
       }else{
+          if (selectmin==0){
+            selectmin = "00"
+          }      
           var datstr = selectyear + "-" + selectmonth + "-" + selectday + "  " + selecthour + ":" +selectmin
           var dtstr = selectyear + "년 " + selectmonth + "월 " + selectday + "일 " + selecthour + ":" +selectmin
           var days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];

@@ -33,7 +33,7 @@
               </div>
           </div> -->
           <div class="col-lg-12 col-md-4">
-            <div class="text-center my-3  border-bottom ">
+            <div class="text-center my-3" style="border-bottom:3px solid rgb(167, 127, 14)">
               <h5>
                 {% raw %}
                 <strong class="font-weight-bold" style="font-size : 24px ">
@@ -163,12 +163,12 @@
                       </h5>
 
                         <div class="text-right">
-                            <button type="button" class="btn btn-outline-default waves-effect float-left">
-                              지원하기
+                            <button type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
+                                지원하기
                             </button>
                             <a id="link{{board_id}}">
-                              <button id="detail{{board_id}}" type="button" class="btn btn-outline-info waves-effect">
-                                  상세보기
+                              <button id="detail{{board_id}}" type="button" class="btn waves-effect" style="padding : 8px 28px ;border-style: solid!important; border-color: rgb(228, 189, 121); color: rgb(228, 189, 121); border-width: 3px; font-size: 17px">
+                                상세보기
                               </button>
                             </a>
                             {% endraw %}
@@ -253,9 +253,10 @@ function getall () {
         }
         moment.locale('ko')
         console.log ("아이아이아이", i,">>>> ",  num)
-        var kupload_time = moment(alldata.boardtb[i].upload_date)
-        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
-        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        var kupload_time = moment(alldata.boardtb[i].upload_time)
+        var kdue_date = moment(alldata.boardtb[i].due_date)
+        alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
+        alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
         alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
         var cardform = $('<div>')
         var cardnum = "card" + (board_len - i)
@@ -284,9 +285,10 @@ function getall () {
         }
         moment.locale('ko')
         console.log ("엘스", i, "board_len" , board_len)
-        var kupload_time = moment(alldata.boardtb[i].upload_date)
-        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
-        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        var kupload_time = moment(alldata.boardtb[i].upload_time)
+        var kdue_date = moment(alldata.boardtb[i].due_date)
+        alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
+        alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
         alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
         var cardform = $('<div>')
         var cardnum = "card" + (board_len - i)
@@ -316,8 +318,8 @@ function getall () {
   {% raw %}
   {{# each boardinst}}
   <div class="c_part col-lg-4" style="padding : 0px;">
-    <span class=" badge badge-info my-1" style="font-size:17px">
-      {{instrument_name}} <span class="badge badge-danger ml-2">{{person}}</span>
+    <span class="badge my-1" style="font-size:17px; background-color: rgb(229, 202, 155); height:30px; width:135px">
+      {{instrument_name}} <span class="badge ml-2" style="background-color:rgb(255, 255, 255); color:rgb(229, 202, 155)!important;">{{person}}</span>
     </span>
   </div>
   {{/each}}
