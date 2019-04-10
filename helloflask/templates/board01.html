@@ -214,10 +214,10 @@ function xx() {
             }
         })
 
-        document.getElementById('due_date').innerHTML = kdue_date.tz('UTC').format('YYYY년 MMMM Do a h시mm분 ')
+        document.getElementById('due_date').innerHTML = kdue_date.tz('ko').format('YYYY년 MMMM Do a h시mm분 ')
         document.getElementById('title').innerHTML = board.board_title
         document.getElementById('user').innerHTML = "User" + board.user_id
-        document.getElementById('upload_date').innerHTML = kupload_time.tz('UTC').format('YYYY년 MMMM Do a h시mm분')
+        document.getElementById('upload_date').innerHTML = kupload_time.tz('ko').format('YYYY년 MMMM Do a h시mm분')
         document.getElementById('gen').innerHTML = gen
         document.getElementById('money').innerHTML = board.money
         document.getElementById('prac_time').innerHTML = board.practice_time + "회" 
