@@ -191,93 +191,84 @@
 
   <!--Main layout-->
   <main>
-    <div class="container">
+    <div class="container" style="padding-left : 0px; padding-right: 0px;">
 
       <!--Navbar-->
-  <nav class="navbar navbar-expand-lg navbar-dark mdb-color lighten-3 mt-3 mb-5">
-      <!-- Navbar brand -->
-      <span class="navbar-brand">상세검색</span>
-      <!-- Collapse button -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-          aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <!-- Collapsible content -->
-      <div class="collapse navbar-collapse" id="basicExampleNav">
-          <!-- Links -->
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="#"> Show All
-                      <span class="sr-only">(current)</span>
-                  </a>
-              </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false"> &nbsp 지역
-              </a>
-           
-              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">서울/경기</a>
-                  <a class="dropdown-item" href="#">인천</a>
-                  <a class="dropdown-item" href="#">강원</a>
-                  <a class="dropdown-item" href="#">충북</a>
-                  <a class="dropdown-item" href="#">충남</a>
-                  <a class="dropdown-item" href="#">경북</a>
-                  <a class="dropdown-item" href="#">경남</a>
-                  <a class="dropdown-item" href="#">전북</a>
-                  <a class="dropdown-item" href="#">전남</a>
-                  <a class="dropdown-item" href="#">제주</a>
-              </div>
-          </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                      aria-expanded="false"> &nbsp 파트
-              </a>
-              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">현악기</a>
-                  <a class="dropdown-item" href="#">관악기</a>
-                  <a class="dropdown-item" href="#">타악기</a>
-                  <a class="dropdown-item" href="#">성악</a>
-                  <a class="dropdown-item" href="#">피아노</a>
-                  <a class="dropdown-item" href="#">작곡</a>
-                  <a class="dropdown-item" href="#">지휘</a>
-                  
-              </div>
-          </li>
-          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false"> &nbsp 최신순
-              </a>
-              <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">추천순</a>
-                  <a class="dropdown-item" href="#">조회수순</a>
-                  <a class="dropdown-item" href="#">등급순</a>
-              </div>
-          </li>
-  
-          </ul>
-          <!-- Links -->
-
-          <form class="form-inline">
-            <div class="md-form my-0" >
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            </div>
-            <div>
-              <a class="blue-text" >
-                <i class="fas fa-search ml-2"></i>
-              </a>
-            </div>
-          </form>
-        </div>
-        <!-- Collapsible content -->
-
-      </nav>
+    <div class="row  my-3 mb-4" style="background-color:  #bcaaa4 ">
+      <div class=" mt-3 ml-3 text-white font-weight-bold" style="font-size:18px; width: 8.333333%">
+        상세검색
+      </div>
+      <div class=" my-1 mx-1" style="width: 10.499999995%">
+        <button class="btn btn-blue-grey" type="button" style="font-size : 15px; padding-top: 10px; padding-bottom: 10px;
+        padding-right: 20px; padding-left: 20px;">
+          전체보기
+        </button>
+      </div>
+      <div class=" mt-2 mx-2" style="width: 12.499999995%">
+        <select id="sel_area" class="mt-1 browser-default custom-select blue-grey text-white" >
+          <option value=""> 지역 </option>
+          <option value="1"> 서울/경기 </option>
+          <option value="2"> 인천광역시 </option>
+          <option value="3"> 강원도 </option>
+          <option value="4"> 충청북도 </option>
+          <option value="5"> 충청남도 </option>
+          <option value="6"> 경상북도 </option>
+          <option value="7"> 경상남도 </option>
+          <option value="8"> 전라북도 </option>
+          <option value="9"> 전라남도 </option>
+          <option value="10"> 제주도 </option>
+        </select>
+      </div>
+      <div class=" mt-2 mx-2" style="width: 12.499999995%">
+        <select id="sel_part" class="mt-1 browser-default custom-select blue-grey text-white" >
+          <option value=""> 파트 </option>
+          <option value="1"> Flute </option>
+          <option value="2"> Oboe </option>
+          <option value="3"> Clarinet </option>
+          <option value="4"> Basson </option>
+          <option value="5"> Saxophone </option>
+          <option value="6"> Horn </option>
+          <option value="7"> Trumpet </option>
+          <option value="8"> Trombone </option>
+          <option value="9"> Tuba </option>
+          <option value="10"> Percussion </option>
+          <option value="11"> Violin </option>
+          <option value="12"> Viola </option>
+          <option value="13"> Cello </option>
+          <option value="14"> Contrabass </option>
+          <option value="15"> Vocal </option>
+          <option value="16"> Composer </option>
+          <option value="17"> Conductor </option>
+        </select>
+      </div>
+      <div class=" mt-2 mx-2 mr-5" style="width: 12.499999995%">
+        <select id="order" class="mt-1 browser-default custom-select blue-grey text-white" >
+          <option value="1"> 등록일순 </option>
+          <option value="2"> 추천순 </option>
+          <option value="3"> 등급순 </option>
+        </select>
+      </div>
+      <div style="width : 30%">
+        <form class="form-inline">
+          <div class="md-form ml-5 mx-2" style="margin-top : 9px; margin-bottom: 0px;">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+          </div>
+        </form>
+      </div>
+          <div style="margin-top : 20px; margin-bottom:0px;">
+            <a class="blue-text">
+              <i class="fas fa-search" ></i>
+            </a>
+          </div>
+        
+    </div>
+    
+ 
       
       <!--/.Navbar-->
       <section class="text-center mb-4">
           <div class=" row wow fadeIn ">
-              <div class="col-lg-2 text-left">
+              <div class="col-lg-2 text-left" style="padding-left : 0px;">
                 <nav class="nav flex-column  lighten-3 py-4 mb-r font-weight-bold z-depth-1 ">
                   
                   <h5>
