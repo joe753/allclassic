@@ -16,7 +16,7 @@
     </div>
     <div class="col-lg-3  border-bottom text-left my-2">
         <a >
-        <img src="{{ url_for('static', filename='img/user_img/user01.jpg') }}" style="height:2rem; width:2rem;" class="rounded-circle mb-1">
+        <img id= "user_img" src="/static/img/user_img/user1.jpg" style="height:2rem; width:2rem;" class="rounded-circle mb-1">
         <strong id="user" class="ml-2 text-dark ">user01</strong>
         </a> 
     </div> 
@@ -228,6 +228,7 @@ function xx() {
         document.getElementById('songs').innerHTML = board.song_info
         document.getElementById('prac_address').innerHTML = board.perform_address
         document.getElementById('perf_address').innerHTML = board.practice_address
+        // $("#user_img").attr("src", "../static/img/user_img/user" + board.user_id + ".jpg")
         console.log("OOOOOOOOOOOOOOOKKKKKKKKKKK")
 
 
