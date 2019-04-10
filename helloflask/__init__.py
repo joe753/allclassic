@@ -103,6 +103,8 @@ def signup_modal():
 def sendboard():
     all_data = request.json
 
+    userinfo = session.get('loginUser')
+    userid = userinfo["userid"]
     title = all_data['title']
     duedate = all_data['duedate']
     money = all_data['money']
@@ -123,7 +125,7 @@ def sendboard():
 
     print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy)
     
-    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, perform_mapx, perform_mapy, detail_textarea, song_textarea, '2')
+    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
         
     try:
         db_session.add(b)

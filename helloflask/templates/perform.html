@@ -46,8 +46,8 @@
               <div class="col-lg-6 text-left text-dark">
                 <h5>
                   <a>
-                    <img src="{{ url_for('static', filename='img/user_img/user6.png') }}" style="height:2rem;  " class="rounded-circle">
                     {% raw %}
+                    <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle">
                     <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">{{user_nickname}}</strong>
                     {% endraw %}
                   </a>
@@ -206,6 +206,22 @@
    
 
 <script>
+var i = 0;
+var num = 4; 
+getall()
+
+
+$(document).ready(function(){
+  $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
+     if ($(window).scrollTop() >= $(document).height() - $(window).height()){
+        getall()
+     } 
+  })
+});
+
+
+
+
 
 
 function addComma(num) {
@@ -215,8 +231,14 @@ function addComma(num) {
 
 var alldata;
 var boardinst_json = {}
+var stopscroll;
+var board_len
 
 function getall () {
+  if ( stopscroll == i ) {
+    return ""
+  }
+  else if (alldata == undefined) {
   $.ajax({
     url : "/alldata",
     data : "",
@@ -224,20 +246,24 @@ function getall () {
     dataType : ''
     }).done(function (res){
       alldata = res
-      var board_len = res.boardtb.length
-      for (i=0; i < board_len; i++) {
+      board_len = alldata.boardtb.length
+      for (i; i < 4; i++) {
+        if (board_len == i) {
+          break;
+        }
         moment.locale('ko')
-        var kupload_time = moment(res.boardtb[i].upload_date)
-        res.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
-        res.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
-        res.boardtb[i].money = addComma(res.boardtb[i].money)
+        console.log ("아이아이아이", i,">>>> ",  num)
+        var kupload_time = moment(alldata.boardtb[i].upload_date)
+        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
+        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
         var cardform = $('<div>')
         var cardnum = "card" + (board_len - i)
         cardform.addClass("col-lg-6").addClass("mb-3")
         cardform.attr("id", cardnum) 
         $("#cards").append(cardform)
-        eee("card-template", res.boardtb[i], cardnum)
-        var a = res.boardinst
+        eee("card-template", alldata.boardtb[i], cardnum)
+        var a = alldata.boardinst
         var result = a.filter( function (j) {
           return  j["board_id"] == (board_len - i)
         })
@@ -247,10 +273,42 @@ function getall () {
         $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
         // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
       }
+      console.log(">>>>")
+      num = num + 2
     })
+  }
+  else   {
+    for (i; i < num; i++) {
+        if (board_len == i) {
+          break;
+        }
+        moment.locale('ko')
+        console.log ("엘스", i, "board_len" , board_len)
+        var kupload_time = moment(alldata.boardtb[i].upload_date)
+        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
+        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
+        var cardform = $('<div>')
+        var cardnum = "card" + (board_len - i)
+        cardform.addClass("col-lg-6").addClass("mb-3")
+        cardform.attr("id", cardnum) 
+        $("#cards").append(cardform)
+        eee("card-template", alldata.boardtb[i], cardnum)
+        var a = alldata.boardinst
+        var result = a.filter( function (j) {
+          return  j["board_id"] == (board_len - i)
+        })
+          boardinst_json["boardinst"] = result
+          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
+        
+        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
+      }
+    num = num + 2
+  }
 } 
 
-getall()
+
 </script>
 
 
@@ -258,8 +316,8 @@ getall()
   {% raw %}
   {{# each boardinst}}
   <div class="c_part col-lg-4" style="padding : 0px;">
-    <span class=" text-primary my-4" style="font-size:16px">
-      {{instrument_name}} ({{person}})
+    <span class=" badge badge-info my-1" style="font-size:17px">
+      {{instrument_name}} <span class="badge badge-danger ml-2">{{person}}</span>
     </span>
   </div>
   {{/each}}
