@@ -91,11 +91,11 @@
     <!-- Line 7 -->
     <div class="col-lg-6 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text">연습 장소 </span> 
-        <span class="text-primary ml-1"> 서울시 노원구 상계동 </span>
+        <span id="prac_address" class="text-primary ml-1"> 서울시 노원구 상계동 </span>
     </div>
     <div class="col-lg-6 text-left border-bottom my-2" style="height:2rem;">
         <span class="detail_grey grey-text ml-2">연주 장소 </span> 
-        <span class="text-primary ml-1"> 서울시 강남구 서초동  </span>
+        <span id="perf_address" class="text-primary ml-1"> 서울시 강남구 서초동  </span>
     </div>
     <div class="col-lg-5 mx-4 text-center mb-2">
         <!-- <span class="grey-text font-weight-bold" style="font-size : 24px;"> 연습실 지도 보기</span>  -->
@@ -226,6 +226,8 @@ function xx() {
         document.getElementById('costume').innerHTML = costume
         document.getElementById('detail_info').innerHTML = board.detail_info
         document.getElementById('songs').innerHTML = board.song_info
+        document.getElementById('prac_address').innerHTML = board.perform_address
+        document.getElementById('perf_address').innerHTML = board.practice_address
         console.log("OOOOOOOOOOOOOOOKKKKKKKKKKK")
 
 

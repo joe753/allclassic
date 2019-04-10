@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block section %}
-<button id="testbt">콜콜</button>
 <div id="cards" class="row"> </div>
 
   <script id="card-template" type="text/x-handlebars-template">
@@ -47,8 +46,8 @@
               <div class="col-lg-6 text-left text-dark">
                 <h5>
                   <a>
-                    <img src="{{ url_for('static', filename='img/user_img/user6.png') }}" style="height:2rem;  " class="rounded-circle">
                     {% raw %}
+                    <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle">
                     <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">{{user_nickname}}</strong>
                     {% endraw %}
                   </a>
@@ -224,9 +223,6 @@ $(document).ready(function(){
 
 
 
-$("#testbt").click(function () {
-  getall();
-})
 
 function addComma(num) {
   var regexp = /\B(?=(\d{3})+(?!\d))/g;
@@ -242,13 +238,52 @@ function getall () {
   if ( stopscroll == i ) {
     return ""
   }
-  else if (alldata) {
+  else if (alldata == undefined) {
+  $.ajax({
+    url : "/alldata",
+    data : "",
+    type : 'GET',
+    dataType : ''
+    }).done(function (res){
+      alldata = res
+      board_len = alldata.boardtb.length
+      for (i; i < 4; i++) {
+        if (board_len == i) {
+          break;
+        }
+        moment.locale('ko')
+        console.log ("아이아이아이", i,">>>> ",  num)
+        var kupload_time = moment(alldata.boardtb[i].upload_date)
+        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
+        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
+        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
+        var cardform = $('<div>')
+        var cardnum = "card" + (board_len - i)
+        cardform.addClass("col-lg-6").addClass("mb-3")
+        cardform.attr("id", cardnum) 
+        $("#cards").append(cardform)
+        eee("card-template", alldata.boardtb[i], cardnum)
+        var a = alldata.boardinst
+        var result = a.filter( function (j) {
+          return  j["board_id"] == (board_len - i)
+        })
+          boardinst_json["boardinst"] = result
+          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
+        
+        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
+      }
+      console.log(">>>>")
+      num = num + 2
+    })
+  }
+  else   {
     for (i; i < num; i++) {
         if (board_len == i) {
           break;
         }
         moment.locale('ko')
-        console.log ("엘스이프", i, "board_len" , board_len)
+        console.log ("엘스", i, "board_len" , board_len)
         var kupload_time = moment(alldata.boardtb[i].upload_date)
         alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
         alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
@@ -271,44 +306,6 @@ function getall () {
       }
     num = num + 2
   }
-  else {
-  $.ajax({
-    url : "/alldata",
-    data : "",
-    type : 'GET',
-    dataType : ''
-    }).done(function (res){
-      alldata = res
-      board_len = alldata.boardtb.length
-      for (i; i < num; i++) {
-        if (board_len == i) {
-          break;
-        }
-        moment.locale('ko')
-        console.log ("아이아이아이", i)
-        var kupload_time = moment(alldata.boardtb[i].upload_date)
-        alldata.boardtb[i].upload_date = kupload_time.tz('UTC').format('YYYY.MM.DD a hh:mm')
-        alldata.boardtb[i].due_date = kupload_time.tz('UTC').format('YYYY.MM.DD (dd) a hh:mm')
-        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-        var cardform = $('<div>')
-        var cardnum = "card" + (board_len - i)
-        cardform.addClass("col-lg-6").addClass("mb-3")
-        cardform.attr("id", cardnum) 
-        $("#cards").append(cardform)
-        eee("card-template", alldata.boardtb[i], cardnum)
-        var a = alldata.boardinst
-        var result = a.filter( function (j) {
-          return  j["board_id"] == (board_len - i)
-        })
-          boardinst_json["boardinst"] = result
-          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
-        
-        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
-        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-      }
-      num = num + 2
-    })
-}
 } 
 
 
@@ -319,8 +316,8 @@ function getall () {
   {% raw %}
   {{# each boardinst}}
   <div class="c_part col-lg-4" style="padding : 0px;">
-    <span class=" text-primary my-4" style="font-size:16px">
-      {{instrument_name}} ({{person}})
+    <span class=" badge badge-info my-1" style="font-size:17px">
+      {{instrument_name}} <span class="badge badge-danger ml-2">{{person}}</span>
     </span>
   </div>
   {{/each}}
