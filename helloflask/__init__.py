@@ -25,6 +25,11 @@ app.config.update(
 ##### function #######################3\
 
 
+@app.route('/test_pre')
+def test():
+    return render_template("cg_premium.html")
+
+
 #######################3 route ######################33
 @app.route('/lesson')
 def lesson():
@@ -220,7 +225,7 @@ def logout():
 
 
 @app.route('/alldata')
-def test():
+def alldata():
     data = {}
     instruments = json_instruments()
     boardtb = json_boards()    
