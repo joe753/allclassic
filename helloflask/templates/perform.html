@@ -203,7 +203,28 @@
       </div>
     </div>
   </script>
-   
+
+
+
+
+<!-- =================== Select =====================-->
+<script>
+function testarea () {  
+  $.ajax({
+    url : "/alldata",
+    data : "",
+    type : 'GET',
+    dataType : ''
+    }).done(function (res){
+      var test = res.boardtb
+      var filter = test.filter( function (rs) {
+        return rs["area_number"] == 1
+      }).sort()
+      res.boardtb = filter
+    console.log (">>>>>", res)
+    })
+  }
+</script>
 
 
 

@@ -410,8 +410,10 @@ function send_all() {
       choice_inst.attr('id', "inst_" + inst_id);
       choice_inst.attr("inst_num", inst_id)
       choice_inst.attr('type','button')
-      choice_inst.addClass("btn").addClass("waves-effect").addClass("float-left").addClass("col-lg-2").addClass("float-left");
-      choice_inst.css('padding', '9px 28px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
+      choice_inst.addClass('btn').addClass('btn-outline-success').addClass('col-lg-2').addClass('ml-2');
+      choice_inst.css("padding","7px");
+      // choice_inst.addClass("btn").addClass("waves-effect").addClass("float-left").addClass("col-lg-2").addClass("float-left");
+      // choice_inst.css('padding', '9px 28px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
       choice_inst.text(inst_name);
       choice_inst.attr("onclick", "add_part($(this).text(),$(this).attr('inst_num'))");
       
@@ -436,12 +438,17 @@ function send_all() {
       has_selected.attr("id", "sel_" + instrument);
       has_selected.attr("name", instrument);
       has_selected.attr("type", "button");
-      has_selected.attr("data-id", inst_num);
-      has_selected.addClass("badge").addClass("my-1");
-      has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','135px');
-      has_selected.attr("onclick", 'del_part($(this).attr("name"))');
+      has_selected.attr("data-id", inst_num)
+      has_selected.addClass("btn").addClass("btn-sm").addClass("btn-outline-primary").addClass("col-lg-2").addClass("float-left")
+      has_selected.css('padding', '5px');
+      has_selected.attr("onclick", 'del_part($(this).attr("name"))')
+      // has_selected.attr("data-id", inst_num);
+      // has_selected.addClass("badge").addClass("my-1");
+      // has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','135px');
+      // has_selected.attr("onclick", 'del_part($(this).attr("name"))');
 
-      bg_add.addClass('badge').addClass('ml-2').css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
+      bg_add.addClass('badge').addClass('clicknum').addClass('badge-primary').addClass('badge-pill').addClass('ml-2');
+      // bg_add.addClass('badge').addClass('ml-2').css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
       bg_add.attr("id", "bg" + instrument)
       bg_add.text('1')
 
