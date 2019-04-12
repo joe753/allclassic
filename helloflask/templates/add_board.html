@@ -411,7 +411,7 @@ function send_all() {
       choice_inst.attr("inst_num", inst_id)
       choice_inst.attr('type','button')
       choice_inst.addClass("btn").addClass("waves-effect").addClass("float-left").addClass("col-lg-2").addClass("float-left");
-      choice_inst.css('padding', '9px 28px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
+      choice_inst.css('padding', '9px 15px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
       choice_inst.text(inst_name);
       choice_inst.attr("onclick", "add_part($(this).text(),$(this).attr('inst_num'))");
       
@@ -426,7 +426,7 @@ function send_all() {
     var close_button = $('<span>')  
     var bg_add = $('<span>')
       
-      close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
+      close_button.addClass("float-right").addClass("float-right mr-1 mb-1").addClass("text-danger")
       close_button.css("font-weight","500")
       close_button.text('X')
 
