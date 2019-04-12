@@ -225,7 +225,40 @@ function testarea () {
     })
   }
 </script>
+<script>
 
+function getall () {
+
+  if (alldata == undefined) {
+  $.ajax({
+    url : "/alldata",
+    data : "",
+    type : 'GET',
+    dataType : ''
+    }).done(function (res){
+        draw_cards(4, res)
+    })
+  }
+  else   {
+    draw_cards(num, alldata)
+  }
+} 
+
+
+
+function get_area (res) {
+  if ($('#sel_area').val() > 0 ) {
+    var test = res.boardtb;
+    res.boardtb = test.filter( function (j) {
+      return j["area_number"] == $('#sel_area').val()
+      }).sort()
+    return res
+  }
+  else {
+    return res
+  }
+}
+</script>
 
 
 
@@ -254,83 +287,47 @@ var boardinst_json = {}
 var stopscroll;
 var board_len
 
-
-
-function getall () {
-  if ( stopscroll == i ) {
-    return ""
-  }
-  else if (alldata == undefined) {
-  $.ajax({
-    url : "/alldata",
-    data : "",
-    type : 'GET',
-    dataType : ''
-    }).done(function (res){
-      alldata = res
-      board_len = alldata.boardtb.length
-      for (i; i < 4; i++) {
-        if (board_len == i) {
+function draw_cards (number, res) {
+  moment.locale('ko')
+  alldata = res
+  board_len = alldata.boardtb.length
+  for (i; i < number; i++) {
+    if (board_len == i) {
           break;
         }
-        moment.locale('ko')
-        console.log ("아이아이아이", i,">>>> ",  num)
-        var kupload_time = moment(alldata.boardtb[i].upload_time)
-        var kdue_date = moment(alldata.boardtb[i].due_date)
-        alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
-        alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
-        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-        var cardform = $('<div>')
-        var cardnum = "card" + (board_len - i)
-        cardform.addClass("col-lg-6").addClass("mb-3")
-        cardform.attr("id", cardnum) 
-        $("#cards").append(cardform)
-        eee("card-template", alldata.boardtb[i], cardnum)
-        var a = alldata.boardinst
-        var result = a.filter( function (j) {
-          return  j["board_id"] == (board_len - i)
-        })
-          boardinst_json["boardinst"] = result
-          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
-        
-        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
-        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-      }
-      console.log(">>>>")
-      num = num + 2
+    // 시간 설정
+    var kupload_time = moment(alldata.boardtb[i].upload_time)
+    var kdue_date = moment(alldata.boardtb[i].due_date)
+    alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
+    alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
+    // 돈 콤마
+    alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
+
+    //카드 만들기
+    var cardform = $('<div>')
+    var cardnum = "card" + (board_len - i)
+    cardform.addClass("col-lg-6").addClass("mb-3")
+    cardform.attr("id", cardnum) 
+    $("#cards").append(cardform)
+    eee("card-template", alldata.boardtb[i], cardnum)
+    
+    // 카드안에 악기정보 넣기
+    var a = alldata.boardinst
+    var result = a.filter( function (j) {
+      return  j["board_id"] == (board_len - i)
     })
+    boardinst_json["boardinst"] = result
+    eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
+    $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+    // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
   }
-  else   {
-    for (i; i < num; i++) {
-        if (board_len == i) {
-          break;
-        }
-        moment.locale('ko')
-        console.log ("엘스", i, "board_len" , board_len)
-        var kupload_time = moment(alldata.boardtb[i].upload_time)
-        var kdue_date = moment(alldata.boardtb[i].due_date)
-        alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
-        alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
-        alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-        var cardform = $('<div>')
-        var cardnum = "card" + (board_len - i)
-        cardform.addClass("col-lg-6").addClass("mb-3")
-        cardform.attr("id", cardnum) 
-        $("#cards").append(cardform)
-        eee("card-template", alldata.boardtb[i], cardnum)
-        var a = alldata.boardinst
-        var result = a.filter( function (j) {
-          return  j["board_id"] == (board_len - i)
-        })
-          boardinst_json["boardinst"] = result
-          eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
-        
-        $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
-        // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-      }
-    num = num + 2
-  }
-} 
+  console.log(">>>>")
+  num = num + 2
+}
+
+
+
+
 
 
 </script>
