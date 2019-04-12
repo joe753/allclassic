@@ -24,6 +24,22 @@ app.config.update(
 
 ##### function #######################3\
 
+def check_area(data) :
+    
+    # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
+    
+    area = data.split(" ")[0]
+
+    arealist = {'서울' : 1, '경기' : 2, '인천' : 3, '강원' : 4, '충북' : 5, '세종' : 5,
+                '충남' : 6, '대전' : 6, '경북' : 7, '대구' : 7, '경남' : 8, '부산' : 8,
+                '울산' : 8, '전북' : 9, '전남' : 10, '광주' : 10, '제주' : 11}
+
+    for i in arealist.keys() :
+        if i in area :
+            result = arealist[i]
+    return result    
+
+
 
 @app.route('/test_pre')
 def test():
@@ -108,6 +124,8 @@ def signup_modal():
 def sendboard():
     all_data = request.json
 
+    
+
     userinfo = session.get('loginUser')
     userid = userinfo["userid"]
     title = all_data['title']
@@ -128,9 +146,11 @@ def sendboard():
     perform_mapx = all_data["perform_mapx"]
     perform_mapy = all_data["perform_mapy"]
 
-    print (title, "\n", duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy)
+    area_number = check_area(perf_address)
+
+    print ("\n\n\n\n \t\t\t\t\t BOARD BOARD BOARD BOARD", title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
     
-    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
         
     try:
         db_session.add(b)
@@ -150,7 +170,6 @@ def sendboard():
         db_session.rollback()
 
     
-    print ("-=======>>>>>>>>>>>>>>>>>>>>>>>>>>>",b.board_id)
     return str(b.board_id)
 
 

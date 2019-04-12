@@ -48,7 +48,7 @@ class Users(Base):
 class Board(Base):
     __tablename__ = 'Board'
 
-    def __init__ (self, board_title, due_date, qualification , gender, money, practice_time, perform_time,  costume, practice_address, practice_mapx,  practice_mapy, perform_address, perform_mapx, perform_mapy,  detail_info, song_info, user_id) :
+    def __init__ (self, board_title, due_date, qualification , gender, money, practice_time, perform_time,  costume, practice_address, practice_mapx,  practice_mapy, perform_address, area_number, perform_mapx, perform_mapy,  detail_info, song_info, user_id) :
         self.board_title = board_title
         self.due_date = due_date
         self.qualification = qualification
@@ -61,6 +61,7 @@ class Board(Base):
         self.practice_mapx = practice_mapx
         self.practice_mapy = practice_mapy
         self.perform_address = perform_address
+        self.area_number = area_number
         self.perform_mapx = perform_mapx
         self.perform_mapy = perform_mapy
         self.detail_info = detail_info
@@ -84,6 +85,7 @@ class Board(Base):
     practice_mapx = Column(String)
     practice_mapy = Column(String)
     perform_address = Column(String)
+    area_number = Column(Integer)
     perform_mapx = Column(String)
     perform_mapy = Column(String)
     detail_info = Column(String)
