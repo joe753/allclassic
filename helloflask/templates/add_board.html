@@ -423,12 +423,12 @@ function send_all() {
   function add_part (instrument, inst_num){
     var has_selected = $('<button>')
     var instrument_name = $("<span>")
-    var close_button = $('<span>')  
+    // var close_button = $('<span>')  
     var bg_add = $('<span>')
       
-      close_button.addClass("float-right").addClass("float-right mr-1 mb-1").addClass("text-danger")
-      close_button.css("font-weight","500")
-      close_button.text('X')
+      // close_button.addClass("float-right").addClass("float-right mr-1 mb-1").css("color", "#e65100")
+      // close_button.css("font-weight","500")
+      // close_button.text('x')
 
       instrument_name.addClass("get_instrument")
       instrument_name.text(instrument)
@@ -437,11 +437,11 @@ function send_all() {
       has_selected.attr("name", instrument);
       has_selected.attr("type", "button");
       has_selected.attr("data-id", inst_num);
-      has_selected.addClass("badge").addClass("my-1");
-      has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','135px');
+      has_selected.addClass("badge").addClass("my-1").addClass("btn").addClass("btn-sm").addClass("float-left");
+      has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','163px').css('padding','0px 10px');
       has_selected.attr("onclick", 'del_part($(this).attr("name"))');
 
-      bg_add.addClass('badge').addClass('ml-2').css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
+      bg_add.addClass('badge').addClass('mr-1').addClass("float-right").css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
       bg_add.attr("id", "bg" + instrument)
       bg_add.text('1')
 
@@ -455,7 +455,7 @@ function send_all() {
     else {
       $('#selpart_box').append(has_selected)
       $('#sel_' + instrument).append(instrument_name)
-      $('#sel_' + instrument).append(close_button)
+      // $('#sel_' + instrument).append(close_button)
       $('#sel_' + instrument).append(bg_add)
     }
     
@@ -463,11 +463,11 @@ function send_all() {
   }
 
   function del_part (inst_name) {
-    var close_button = $('<span>') 
+    // var close_button = $('<span>') 
       
-      close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
-      close_button.css("font-weight","500")
-      close_button.text('X')
+    //   close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
+    //   close_button.css("font-weight","500")
+    //   close_button.text('X')
     
     var before_num = $('#sel_'+ inst_name).text()
     var a = $('#bg' + inst_name).text()
