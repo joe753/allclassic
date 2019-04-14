@@ -107,24 +107,29 @@
   var boardinst_json = {}
   var stopscroll;
   var board_len
+  var check_onchange
+  var newtb;
 
-
-
-function select_area (alldata) {
-    document.getElementById("cards").innerHTML = ""
-    var areadata = alldata
-    console.log(alldata, ">>>>>>>>>>><<<><<>")
-    var test = areadata.boardtb
-    var filter = test.filter( function (rs) {
-      return rs["area_number"] == 1
-    }).sort()
-    areadata.boardtb = filter
-    console.log(alldata)
-    i = 0;
-    num = 4;
-    console.log(areadata, num)
-    draw_cards(num, areadata)
+function select_area (data, sel_val) {
+  if (sel_val == 0) {
+    console.log("아니야")
+    $("#sel_area").val(check_onchange)
+    return ""
   }
+  else {
+  check_onchange = sel_val;
+  newtb = JSON.parse(JSON.stringify(data));
+  document.getElementById("cards").innerHTML = ""
+  var test = newtb.boardtb
+  var filter = test.filter( function (rs) {
+    return rs["area_number"] == sel_val
+  }).sort()
+  newtb.boardtb = filter
+  i = 0;
+  num = 4;
+  draw_cards(num, newtb)
+  }
+}
   
 </script>
 <script>
@@ -174,9 +179,17 @@ getall()
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
+        if ($("#sel_area").val() > 0) {
+          console.log("<<<<<<<<<<<<<<<이프>>>>>>>>>>>>>>>>", newtb)
+          draw_cards(num, newtb)
+        }
+        else if ((check_onchange - $("#sel_area").val()) == check_onchange) {
+          return ""
+        }
+        else {
         getall()
         console.log(alldata)
-
+        }
      } 
   })
 });
@@ -187,39 +200,48 @@ function addComma(num) {
 }
 
 
-function addProperty(alldata, i){
+function addProperty(data, i){
   // 시간 설정
-  var kupload_time = moment(alldata.boardtb[i].upload_time)
-  var kdue_date = moment(alldata.boardtb[i].due_date)
-  alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
-  alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
+  moment.locale('ko')
+  var kupload_time = moment(data.boardtb[i].upload_time)
+  var kdue_date = moment(data.boardtb[i].due_date)
+  data.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
+  data.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
   
   // 돈 콤마
-  alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-  return alldata
+  data.boardtb[i].money = addComma(data.boardtb[i].money)
+  return data
 }
-function createCard(alldata, board_len, i){
+function createCard(data, board_len, i){
     //카드 만들기
     var cardform = $('<div>')
     var cardnum = "card" + (board_len - i)
     cardform.addClass("col-lg-6").addClass("mb-3")
     cardform.attr("id", cardnum) 
     $("#cards").append(cardform)
-    eee("card-template", alldata.boardtb[i], cardnum)
+    eee("card-template", data.boardtb[i], cardnum)
 }
-function postInst(alldata, board_len, i, boardinst_json){
-  var a = alldata.boardinst
+function postInst(data, board_len, i, boardinst_json){
+  var a = data.boardinst
+  console.log(board_len, i)
   var result = a.filter( function (j) {
     return  j["board_id"] == (board_len - i)
   })
-  boardinst_json["boardinst"] = result
-  eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
+  var board_table = data.boardtb
+  var bid = a.filter( function (t) {
+    return t["board_id"] == (board_table[i].board_id)
+  }) 
+
+  console.log(bid, "비아디 ㅡㅡ")
+  boardinst_json["boardinst"] = bid
+  eee("hb_instsrc", boardinst_json, "inst" + (bid[0].board_id))
   $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
 }
 
 
-function draw_cards (number, alldata) {
-  board_len = alldata.boardtb.length
+function draw_cards (number, data) {
+  var newdata = JSON.parse(JSON.stringify(data));
+  board_len = newdata.boardtb.length
     for (i; i < number; i++) {
       if (board_len == i) {
             break;
@@ -235,10 +257,11 @@ function draw_cards (number, alldata) {
     // var kdue_date = moment(alldata.boardtb[i].due_date)
     // alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
     // alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
+    var firstdata = addProperty(newdata, i);
     
     // // 돈 콤마
     // alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-    var firstdata = addProperty(alldata, i);
+  
 
     //카드 만들기
     // var cardform = $('<div>')
@@ -258,7 +281,7 @@ function draw_cards (number, alldata) {
     // eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
     // $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
     // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-    console.log("올데이타", firstdata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
+    console.log("올데이타" + i, firstdata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
     postInst(firstdata, board_len, i, boardinst_json)
   }
   num = num + 2

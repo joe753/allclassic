@@ -205,8 +205,8 @@
         </button>
       </div>
       <div class=" mt-2 mx-2" style="width: 14.099999995%">
-        <select id="sel_area" onchange="getall()" class="mt-1 browser-default custom-select text-black" >
-          <option value=""> 지역 </option>
+        <select id="sel_area" onchange="select_area(alldata, $(this).val())" class="mt-1 browser-default custom-select text-black" >
+          <option value="0"> 지역 </option>
           <option value="1"> 서울 </option>
           <option value="2"> 경기 </option>
           <option value="3"> 인천 </option>
