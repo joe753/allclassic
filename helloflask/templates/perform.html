@@ -111,6 +111,7 @@
 
 
 function select_area (alldata) {
+    document.getElementById("cards").innerHTML = ""
     var areadata = alldata
     console.log(alldata, ">>>>>>>>>>><<<><<>")
     var test = areadata.boardtb
@@ -212,7 +213,6 @@ function postInst(alldata, board_len, i, boardinst_json){
     return  j["board_id"] == (board_len - i)
   })
   boardinst_json["boardinst"] = result
-  console.log("보들랭", board_len)
   eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
   $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
 }
@@ -238,7 +238,7 @@ function draw_cards (number, alldata) {
     
     // // 돈 콤마
     // alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-    addProperty(alldata, i);
+    var firstdata = addProperty(alldata, i);
 
     //카드 만들기
     // var cardform = $('<div>')
@@ -247,7 +247,7 @@ function draw_cards (number, alldata) {
     // cardform.attr("id", cardnum) 
     // $("#cards").append(cardform)
     // eee("card-template", alldata.boardtb[i], cardnum)
-    createCard(alldata, board_len, i);
+    createCard(firstdata, board_len, i);
     
     // 카드안에 악기정보 넣기
     // var a = alldata.boardinst
@@ -258,8 +258,8 @@ function draw_cards (number, alldata) {
     // eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
     // $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
     // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-    console.log("올데이타", alldata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
-    postInst(alldata, board_len, i, boardinst_json)
+    console.log("올데이타", firstdata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
+    postInst(firstdata, board_len, i, boardinst_json)
   }
   num = num + 2
 }
