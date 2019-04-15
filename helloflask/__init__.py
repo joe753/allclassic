@@ -246,6 +246,7 @@ def logout():
 @app.route('/alldata')
 def alldata():
     data = {}
+    users = json_users()
     instruments = json_instruments()
     boardtb = json_boards()    
     boardinst = json_boardinst()
@@ -255,6 +256,10 @@ def alldata():
     # print(">>>>",bjson, ijson, tjson)
     # return jsonify(data)
     return jsonify({'boardinst': [b.json() for b in boardinst], 'instruments':[i.json() for i in instruments], 'boardtb' : [t.json() for t in boardtb]})
+
+def json_users() :
+    users = Users.query.order_by(Users.user_no).all()
+    return users
 
 def json_boardinst() :
     boardinst = BoardInstrument.query.order_by(BoardInstrument.instrument_id).all()
@@ -267,7 +272,6 @@ def json_instruments() :
 def json_boards () : 
     # boardtb = Board.query.filter(Board.board_id == boardid).all()
     boardtb = Board.query.order_by(Board.board_id.desc()).all()
-    
     return boardtb
 
 
