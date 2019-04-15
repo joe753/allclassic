@@ -201,12 +201,12 @@
       <div class=" my-1 mx-1" style="width: 10.499999995%">
         <button class="btn" type="button" style="background-color:rgb(3,25,83);font-size : 15px; padding-top: 10px; padding-bottom: 10px;
         padding-right: 20px; padding-left: 20px;" onclick="showall()">
-          전체보기
+          새로고침
         </button>
       </div>
       <div class=" mt-2 mx-2" style="width: 14.099999995%">
         <select id="sel_area" onchange="select_area(alldata, $(this).val())" class="mt-1 browser-default custom-select text-black" >
-          <option value="0"> 지역 </option>
+          <option value="0"> 전체보기 </option>
           <option value="1"> 서울 </option>
           <option value="2"> 경기 </option>
           <option value="3"> 인천 </option>
@@ -321,11 +321,10 @@
                 </nav>
               </div>
               <div class="col-lg-10">
-                <div class="row">
+                
                   {% block section %}
 
                   {% endblock %}
-                </div>
               </div>
             </div>
       </section>
@@ -337,11 +336,11 @@
   </main>
 
 
-
+  
   <script>
     function showall() {
-      location.reload();
-
+      alldata = null;
+      select_area(alldata, $("#sel_area").val());
       window.scrollTo(0, 420);
     
     }

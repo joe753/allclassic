@@ -441,7 +441,7 @@ function send_all() {
       has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','163px').css('padding','0px 10px');
       has_selected.attr("onclick", 'del_part($(this).attr("name"))');
 
-      bg_add.addClass('badge').addClass('mr-1').addClass("float-right").css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)');
+      bg_add.addClass('badge').addClass('mr-1').addClass("float-right").css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)').addClass('clicknum');
       bg_add.attr("id", "bg" + instrument)
       bg_add.text('1')
 

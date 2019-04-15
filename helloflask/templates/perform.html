@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
 {% block section %}
-<div id="cards" class="row"> </div>
 
-  <script id="card-template" type="text/x-handlebars-template">
+<div id="cards" class="row"> </div>
+<script id="card-template" type="text/x-handlebars-template">
     <!--Card-->
       <div class="card" style="height: 28rem">
           
@@ -96,7 +96,7 @@
 
       </div>
     </div>
-  </script>
+</script>
   
   
   
@@ -111,26 +111,50 @@
   var newtb;
 
 function select_area (data, sel_val) {
-  if (sel_val == 0) {
-    console.log("아니야")
-    $("#sel_area").val(check_onchange)
-    return ""
-  }
+  if (data == undefined) {
+    $.ajax({
+      url : "/alldata",
+      data : "",
+      type : 'GET',
+      dataType : ''
+      }).done(function (res){
+          alldata = res
+          var data = res
+          check_onchange = sel_val;
+          newtb = JSON.parse(JSON.stringify(data));
+          document.getElementById("cards").innerHTML = ""
+          var btd = newtb.boardtb
+          var filter = btd.filter( function (rs) {
+            return rs["area_number"] == sel_val
+          }).sort()
+          newtb.boardtb = filter
+          i = 0;
+          num = 4;
+          draw_cards(num, newtb)
+          })
+        }
   else {
-  check_onchange = sel_val;
-  newtb = JSON.parse(JSON.stringify(data));
-  document.getElementById("cards").innerHTML = ""
-  var test = newtb.boardtb
-  var filter = test.filter( function (rs) {
-    return rs["area_number"] == sel_val
-  }).sort()
-  newtb.boardtb = filter
-  i = 0;
-  num = 4;
-  draw_cards(num, newtb)
-  }
+    if (sel_val == 0) {
+      document.getElementById("cards").innerHTML = ""
+      i = 0;
+      num = 4;
+      draw_cards(num, data)
+    }
+    else {
+      check_onchange = sel_val;
+      newtb = JSON.parse(JSON.stringify(data));
+      document.getElementById("cards").innerHTML = "" 
+      var btd = newtb.boardtb
+      var filter = btd.filter( function (rs) {
+        return rs["area_number"] == sel_val
+      }).sort()
+      newtb.boardtb = filter
+      i = 0;
+      num = 4;
+      draw_cards(num, newtb)
+      }
+    }
 }
-  
 </script>
 <script>
 
@@ -147,7 +171,6 @@ function getall () {
     })
   }
   else   {
-    console.log("엘스")
     draw_cards(num, alldata)
   }
 } 
@@ -180,15 +203,10 @@ $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
         if ($("#sel_area").val() > 0) {
-          console.log("<<<<<<<<<<<<<<<이프>>>>>>>>>>>>>>>>", newtb)
           draw_cards(num, newtb)
-        }
-        else if ((check_onchange - $("#sel_area").val()) == check_onchange) {
-          return ""
         }
         else {
         getall()
-        console.log(alldata)
         }
      } 
   })
@@ -223,19 +241,14 @@ function createCard(data, board_len, i){
 }
 function postInst(data, board_len, i, boardinst_json){
   var a = data.boardinst
-  console.log(board_len, i)
-  var result = a.filter( function (j) {
-    return  j["board_id"] == (board_len - i)
-  })
   var board_table = data.boardtb
   var bid = a.filter( function (t) {
     return t["board_id"] == (board_table[i].board_id)
   }) 
 
-  console.log(bid, "비아디 ㅡㅡ")
   boardinst_json["boardinst"] = bid
   eee("hb_instsrc", boardinst_json, "inst" + (bid[0].board_id))
-  $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+  $('#link'+(bid[0].board_id)).attr("href", "/perform/detail/board" + (bid[0].board_id) )
 }
 
 
@@ -281,7 +294,6 @@ function draw_cards (number, data) {
     // eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
     // $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
     // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-    console.log("올데이타" + i, firstdata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
     postInst(firstdata, board_len, i, boardinst_json)
   }
   num = num + 2
