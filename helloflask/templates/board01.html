@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block section %}
-
+<div class="row">
     <!-- Line 1 -->
     <div class="col-lg-12 text-center border-bottom">
         <h3 id = "title" >
@@ -125,7 +125,7 @@
             친구에게 태그하기
         </button>
     </div>
-
+</div>
     
 <script>
 function send_ajax(url, method, board, boardType, fn) {
@@ -214,10 +214,10 @@ function xx() {
             }
         })
 
-        document.getElementById('due_date').innerHTML = kdue_date.tz('ko').format('YYYY년 MMMM Do a h시mm분 ')
+        document.getElementById('due_date').innerHTML = kdue_date.format('YYYY년 MMMM Do a h시mm분 ')
         document.getElementById('title').innerHTML = board.board_title
         document.getElementById('user').innerHTML = "User" + board.user_id
-        document.getElementById('upload_date').innerHTML = kupload_time.tz('ko').format('YYYY년 MMMM Do a h시mm분')
+        document.getElementById('upload_date').innerHTML = kupload_time.format('YYYY년 MMMM Do a h시mm분')
         document.getElementById('gen').innerHTML = gen
         document.getElementById('money').innerHTML = board.money
         document.getElementById('prac_time').innerHTML = board.practice_time + "회" 
@@ -226,8 +226,8 @@ function xx() {
         document.getElementById('costume').innerHTML = costume
         document.getElementById('detail_info').innerHTML = board.detail_info
         document.getElementById('songs').innerHTML = board.song_info
-        document.getElementById('prac_address').innerHTML = board.perform_address
-        document.getElementById('perf_address').innerHTML = board.practice_address
+        document.getElementById('prac_address').innerHTML = board.practice_address
+        document.getElementById('perf_address').innerHTML = board.perform_address
         // $("#user_img").attr("src", "../static/img/user_img/user" + board.user_id + ".jpg")
         console.log("OOOOOOOOOOOOOOOKKKKKKKKKKK")
 

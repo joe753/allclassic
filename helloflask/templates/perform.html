@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
 {% block section %}
-<div id="cards" class="row"> </div>
 
-  <script id="card-template" type="text/x-handlebars-template">
+<div id="cards" class="row"> </div>
+<script id="card-template" type="text/x-handlebars-template">
     <!--Card-->
-      <div class="card" style="height: 28rem">
+      <div class="card" style="height: 32rem">
           
           <div class="col-lg-12 col-md-4">
             <div class="text-center my-3" style="border-bottom:3px solid rgb(167, 127, 14)">
@@ -22,7 +22,7 @@
                 <h5>
                   <a>
                     {% raw %}
-                    <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle">
+                    <!-- <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle"> -->
                     <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">{{user_nickname}}</strong>
                     {% endraw %}
                   </a>
@@ -37,7 +37,7 @@
               </div>
               
             </div>
-            <div id="inst{{board_id}}" class="row" style="height: 8rem;">
+            <div id="inst{{board_id}}" class="row" style="height: 13rem;">
             
             </div> 
                 <div class="row mt-4">
@@ -60,7 +60,7 @@
                             <button type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
                                 지원하기
                             </button>
-                            <a id="link{{board_id}}">
+                            <a target="_blank" id="link{{board_id}}">
                               <button id="detail{{board_id}}" type="button" class="btn waves-effect" style="padding : 8px 28px ;border-style: solid!important; border-color: rgb(228, 189, 121); color: rgb(228, 189, 121); border-width: 3px; font-size: 17px">
                                 상세보기
                               </button>
@@ -96,7 +96,7 @@
 
       </div>
     </div>
-  </script>
+</script>
   
   
   
@@ -110,27 +110,97 @@
   var check_onchange
   var newtb;
 
-function select_area (data, sel_val) {
-  if (sel_val == 0) {
-    console.log("아니야")
-    $("#sel_area").val(check_onchange)
-    return ""
-  }
-  else {
-  check_onchange = sel_val;
+function filtering (data, column1, getnumber1, column2, getnumber2 ) {
+  bid_lst = []
+  boardtable = []
   newtb = JSON.parse(JSON.stringify(data));
-  document.getElementById("cards").innerHTML = ""
-  var test = newtb.boardtb
-  var filter = test.filter( function (rs) {
-    return rs["area_number"] == sel_val
-  }).sort()
-  newtb.boardtb = filter
+  if (getnumber1 != 0) {
+  newtb.boardtb = newtb.boardtb.filter( function (res) {
+    return res[column1] == getnumber1}).sort()
+  }
+  if (getnumber2 != 0) {
+    var dt = newtb.boardinst.filter( function (res) {
+    return res[column2] == getnumber2}).sort()
+    
+    var test = dt.filter( function (ttt) {
+      bid_lst.push(ttt["board_id"])
+      return ttt
+    })
+    function last (table, bids) {
+      console.log (bids, table)
+      table.forEach(row => {
+        if (bids.indexOf(row.board_id) !== -1) {
+          boardtable.push(row)
+        }
+      });
+    }
+    last(newtb.boardtb, bid_lst)
+    newtb.boardtb = boardtable
+    // console.log(boardtable, "디티")
+  }
   i = 0;
   num = 4;
+  // console.log(newtb, "뉴티비")
   draw_cards(num, newtb)
   }
+
+
+
+
+
+function select_area (data, sel_area, sel_part) {
+  if (data == undefined) {
+    $.ajax({
+      url : "/alldata",
+      data : "",
+      type : 'GET',
+      dataType : ''
+      }).done(function (res){
+          alldata = res
+          var data = res
+          check_onchange = sel_area;
+          newtb = JSON.parse(JSON.stringify(data));
+          document.getElementById("cards").innerHTML = ""
+          var btd = newtb.boardtb
+          var filter = btd.filter( function (rs) {
+            return rs["area_number"] == sel_area
+          }).sort()
+          newtb.boardtb = filter
+          i = 0;
+          num = 4;
+          draw_cards(num, newtb)
+          })
+        }
+  else {
+    if (sel_area == 0) {
+      document.getElementById("cards").innerHTML = ""
+      i = 0;
+      num = 4;
+      draw_cards(num, data)
+      // console.log("아니야")
+      // $("#sel_area").val(check_onchange)
+      // return ""
+    }
+    else {
+      check_onchange = sel_area;
+      document.getElementById("cards").innerHTML = ""
+      filtering(alldata, "area_number", sel_area, "instrument_id", sel_part)
+      // newtb = JSON.parse(JSON.stringify(data));
+      // document.getElementById("cards").innerHTML = "" 
+      // var btd = newtb.boardtb
+      // if (sel_area > 0 | sel_part > 0) {
+      //   filtering ()
+      // }
+      // var filter = btd.filter( function (rs) {
+      //   return rs["area_number"] == sel_area
+      // }).sort()
+      // newtb.boardtb = filter
+      // i = 0;
+      // num = 4;
+      // draw_cards(num, newtb)
+      }
+    }
 }
-  
 </script>
 <script>
 
@@ -147,7 +217,6 @@ function getall () {
     })
   }
   else   {
-    console.log("엘스")
     draw_cards(num, alldata)
   }
 } 
@@ -180,15 +249,13 @@ $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
         if ($("#sel_area").val() > 0) {
-          console.log("<<<<<<<<<<<<<<<이프>>>>>>>>>>>>>>>>", newtb)
           draw_cards(num, newtb)
         }
-        else if ((check_onchange - $("#sel_area").val()) == check_onchange) {
-          return ""
-        }
+        // else if ((check_onchange - $("#sel_area").val()) == check_onchange) {
+        //   return ""
+        // }
         else {
         getall()
-        console.log(alldata)
         }
      } 
   })
@@ -223,19 +290,18 @@ function createCard(data, board_len, i){
 }
 function postInst(data, board_len, i, boardinst_json){
   var a = data.boardinst
-  console.log(board_len, i)
-  var result = a.filter( function (j) {
-    return  j["board_id"] == (board_len - i)
-  })
   var board_table = data.boardtb
   var bid = a.filter( function (t) {
     return t["board_id"] == (board_table[i].board_id)
   }) 
+  if (bid[0] == undefined) {
+    $("#card" + (board_len - i)).remove()
+    return true
+  }
 
-  console.log(bid, "비아디 ㅡㅡ")
   boardinst_json["boardinst"] = bid
   eee("hb_instsrc", boardinst_json, "inst" + (bid[0].board_id))
-  $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
+  $('#link'+(bid[0].board_id)).attr("href", "/perform/detail/board" + (bid[0].board_id) )
 }
 
 
@@ -281,7 +347,6 @@ function draw_cards (number, data) {
     // eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
     // $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
     // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
-    console.log("올데이타" + i, firstdata, "보들랭", board_len, "아이", i, "보딘제이슨", boardinst_json)
     postInst(firstdata, board_len, i, boardinst_json)
   }
   num = num + 2
