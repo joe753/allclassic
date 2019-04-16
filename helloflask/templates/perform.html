@@ -22,7 +22,7 @@
                 <h5>
                   <a>
                     {% raw %}
-                    <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle">
+                    <!-- <img src="../static/img/user_img/user{{user_id}}.jpg" style="height:2rem;  " class="rounded-circle"> -->
                     <strong class="ml-2 text-dark font-weight-bold" style="font-size : 22px;">{{user_nickname}}</strong>
                     {% endraw %}
                   </a>
@@ -110,7 +110,46 @@
   var check_onchange
   var newtb;
 
-function select_area (data, sel_val) {
+function filtering (data, column1, getnumber1, column2, getnumber2 ) {
+  bid_lst = []
+  boardtable = []
+  newtb = JSON.parse(JSON.stringify(data));
+  if (getnumber1 != 0) {
+  newtb.boardtb = newtb.boardtb.filter( function (res) {
+    return res[column1] == getnumber1}).sort()
+  }
+  // console.log (newtb)
+  if (getnumber2 != 0) {
+    var dt = newtb.boardinst.filter( function (res) {
+    return res[column2] == getnumber2}).sort()
+    
+    var test = dt.filter( function (ttt) {
+      bid_lst.push(ttt["board_id"])
+      return ttt
+    })
+    function last (table, bids) {
+      // console.log(bids)
+      table.forEach(row => {
+        // console.log (row.board_id)
+        if (bids.indexOf(row.board_id) !== 1) {
+          boardtable.push(row)
+        }
+      });
+    }
+    last(newtb.boardtb, bid_lst)
+    // console.log(boardtable, "디티")
+  }
+  i = 0;
+  num = 4;
+  // console.log(newtb, "뉴티비")
+  draw_cards(num, newtb)
+  }
+
+
+
+
+
+function select_area (data, sel_area, sel_part) {
   if (data == undefined) {
     $.ajax({
       url : "/alldata",
@@ -120,12 +159,12 @@ function select_area (data, sel_val) {
       }).done(function (res){
           alldata = res
           var data = res
-          check_onchange = sel_val;
+          check_onchange = sel_area;
           newtb = JSON.parse(JSON.stringify(data));
           document.getElementById("cards").innerHTML = ""
           var btd = newtb.boardtb
           var filter = btd.filter( function (rs) {
-            return rs["area_number"] == sel_val
+            return rs["area_number"] == sel_area
           }).sort()
           newtb.boardtb = filter
           i = 0;
@@ -134,7 +173,7 @@ function select_area (data, sel_val) {
           })
         }
   else {
-    if (sel_val == 0) {
+    if (sel_area == 0) {
       document.getElementById("cards").innerHTML = ""
       i = 0;
       num = 4;
@@ -144,17 +183,22 @@ function select_area (data, sel_val) {
       // return ""
     }
     else {
-      check_onchange = sel_val;
-      newtb = JSON.parse(JSON.stringify(data));
-      document.getElementById("cards").innerHTML = "" 
-      var btd = newtb.boardtb
-      var filter = btd.filter( function (rs) {
-        return rs["area_number"] == sel_val
-      }).sort()
-      newtb.boardtb = filter
-      i = 0;
-      num = 4;
-      draw_cards(num, newtb)
+      check_onchange = sel_area;
+      document.getElementById("cards").innerHTML = ""
+      filtering(alldata, "area_number", sel_area, "instrument_id", sel_part)
+      // newtb = JSON.parse(JSON.stringify(data));
+      // document.getElementById("cards").innerHTML = "" 
+      // var btd = newtb.boardtb
+      // if (sel_area > 0 | sel_part > 0) {
+      //   filtering ()
+      // }
+      // var filter = btd.filter( function (rs) {
+      //   return rs["area_number"] == sel_area
+      // }).sort()
+      // newtb.boardtb = filter
+      // i = 0;
+      // num = 4;
+      // draw_cards(num, newtb)
       }
     }
 }
@@ -251,6 +295,10 @@ function postInst(data, board_len, i, boardinst_json){
   var bid = a.filter( function (t) {
     return t["board_id"] == (board_table[i].board_id)
   }) 
+  if (bid[0] == undefined) {
+    $("#card" + (board_len - i)).remove()
+    return true
+  }
 
   boardinst_json["boardinst"] = bid
   eee("hb_instsrc", boardinst_json, "inst" + (bid[0].board_id))
