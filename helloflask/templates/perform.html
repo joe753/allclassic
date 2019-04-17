@@ -130,7 +130,6 @@ function filtering (data, column1, getnumber1, column2, getnumber2 ) {
       return ttt
     })
   function last (table, bids) {
-    console.log (bids, table)
     table.forEach(row => {
       if (bids.indexOf(row.board_id) !== -1) {
         boardtable.push(row)
@@ -139,8 +138,8 @@ function filtering (data, column1, getnumber1, column2, getnumber2 ) {
     }
     last(newtb.boardtb, bid_lst)
     newtb.boardtb = boardtable
+    console.log(newtb.boardtb)
   }
-  console.log("라스트 끝")
   i = 0;
   num = 4;
   draw_cards(num, newtb)
@@ -225,7 +224,7 @@ getall()
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
-        if ($("#sel_area").val() > 0) {
+        if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0) {
           draw_cards(num, newtb)
         }
         

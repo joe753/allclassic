@@ -93,6 +93,7 @@ class Board(Base):
     user_id = Column(Integer, ForeignKey('Users.user_no') , nullable=False)
     upload_time = Column(TIMESTAMP)
     users = relationship("Users")
+
    
 
 
