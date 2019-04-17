@@ -19,9 +19,9 @@ num = ["0","1","2","3","4","5","6","7","8","9"]
 albe = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"]
 parts = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"]
 performs_detail = []
-users_detail = [("better3311@naver.com", "1q2w3e", "배준홍", "010-4321-4321", "배럴이왔어요", "서울"), ("joe753@gmail.com", "1234", "이현욱", "01012341234", "운영자새끼", "서울")]
+users_detail = [("better3311@naver.com", "1q2w3e", "배준홍", "010-4321-4321", "배럴이왔어요", "서울"), ("joe753@naver.com", "1234", "이현욱", "01012341234", "운영자새끼", "서울")]
 i = 1
-while len(performs_detail)<1:
+while len(performs_detail)<1000:
     perform_address = random.choice(places)
     practice_address = random.choice(places)
     qualification = random.choice(qualifications)
@@ -156,6 +156,7 @@ for board_id in board_ids:
     for instrument_id in instruments:
         person = random.randrange(1,3)
         BI_detail.append((str(board_id[0]), instrument_id, str(person)))
+        print((str(board_id[0]), instrument_id, str(person)))
 
 with conn:
     cur = conn.cursor()
