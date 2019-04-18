@@ -109,6 +109,7 @@
   var board_len
   var check_onchange
   var newtb;
+  var searchstr;
 
 
 
@@ -117,7 +118,7 @@
 function filtering (data, column1, getnumber1, column2, getnumber2 ) {
   bid_lst = []
   boardtable = []
-  newtb = JSON.parse(JSON.stringify(data));
+  newtb = JSON.parse(JSON.stringify(data))
   if (getnumber1 != 0) {
   newtb.boardtb = newtb.boardtb.filter( function (res) {
     return res[column1] == getnumber1}).sort()
@@ -137,13 +138,12 @@ function filtering (data, column1, getnumber1, column2, getnumber2 ) {
         }
       });
     }
-    last(newtb.boardtb, bid_lst)
-    newtb.boardtb = boardtable
-    console.log(newtb.boardtb)
+  last(newtb.boardtb, bid_lst)
+  newtb.boardtb = boardtable
   }
-  i = 0;
-  num = 4;
-  draw_cards(num, newtb)
+  
+  searchtitle(newtb, $("#search_input").val())
+ 
 }
 
 
@@ -219,15 +219,18 @@ function get_area (res) {
 <script>
 var i = 0;
 var num = 4; 
+var search_click = 0;
 getall()
 
 
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
-        if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0) {
+       console.log(search_click)
+        if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0 | search_click != 0) {
           draw_cards(num, newtb)
         }
+        
         
         else {
         getall()
