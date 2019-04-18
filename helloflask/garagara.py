@@ -12,16 +12,18 @@ d2 = datetime.datetime.strptime('2021/12/31', '%Y/%m/%d')
 int_delta = (d2 - d1).days
 
 places = ["서울","경기","인천","강원","충북", "세종","충남", "대전", "대구", "경북", "경남", "부산", "울산", "전북", "전남","광주","제주"]
-
+perftitles = ["유치원", "예술의 전당", "웨딩", "워커힐 호텔", "기업행사", "양재 엘타워", "서울스프링페스티벌", "엘지아트센터", "롯데콘서트홀", "라움아트센터", "대구 콘서트하우스","인천아트센터"]
 gens = ["0","1","2","3"]
 qualifications = ["0","1","2","3"]
 num = ["0","1","2","3","4","5","6","7","8","9"]
 albe = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"]
 parts = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"]
 performs_detail = []
-users_detail = [("better3311@naver.com", "1q2w3e", "배준홍", "010-4321-4321", "배럴이왔어요", "서울"), ("joe753@naver.com", "1234", "이현욱", "01012341234", "운영자새끼", "서울")]
+# users_detail = [("better3311@naver.com", "1q2w3e", "배준홍", "010-4321-4321", "배럴이왔어요", "서울"), ("joe753@naver.com", "1234", "이현욱", "01012341234", "운영자새끼", "서울")]
+users_detail = []
 i = 1
-while len(performs_detail)<1000:
+perflen = len(perftitles)
+while len(performs_detail)<200:
     perform_address = random.choice(places)
     practice_address = random.choice(places)
     qualification = random.choice(qualifications)
@@ -34,7 +36,7 @@ while len(performs_detail)<1000:
     practice_mapy = random.uniform(35.221932, 37.750555)
     perform_mapx = random.uniform(126.856114, 128.553447)
     perform_mapy = random.uniform(35.221932, 37.750555)
-    board_title = "타이틀 " + perform_address + "공연"
+    board_title = perftitles[random.randrange(perflen)] + "공연"
     detail_info = "디테일 " + perform_address + "공연"
     song_info = "곡 " + perform_address
     user_id = i

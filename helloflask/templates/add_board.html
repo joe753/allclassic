@@ -133,6 +133,10 @@
         </div>
       </div>
       <div class="form-row">
+        <div id="praccal" class="col-lg-4"></div>
+        <div id="perfcal" class="col-lg-4"></div>
+      </div>
+      <div class="form-row">
         <div id="calenprac" class="col-lg-5"></div>
         <div id="calenperf" class="col-lg-5"></div>
       </div>
@@ -574,7 +578,7 @@ function send_all() {
 
 
 <!-- ============================ Handle Bar Year========================================== ========================-->
-<script id="yscr" type="text/x-handlebars-template">
+<!-- <script id="yscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pyear" class="browser-default custom-select mr-2" onchange="makeDays()">
           <option value="none" selected>----</option>
@@ -642,7 +646,7 @@ function send_all() {
   <option value={{day}}>{{day}}</option>
   {{/each}}
   {% endraw %}
-</script>
+</script>-->
 
 <script id="calensrc" type="text/x-handlebars-template">
   {% raw %}
@@ -674,7 +678,7 @@ function send_all() {
   </table>
   {% endraw %}
 
-</script>
+</script> -->
 <script>
   var d = new Date();
   var tyear = d.getFullYear();
@@ -787,9 +791,11 @@ function send_all() {
       var source = document.getElementById(sourceId).innerHTML
       var template = Handlebars.compile(source);
       var html = template(caldata);
+      console.log(html)
       document.getElementById(resultId).innerHTML = html;
   }
-  calen("calensrc", caldata, "cal")
+  calen("calensrc", caldata, "praccal")
+  calen("calensrc", caldata, "perfcal")
 
   function lastmonth(){
       caldata.days = []
@@ -797,11 +803,11 @@ function send_all() {
           tmonth = tmonth + 11;
           tyear = tyear - 1;
           insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "cal")
+          calen("calensrc", caldata, "praccal")
       } else {
           tmonth = tmonth - 1;
           insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "cal")
+          calen("calensrc", caldata, "praccal")
       }
   }
   function nextmonth(){
@@ -810,11 +816,11 @@ function send_all() {
           tmonth = tmonth - 11;
           tyear = tyear + 1;
           insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "cal")
+          calen("calensrc", caldata, "praccal")
       } else {
           tmonth = tmonth + 1;
           insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "cal")
+          calen("calensrc", caldata, "praccal")
       }
   }
   
