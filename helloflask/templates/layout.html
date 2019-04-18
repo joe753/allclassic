@@ -254,22 +254,24 @@
       <div style="width : 20%">
         <form class="form-inline">
           <div class="md-form ml-3 mx-2" style="margin-top : 9px; margin-bottom: 0px;">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <input id="search_input" class="form-control" type="text" placeholder="Search" aria-label="Search">
           </div>
         </form>
       </div>
-      <div class="mr-5" style="margin-top : 20px; margin-bottom:0px;">
-        <a class="blue-text">
-          <i class="fas fa-search" ></i>
-        </a>
+      <div class="mr-3 mt-2">
+        <button type="button" class="btn btn-info px-3" style="padding-right:9px; padding-left:9px;  padding-bottom:9px;  padding-top:9px;"
+              onclick="filtering(alldata, 'area_number', $('#sel_area').val() , 'instrument_id', $('#sel_part').val())">
+          <i class="fas fa-search text-white" ></i>
+        </button>
       </div>
 
       <div class="mt-1 ml-3" style="width: 12.99999%; ">
+        <a href="/addboard/perform">
           <button class="btn btn-primary" type="button" style="font-size : 15px; padding-top: 10px; padding-bottom: 10px;
-          padding-right: 20px; padding-left: 20px;" onclick="select_area(alldata)">
+          padding-right: 20px; padding-left: 20px;">
             연주공고 등록  
           </button>
-          
+        </a> 
       </div>
         
     </div>
@@ -338,9 +340,31 @@
 
   
   <script>
+    function searchtitle(data, search_input) {
+      searchstr = $("#search_input").val()
+      search_click = 0;
+      if ($("#sel_area").val() == 0 && $("#sel_part").val() == 0) {
+        data = JSON.parse(JSON.stringify(alldata))
+        newtb = JSON.parse(JSON.stringify(alldata))
+      }
+      searched_data = JSON.parse(JSON.stringify(data));
+      var dt = searched_data.boardtb
+      
+      flt = dt.filter( function (ttt) {
+        return ttt["board_title"].includes(search_input) 
+      })
+      newtb.boardtb = flt
+      console.log(newtb)
+      document.getElementById("cards").innerHTML = ""
+      i = 0;
+      num = 4;
+      draw_cards(num, newtb)
+      search_click ++;
+    }
+
     function showall() {
       alldata = null;
-      select_area(alldata, $("#sel_area").val());
+      select_area(alldata, $('#sel_area').val(), $('#sel_part').val())
       window.scrollTo(0, 420);
     
     }

@@ -31,7 +31,7 @@
      <!------- Line 2 -------->
     <div class="form-row my-2">
       <div class="col-lg-1 mt-2 text-left font-weight-bold" >
-        지원기한
+          기간
       </div>
       <div id="detail" class="form-row my-2">
         <!-- <span id="datstr"></span> -->
@@ -41,7 +41,7 @@
 
     <!----------------- Line 3  ------------------------->
     <div class="form-row my-2">
-      <div class="col-lg-1.5 text-left my-2 font-weight-bold">
+      <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
           자격요건
         </div>
       <div class="col-lg-1.5" id ="slt-graduation">
@@ -63,89 +63,47 @@
           <option value="3">여</option>
         </select>
       </div>
-      <div class="col-lg-0.5"></div>
-      <div class="col-lg-0.5 my-2 mx-2 text-left font-weight-bold">
-          복장
-        </div>
-        <div id="getradio" style="display: inline-flex">
-          <div class="col-lg-1.5 my-2 ml-1">
-            <div class="form-check form-check-inline">
-                <input id="radiobox1" onclick="handlegd()" type="radio" class="form-check-input" name="radiogd1" value="1">
-                <label class="form-check-label" for="materialInline1">추후공지</label>
-            </div>
-            <div class="form-check form-check-inline ml-4">
-                <input id="radiobox2" onclick="handlegd()" type="radio" class="form-check-input"  name="radiogd1" checked>
-                <label class="form-check-label" for="materialInline2">복장선택</label>
-            </div>
-          </div>
-          <div class="col-lg-4 ml-2" >
-              <select id="slt_gd" class="browser-default custom-select">
-                  <option value="" selected>-----------</option>
-                  <option value="2">자유</option>
-                  <option value="3">정장(흰셔츠)</option>
-                  <option value="4">정장(올블랙)</option>
-              </select>
-          </div>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="col-lg-1 mt-2 text-left font-weight-bold">
+      <div class="col-lg-1 mt-2 text-center font-weight-bold">
           금액
-        </div>
-        <div class="col-lg-2">
-          <div class="form-group">
-            <input type="text" value="0" class="form-control" id="money" name="money" placeholder="0원" required> 
-          </div>
-        </div>
-        <div id="paycheck" class="col-lg-3.5 text-left ml-3" style="color:grey"></div>
       </div>
-      
-      <!------- Line 4 ------->
-      <div class="form-row my-2">
+      <div class="col-lg-2">
+        <div class="form-group">
+            <input type="text" value="0" class="form-control" id="money" name="money" placeholder="0원" required> 
+        </div>
+      </div>
+      <div id="paycheck" class="col-lg-3.5 text-left ml-3"></div>
+    </div>
+
+    <!------- Line 4 ------->
+    <div class="form-row my-2">
         <div class="col-lg-1 mt-2 text-left font-weight-bold">
-          연습
+            연습
         </div>
         <div class="col-lg-1">
           <div class="form-group">
             <input type="number" value="3" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
           </div>
         </div>
-        <!-- <div class="col-lg-1 text-left my-2"> -->
-          <span class="my-2">회 &nbsp;&nbsp;</span>
-        <!-- </div> -->
-        <div class="col-lg-1.5 text-left">
-          <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold mb-2">날짜선택</button>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-1 mt-2 text-left font-weight-bold">
-          연주
+        <div class="col-lg-1 text-left my-2">
+          <span>회 &nbsp;&nbsp;</span>
+          <span class="font-weight-bold">연주</span>
         </div>
         <div class="col-lg-1">
           <div class="form-group">
             <input type="number" value="4" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
           </div>
         </div>
-        <div class="col-lg-0.5 text-left my-2">
+        <div class="col-lg-0.5 text-left  my-2">
           회
         </div>
         <div class="col-lg-1.5 text-left">
-          <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold mb-2">날짜선택</button>
-        </div>
-      </div>
-      <div class="form-row">
-        <div id="praccal" class="col-lg-4"></div>
-        <div id="perfcal" class="col-lg-4"></div>
-      </div>
-      <div class="form-row">
-        <div id="calenprac" class="col-lg-5"></div>
-        <div id="calenperf" class="col-lg-5"></div>
-      </div>
-      <div class="form-row my-2">
-        <div class="col-lg-1 my-2 text-left font-weight-bold">
-          복장
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">날짜선택</button>
         </div>
         <div id="getradio" style="display: inline-flex">
-          <div class="col-lg-1.5 my-2 ml-1">
+          <div class="col-lg-0.5 my-2 mx-3 font-weight-bold">
+            복장
+          </div>
+          <div class="col-lg-2.5 my-2 ml-1">
             <div class="form-check form-check-inline">
                 <input id="radiobox1" onclick="handlegd()" type="radio" class="form-check-input" name="radiogd1" value="1">
                 <label class="form-check-label" for="materialInline1">추후공지</label>
@@ -313,44 +271,44 @@ $('#money').keyup(function paycheck(){
         paystr = nth(aa) + paystr
       }
       if (i == 1){
-        paystr = nth(aa)+ "십 " + paystr
+        paystr = nth(aa)+ "십" + paystr
       }
       if ( i == 2){
-        paystr = nth(aa)+ "백 " + paystr
+        paystr = nth(aa)+ "백" + paystr
       }
       if ( i == 3){
-        paystr = nth(aa)+ "천 " + paystr
+        paystr = nth(aa)+ "천" + paystr
       }
       if ( i == 4){
-        paystr = nth(aa)+ "만 " + paystr
+        paystr = nth(aa)+ "만" + paystr
       }
       if ( i == 5){
-        paystr = nth(aa)+ "십 " + paystr
+        paystr = nth(aa)+ "십" + paystr
       }
       if ( i == 6){
-        paystr = nth(aa)+ "백 " + paystr
+        paystr = nth(aa)+ "백" + paystr
       }
       if ( i == 7){
-        paystr = nth(aa)+ "천 " + paystr
+        paystr = nth(aa)+ "천" + paystr
       }
       if ( i == 8){
-        paystr = nth(aa)+ "억 " + paystr
+        paystr = nth(aa)+ "억" + paystr
       }
       if ( i == 9){
-        paystr = nth(aa)+ "십 " + paystr
+        paystr = nth(aa)+ "십" + paystr
       }
       if ( i == 10){
-        paystr = nth(aa)+ "백 " + paystr
+        paystr = nth(aa)+ "백" + paystr
       }
       if ( i == 11){
-        paystr = nth(aa)+ "천 " + paystr
+        paystr = nth(aa)+ "천" + paystr
       }
     } else{
       if ( i == 4){
-        paystr = nth(aa)+ "만 " + paystr
+        paystr = nth(aa)+ "만" + paystr
       }
       if ( i == 8){
-        paystr = nth(aa)+ "억 " + paystr
+        paystr = nth(aa)+ "억" + paystr
       }
     }
   }
@@ -578,7 +536,7 @@ function send_all() {
 
 
 <!-- ============================ Handle Bar Year========================================== ========================-->
-<!-- <script id="yscr" type="text/x-handlebars-template">
+<script id="yscr" type="text/x-handlebars-template">
   <div class="col-lg-1.5 ml-1" >
       <select id="pyear" class="browser-default custom-select mr-2" onchange="makeDays()">
           <option value="none" selected>----</option>
@@ -646,139 +604,45 @@ function send_all() {
   <option value={{day}}>{{day}}</option>
   {{/each}}
   {% endraw %}
-</script>-->
+</script>
 
-<script id="calensrc" type="text/x-handlebars-template">
-  {% raw %}
 
-  <table id="calendar">
-      <thead id="calhead">
-        
-          <div>
-              <span id="year">{{thisyear}}</span><span>년</span>
-          </div>
-          <div>
-              <span id="lastmonth" onclick="lastmonth()">◀</span>
-              <span id="cmonth">{{thismonth}}</span><span>월</span>
-              <span id="nextmonth" onclick="nextmonth()">▶</span>
-          </div>
-      </thead>
-      <tbody>
-          <tr>
-              <th>일</th>
-              <th>월</th>
-              <th>화</th>
-              <th>수</th>
-              <th>목</th>
-              <th>금</th>
-              <th>토</th>
-          </tr>
-          {{#mod7 days}}{{day}}{{/mod7}}
-      </tbody>
-  </table>
-  {% endraw %}
 
-</script> -->
 <script>
   var d = new Date();
-  var tyear = d.getFullYear();
-  var tmonth = d.getMonth() + 1;
-  var caldata = {
-              days:[],
-              thisyear:"",
-              thismonth:""
-      };
-  var monarr = [4, 6, 9, 11];
-  // caldata 만들기
-  function insertdate(thisyear, thismonth){
-      var fir = new Date(thisyear+"-"+thismonth+"-1")
-      caldata.thisyear = thisyear
-      caldata.thismonth = thismonth
-      addnulltd = Number(fir.getDay())
-      // 평년
-      console.log(leafYearCheck(thisyear))
-      if (leafYearCheck(thisyear) == false){
-          if (monarr.includes(thismonth)){
-              for (i=1-addnulltd; i<=30; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          } else if (thismonth == 2){
-              for (i=1-addnulltd; i<=28; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          } else{
-              for (i=1-addnulltd; i<=31; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          }
-      // 윤년
-      }else{
-          if (monarr.includes(thismonth)){
-              for (i=1-addnulltd; i<=30; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          } else if (thismonth == 2){
-              for (i=1-addnulltd; i<=29; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          } else{
-              for (i=1-addnulltd; i<=31; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: i});
-                  }
-              }
-          }
-      }
-      return caldata
+  var thisyear = d.getFullYear()
+  var data = {
+      years: [],
+      months: [],
+      days: [],
+      hours: [],
+      minutes: []
+  };
+  for (i=0; i<3; i++){
+      data.years.push({year: thisyear+i})
   }
-  // 연도, 월 반영한 caldata 생성
-  caldata = insertdate(tyear,tmonth)
-  // tbody부분 그리는 helper 등록
-  Handlebars.registerHelper("mod7", function(days, options){
-      var html = ""
-      console.log(days.length)
-      for (var i=0, l=days.length; i<l; i++){
-          if (i % 7 == 0 ){
-              html = html + "<tr>" + "<td class='cell'>" + options.fn(days[i]) + "</td>"
-          }else if( i % 7 == 6){
-              html = html + "<td class='cell'>" + options.fn(days[i]) + "</td>" + "</tr>"
-          }else{
-              html = html + "<td class='cell'>" + options.fn(days[i]) + "</td>"
-          }
-      }
-      return html
-  });
-  console.log(caldata)
-  // 윤년체크
-  function leafYearCheck(thisyear){
+  for (i=0; i<12; i++){
+      data.months.push({month: i+1})
+  }
+  for (i=0; i<24; i++){
+      data.hours.push({hour:i})
+  }
+  for (i=0; i<4; i++){
+      data.minutes.push({minute: i*15})
+  }
+  function leafYearCheck(){
       var int_year;
-      int_year = Number(thisyear);
+      var selectyear = document.getElementById('pyear');
+      var selectyvalue = selectyear.options[selectyear.selectedIndex].value;
+      int_year = Number(selectyvalue);
+      console.log(int_year)
       var lyc = 0
-      if( int_year%4 == 0 ){
-          if( int_year%100 == 0 ){
-              if( int_year%400 == 0 ){
+      if( int_year%4 == 0 )
+      {
+          if( int_year%100 == 0 )
+          {
+              if( int_year%400 == 0 )
+              {
                   return true; 
               }
               return false;
@@ -787,200 +651,101 @@ function send_all() {
       }
       return false;
   }
-  function calen(sourceId, caldata, resultId){
+  function makeDays (){
+      data.days = []
+      var selectmonth = document.getElementById('pmonth');
+      var selectvalue = selectmonth.options[selectmonth.selectedIndex].value;
+      selectvalue = Number(selectvalue)
+      console.log(selectvalue)
+      var arr1 = [4, 6, 9, 11];
+      leafYearCheck()
+      console.log(">>>>>>>>>>>>>>>>>>>>>>",leafYearCheck())
+      if (leafYearCheck() == false){
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=28; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      } else{
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=29; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      }
+      repele("qscr", data, "pday")
+  }
+  function repele(sourceId, data, resultId){
       var source = document.getElementById(sourceId).innerHTML
       var template = Handlebars.compile(source);
-      var html = template(caldata);
-      console.log(html)
+      var html = template(data);
       document.getElementById(resultId).innerHTML = html;
   }
-  calen("calensrc", caldata, "praccal")
-  calen("calensrc", caldata, "perfcal")
-
-  function lastmonth(){
-      caldata.days = []
-      if (tmonth == 1){
-          tmonth = tmonth + 11;
-          tyear = tyear - 1;
-          insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "praccal")
-      } else {
-          tmonth = tmonth - 1;
-          insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "praccal")
+  function mkele(sourceId, data, resultId){
+      var source = document.getElementById(sourceId).innerHTML
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      document.getElementById(resultId).innerHTML += html;
+  }
+  mkele("yscr", data, "detail")
+  mkele("mscr", data, "detail")
+  mkele("dscr", data, "detail")
+  mkele("hscr", data, "detail")
+  mkele("Mscr", data, "detail")
+  // selected date => string
+  var inputdate
+  function dts(){
+      var selectyear = selectvalue('pyear');
+      var selectmonth = selectvalue('pmonth');
+      var selectday = selectvalue('pday');
+      var selecthour = selectvalue('phour');
+      var selectmin = selectvalue('pmin');
+      if (selectyear == 'none' || selectmonth == 'none' || selectday == 'none' || selecthour == 'none' || selectmin == 'none'){
+          alert("정확한 시기를 선택해 주세요.")
+      }else{
+          if (selectmin==0){
+            selectmin = "00"
+          }      
+          var datstr = selectyear + "-" + selectmonth + "-" + selectday + "  " + selecthour + ":" +selectmin
+          var dtstr = selectyear + "년 " + selectmonth + "월 " + selectday + "일 " + selecthour + ":" +selectmin
+          var days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+          datestr = new Date(datstr)
+          inputdate = datstr
+          day = days[datestr.getDay()]
+          datestring = dtstr + " " + day
+          if (document.getElementById('datstr') != null) {
+              var $datstr = $('#datstr') 
+              fixeddate($datstr)
+          } else {
+              html = "<span id='datstr'>" + datestring + "</span>"
+              $('#detail').append(html)
+              $datstr = $('#datstr')
+              fixeddate($datstr)
+          }
       }
   }
-  function nextmonth(){
-      caldata.days = []
-      if (tmonth == 12){
-          tmonth = tmonth - 11;
-          tyear = tyear + 1;
-          insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "praccal")
-      } else {
-          tmonth = tmonth + 1;
-          insertdate(tyear, tmonth);
-          calen("calensrc", caldata, "praccal")
-      }
-  }
-  
-  $(document).ready(function(){
-      $(".cell").click(function(){
-          $(this).css("background-color", "grey");
-          var selday = ""
-          selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text()
-          console.log(selday)
-      });
-  });
-</script>
-
-
-<!-- <script>
-function calen(sourceId, data, resultId){
-    var source = document.getElementById(sourceId).innerHTML
-    var template = Handlebars.compile(source);
-    var html = template(data);
-    document.getElementById(resultId).innerHTML = html;
-}
-
-var d = new Date();
-var thisyear = d.getFullYear()
-var data = {
-    years: [],
-    months: [],
-    days: [],
-    hours: [],
-    minutes: []
-};
-for (i=0; i<3; i++){
-    data.years.push({year: thisyear+i})
-}
-for (i=0; i<12; i++){
-    data.months.push({month: i+1})
-}
-for (i=0; i<24; i++){
-    data.hours.push({hour:i})
-}
-for (i=0; i<4; i++){
-    data.minutes.push({minute: i*15})
-}
-function leafYearCheck(){
-    var int_year;
-    var selectyear = document.getElementById('pyear');
-    var selectyvalue = selectyear.options[selectyear.selectedIndex].value;
-    int_year = Number(selectyvalue);
-    console.log(int_year)
-    var lyc = 0
-    if( int_year%4 == 0 )
-    {
-        if( int_year%100 == 0 )
-        {
-            if( int_year%400 == 0 )
-            {
-                return true; 
-            }
-            return false;
-        }
-        return true;        
-    }
-    return false;
-}
-function makeDays (){
-    data.days = []
-    var selectmonth = document.getElementById('pmonth');
-    var selectvalue = selectmonth.options[selectmonth.selectedIndex].value;
-    selectvalue = Number(selectvalue)
-    console.log(selectvalue)
-    var arr1 = [4, 6, 9, 11];
-    if (leafYearCheck() == false){
-        if (selectvalue === NaN){
-            return;
-        }
-        if (arr1.includes(selectvalue)){
-            for (i=1; i<=30; i++){
-                data.days.push({day: i});
-            }
-        } else if (selectvalue == 2){
-            for (i=1; i<=28; i++){
-                data.days.push({day : i});
-            }
-        } else{
-            for (i=1; i<=31; i++){
-                data.days.push({day : i});
-            }
-        }
-    } else{
-        if (selectvalue === NaN){
-            return;
-        }
-        if (arr1.includes(selectvalue)){
-            for (i=1; i<=30; i++){
-                data.days.push({day: i});
-            }
-        } else if (selectvalue == 2){
-            for (i=1; i<=29; i++){
-                data.days.push({day : i});
-            }
-        } else{
-            for (i=1; i<=31; i++){
-                data.days.push({day : i});
-            }
-        }
-    }
-    repele("qscr", data, "pday")
-}
-function repele(sourceId, data, resultId){
-    var source = document.getElementById(sourceId).innerHTML
-    var template = Handlebars.compile(source);
-    var html = template(data);
-    document.getElementById(resultId).innerHTML = html;
-}
-function mkele(sourceId, data, resultId){
-    var source = document.getElementById(sourceId).innerHTML
-    var template = Handlebars.compile(source);
-    var html = template(data);
-    document.getElementById(resultId).innerHTML += html;
-}
-mkele("yscr", data, "detail")
-mkele("mscr", data, "detail")
-mkele("dscr", data, "detail")
-mkele("hscr", data, "detail")
-mkele("Mscr", data, "detail")
-
-calen("calensrc", data, "calenprac")
-calen("calensrc", data, "calenperf")
-// selected date => string
-var inputdate;
-function dts(){
-    var selectyear = selectvalue('pyear');
-    var selectmonth = selectvalue('pmonth');
-    var selectday = selectvalue('pday');
-    var selecthour = selectvalue('phour');
-    var selectmin = selectvalue('pmin');
-    if (selectyear == 'none' || selectmonth == 'none' || selectday == 'none' || selecthour == 'none' || selectmin == 'none'){
-        alert("정확한 시기를 선택해 주세요.")
-    }else{
-        if (selectmin==0){
-          selectmin = "00"
-        }      
-        var datstr = selectyear + "-" + selectmonth + "-" + selectday + "  " + selecthour + ":" +selectmin
-        var dtstr = selectyear + "년 " + selectmonth + "월 " + selectday + "일 " + selecthour + ":" +selectmin
-        var days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
-        datestr = new Date(datstr)
-        inputdate = datstr
-        day = days[datestr.getDay()]
-        datestring = dtstr + " " + day
-        if (document.getElementById('datstr') != null) {
-            var $datstr = $('#datstr') 
-            fixeddate($datstr)
-        } else {
-            html = "<span id='datstr'>" + datestring + "</span>"
-            $('#detail').append(html)
-            $datstr = $('#datstr')
-            fixeddate($datstr)
-        }
-    }
-}
 function fixeddate(datestr){
   datestr.addClass("col-lg-1.5").addClass("float-right").addClass("mx-3").addClass("mt-2")
   datestr.css("font-weight","400").css("color", "grey").css("display", "inline-block")
@@ -992,7 +757,7 @@ function selectvalue(tagid){
   var selectoption = selecttag.options[selecttag.selectedIndex].value;
   return selectoption
 }
-</script> -->
+</script>
 
 
 

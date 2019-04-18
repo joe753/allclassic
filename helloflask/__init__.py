@@ -53,7 +53,7 @@ def lesson():
     return render_template('lesson.html')
 
 
-@app.route('/add/perform/pboard01')
+@app.route('/addboard/perform')
 def add_pboard():
     if not session.get('loginUser') :
         session['next'] = request.url

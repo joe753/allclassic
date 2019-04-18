@@ -109,11 +109,16 @@
   var board_len
   var check_onchange
   var newtb;
+  var searchstr;
+
+
+
+
 
 function filtering (data, column1, getnumber1, column2, getnumber2 ) {
   bid_lst = []
   boardtable = []
-  newtb = JSON.parse(JSON.stringify(data));
+  newtb = JSON.parse(JSON.stringify(data))
   if (getnumber1 != 0) {
   newtb.boardtb = newtb.boardtb.filter( function (res) {
     return res[column1] == getnumber1}).sort()
@@ -126,24 +131,20 @@ function filtering (data, column1, getnumber1, column2, getnumber2 ) {
       bid_lst.push(ttt["board_id"])
       return ttt
     })
-    function last (table, bids) {
-      console.log (bids, table)
-      table.forEach(row => {
-        if (bids.indexOf(row.board_id) !== -1) {
-          boardtable.push(row)
+  function last (table, bids) {
+    table.forEach(row => {
+      if (bids.indexOf(row.board_id) !== -1) {
+        boardtable.push(row)
         }
       });
     }
-    last(newtb.boardtb, bid_lst)
-    newtb.boardtb = boardtable
-    // console.log(boardtable, "디티")
+  last(newtb.boardtb, bid_lst)
+  newtb.boardtb = boardtable
   }
-  i = 0;
-  num = 4;
-  // console.log(newtb, "뉴티비")
-  draw_cards(num, newtb)
-  }
-
+  
+  searchtitle(newtb, $("#search_input").val())
+ 
+}
 
 
 
@@ -158,46 +159,21 @@ function select_area (data, sel_area, sel_part) {
       }).done(function (res){
           alldata = res
           var data = res
-          check_onchange = sel_area;
-          newtb = JSON.parse(JSON.stringify(data));
-          document.getElementById("cards").innerHTML = ""
-          var btd = newtb.boardtb
-          var filter = btd.filter( function (rs) {
-            return rs["area_number"] == sel_area
-          }).sort()
-          newtb.boardtb = filter
-          i = 0;
-          num = 4;
-          draw_cards(num, newtb)
+          filtering(alldata, "area_number", sel_area, "instrument_id", sel_part)
           })
         }
   else {
-    if (sel_area == 0) {
-      document.getElementById("cards").innerHTML = ""
-      i = 0;
+    if (sel_area == 0 && sel_part == 0) {
+      i = 0 ;
       num = 4;
+      document.getElementById("cards").innerHTML = ""
       draw_cards(num, data)
-      // console.log("아니야")
-      // $("#sel_area").val(check_onchange)
-      // return ""
+     
     }
     else {
       check_onchange = sel_area;
       document.getElementById("cards").innerHTML = ""
       filtering(alldata, "area_number", sel_area, "instrument_id", sel_part)
-      // newtb = JSON.parse(JSON.stringify(data));
-      // document.getElementById("cards").innerHTML = "" 
-      // var btd = newtb.boardtb
-      // if (sel_area > 0 | sel_part > 0) {
-      //   filtering ()
-      // }
-      // var filter = btd.filter( function (rs) {
-      //   return rs["area_number"] == sel_area
-      // }).sort()
-      // newtb.boardtb = filter
-      // i = 0;
-      // num = 4;
-      // draw_cards(num, newtb)
       }
     }
 }
@@ -243,17 +219,19 @@ function get_area (res) {
 <script>
 var i = 0;
 var num = 4; 
+var search_click = 0;
 getall()
+
 
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
-        if ($("#sel_area").val() > 0) {
+       console.log(search_click)
+        if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0 | search_click != 0) {
           draw_cards(num, newtb)
         }
-        // else if ((check_onchange - $("#sel_area").val()) == check_onchange) {
-        //   return ""
-        // }
+        
+        
         else {
         getall()
         }
@@ -312,41 +290,9 @@ function draw_cards (number, data) {
       if (board_len == i) {
             break;
           }
-  
-  // board_len = alldata.boardtb.length
-  // for (i; i < number; i++) {
-  //   if (board_len == i) {
-  //         break;
-  //       }
-    // 시간 설정
-    // var kupload_time = moment(alldata.boardtb[i].upload_time)
-    // var kdue_date = moment(alldata.boardtb[i].due_date)
-    // alldata.boardtb[i].upload_date = kupload_time.format('YYYY.MM.DD a hh:mm')
-    // alldata.boardtb[i].due_date = kdue_date.format('YYYY.MM.DD (dd) a hh:mm')
     var firstdata = addProperty(newdata, i);
-    
-    // // 돈 콤마
-    // alldata.boardtb[i].money = addComma(alldata.boardtb[i].money)
-  
-
-    //카드 만들기
-    // var cardform = $('<div>')
-    // var cardnum = "card" + (board_len - i)
-    // cardform.addClass("col-lg-6").addClass("mb-3")
-    // cardform.attr("id", cardnum) 
-    // $("#cards").append(cardform)
-    // eee("card-template", alldata.boardtb[i], cardnum)
     createCard(firstdata, board_len, i);
     
-    // 카드안에 악기정보 넣기
-    // var a = alldata.boardinst
-    // var result = a.filter( function (j) {
-    //   return  j["board_id"] == (board_len - i)
-    // })
-    // boardinst_json["boardinst"] = result
-    // eee("hb_instsrc", boardinst_json, "inst" + (board_len - i))
-    // $('#link'+(board_len-i)).attr("href", "/perform/detail/board" + (board_len -i) )
-    // $('#detail'+(board_len-i)).attr("onclick", "pf_detail(" + (board_len -i) + ")")
     postInst(firstdata, board_len, i, boardinst_json)
   }
   num = num + 2
