@@ -191,7 +191,7 @@
 
   <!--Main layout-->
   <main>
-    <div class="container" style="padding-left : 0px; padding-right: 0px;">
+    <div id="main" class="container" style="padding-left : 0px; padding-right: 0px;">
 
       <!--Navbar-->
     <div class="row  my-3 mb-4" style="background-color:  rgb(247, 225, 167)">
@@ -254,7 +254,7 @@
       <div style="width : 20%">
         <form class="form-inline">
           <div class="md-form ml-3 mx-2" style="margin-top : 9px; margin-bottom: 0px;">
-            <input id="search_input" class="form-control" type="text" placeholder="Search" aria-label="Search">
+            <input onkeyup="enterbt()" id="search_input" class="form-control" type="text" placeholder="Search" aria-label="Search">
           </div>
         </form>
       </div>
@@ -336,10 +336,19 @@
 
     </div>
   </main>
+  
 
 
   
   <script>
+
+    function enterbt() {
+      if (window.event.keyCode == 13) {
+          filtering(alldata, 'area_number', $('#sel_area').val() , 'instrument_id', $('#sel_part').val())
+      }
+    }
+
+
     function searchtitle(data, search_input) {
       searchstr = $("#search_input").val()
       search_click = 0;

@@ -177,30 +177,30 @@ def sendboard():
 
 @app.route('/boards', methods=["GET"])
 def boards_json () : 
-    # boardtb = Board.query.filter(Board.board_id == boardid).all()
+    users = json_users()
     boardtb = Board.query.order_by(Board.board_id.desc()).all()
     
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
     
     return jsonify([s.json() for s in boardtb])
 
 @app.route('/boards/<boardid>', methods=["GET"])
 def board_json (boardid) : 
+    users = json_users()
     boardtb = Board.query.filter(Board.board_id == boardid).all()
-        
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json())
+    print (boardtb)
     
     return jsonify([s.json() for s in boardtb])
 
 @app.route('/instrument', methods=["GET"])
 def get_instrument () : 
+    
     instruments = Instrument.query.all()
     return jsonify([inst.json() for inst in instruments])
 
 @app.route('/boardinstruments/<boardid>', methods=["GET"])
 def get_boardinst(boardid) :
+    boardtb = Board.query.filter(Board.board_id == boardid).all()
+    instruments = Instrument.query.all()
     boardinst = BoardInstrument.query.filter(BoardInstrument.board_id == boardid).order_by(BoardInstrument.instrument_id).all()
 
     return jsonify([s.json() for s in boardinst])

@@ -96,7 +96,23 @@
 
       </div>
     </div>
-</script>
+    
+    
+    
+  </script>
+  <!-- ================== HIDE====================-->
+  <!-- 1st -->
+  <button id=gotop class="btn btn-outline-mdb  " type="button" onclick="$('html').animate({scrollTop : 490})" style="position:fixed; bottom:80px; right:290px; padding-right:10px; padding-left:10px; border-radius: 50%; display:none;">
+      <i class="fas fa-arrow-up text-dark font-weight-bold"></i>
+  </button>
+  
+
+
+
+  <!-- 2nd -->
+  <div id="loading" class="spinner-border" role="status" style="color:rgb(229, 202, 155); height:4rem; width:4rem; position: absolute; margin-top:160px; margin-left:440px; display:none">
+    <span class="sr-only">Loading...</span>
+  </div>
   
   
   
@@ -150,6 +166,8 @@ function filtering (data, column1, getnumber1, column2, getnumber2 ) {
 
 
 function select_area (data, sel_area, sel_part) {
+  $("#gotop").css("display", "none")
+
   if (data == undefined) {
     $.ajax({
       url : "/alldata",
@@ -163,9 +181,9 @@ function select_area (data, sel_area, sel_part) {
           })
         }
   else {
-    if (sel_area == 0 && sel_part == 0) {
+    if (sel_area == 0 && sel_part == 0 && searchstr == undefined) {
       i = 0 ;
-      num = 4;
+      num = 6;
       document.getElementById("cards").innerHTML = ""
       draw_cards(num, data)
      
@@ -182,6 +200,7 @@ function select_area (data, sel_area, sel_part) {
 
 function getall () {
   if (alldata == undefined) {
+    $("#loading").css("display","block")
   $.ajax({
     url : "/alldata",
     data : "",
@@ -189,7 +208,8 @@ function getall () {
     dataType : ''
     }).done(function (res){
         alldata = res
-        draw_cards(4, alldata)
+        draw_cards(6, alldata)
+        $("#loading").css("display","none")
     })
   }
   else   {
@@ -218,24 +238,26 @@ function get_area (res) {
 
 <script>
 var i = 0;
-var num = 4; 
+var num = 6; 
 var search_click = 0;
 getall()
-
 
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
      if ($(window).scrollTop() >= $(document).height() - $(window).height()){
-       console.log(search_click)
-        if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0 | search_click != 0) {
-          draw_cards(num, newtb)
-        }
-        
-        
-        else {
-        getall()
-        }
-     } 
+        console.log(search_click)
+      if ($("#sel_area").val() > 0 | $("#sel_part").val() > 0 | search_click != 0) {
+        draw_cards(num, newtb)
+      }
+      
+      
+      else {
+      getall()
+      }
+    }
+    if ($(document).height() > 4200) {
+      $("#gotop").css("display", "block")
+    }
   })
 });
 
@@ -286,16 +308,17 @@ function postInst(data, board_len, i, boardinst_json){
 function draw_cards (number, data) {
   var newdata = JSON.parse(JSON.stringify(data));
   board_len = newdata.boardtb.length
+  console.log("보들랭", board_len)
     for (i; i < number; i++) {
       if (board_len == i) {
-            break;
-          }
+        break;
+      }
     var firstdata = addProperty(newdata, i);
     createCard(firstdata, board_len, i);
     
     postInst(firstdata, board_len, i, boardinst_json)
   }
-  num = num + 2
+  num = num + 4
 }
 
 </script>
