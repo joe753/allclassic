@@ -24,6 +24,7 @@ app.config.update(
 
 ##### function #######################3\
 
+
 @app.route('/nexturl')
 def next ():
     dt = {}
@@ -146,7 +147,7 @@ def sendboard():
     all_data = request.json
 
     
-
+    board_id = all_data["board_id"]
     userinfo = session.get('loginUser')
     userid = userinfo["userid"]
     title = all_data['title']
@@ -169,29 +170,57 @@ def sendboard():
 
     area_number = check_area(perf_address)
 
-    print ("\n\n\n\n \t\t\t\t\t BOARD BOARD BOARD BOARD", title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
+    print (title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
     
-    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
-        
-    try:
-        db_session.add(b)
-        db_session.commit()
-        
-        for j in instruments:
-            iid = j['iid']
-            person = j['person']
+    if (board_id != ""):
+        print ("이픈데여 \n\n\n")
+        b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        b.board_id = board_id 
+        print(">>>>>>>>>", b.board_title)
+        try:
+            db_session.merge(b)
+            
+            BoardInstrument.query.filter(BoardInstrument.id > 0).filter(BoardInstrument.board_id == board_id).delete()
+            for j in instruments:
+                iid = j['iid']
+                person = j['person']
 
-            inst = BoardInstrument(b.board_id, iid, person)
-            db_session.add(inst)
+                inst = BoardInstrument(b.board_id, iid, person)
+                db_session.merge(inst)
+            
             db_session.commit()
-        # inst = BoardInstrument(b.board_id, instruments.in)
-    
-    except Exception as err:
-        print (err)
-        db_session.rollback()
+            # inst = BoardInstrument(b.board_id, instruments.in)
+        
+        except Exception as err:
+            print (err)
+            db_session.rollback()
 
-    
-    return str(b.board_id)
+        
+        return str(b.board_id)
+
+    else :
+        print ("엘슨데여 \n\n\n")
+        b = Board(title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        
+        try:
+            # db_session.add(b)
+            
+            for j in instruments:
+                iid = j['iid']
+                person = j['person']
+
+                inst = BoardInstrument(b.board_id, iid, person)
+                db_session.add(inst)
+            
+            db_session.commit()
+            # inst = BoardInstrument(b.board_id, instruments.in)
+        
+        except Exception as err:
+            print (err)
+            db_session.rollback()
+
+        
+        return str(b.board_id)
 
 
 #### DB API ########################################3

@@ -268,7 +268,6 @@ function addinput () {
       var kdue_date = moment(boardtb.due_date)
       var inputdate = kdue_date.format('YYYY M D h mm').split(" ")
       console.log(boardtb)
-
       $("#pyear").val(inputdate[0])
       $("#pmonth").val(inputdate[1])
       makeDays();
@@ -423,6 +422,7 @@ function send_all() {
     return false
   }
   var alldata = send_data();
+  alldata["board_id"] = boardtb.board_id
   alldata["costume"] = radio_value()
   instruments =  send_hiddenform()
   alldata["instruments"] = instruments
@@ -594,7 +594,8 @@ function send_all() {
   function send_data () {
     var qualification = $('#slt_grad').val()
     var gen = $('#slt_gen').val()
-
+    var mapdata1 = [{'x' : boardtb.practice_mapx, 'y' : boardtb.practice_mapy }]
+    var mapdata2 = [{'x' : boardtb.perform_mapx, 'y' : boardtb.perform_mapy } ]
     var data = {"title" : $('#title').val(),
               "duedate" : inputdate,
               "qualification" :$("#slt_grad").val(),
@@ -607,10 +608,10 @@ function send_all() {
               "perform_address" : $('#perf_address').val(),
               "detail_info" : $('#detail_textarea').val(),
               "song_info" : $('#song_textarea').val(),
-              "practice_mapx" : mapdata[0].x,
-              "practice_mapy" : mapdata[0].y,
-              "perform_mapx" : mapdata[1].x,
-              "perform_mapy" : mapdata[1].y
+              "practice_mapx" : mapdata1[0].x,
+              "practice_mapy" : mapdata1[0].y,
+              "perform_mapx" : mapdata2[0].x,
+              "perform_mapy" : mapdata2[0].y
               }
     return data
   }
@@ -851,14 +852,20 @@ function selectvalue(tagid){
 
 <script>
 
+
+
+
+
+
 //주소-좌표 변환 객체를 생성
 var geocoder1 = new daum.maps.services.Geocoder();
 
 
-var mapdata = []
-
+var mapdata1 = []
+var mapdata2 = []
 
 function sample5_execDaumPostcode(paddress, pmap) {
+  
   new daum.Postcode({
     oncomplete: function(data) {
       var addr = data.address; // 최종 주소 변수
@@ -871,7 +878,14 @@ function sample5_execDaumPostcode(paddress, pmap) {
         if (status === daum.maps.services.Status.OK) {
 
           var result = results[0]; //첫번째 결과의 값을 활용
-          mapdata.push(result)
+          if (paddress = "prac_address"){
+            mapdata1 = []
+            mapdata1.push(result)
+          }
+          else {
+            mapdata2 = []
+            mapdata2.push(result)
+          }
           // 해당 주소에 대한 좌표를 받아서
           var coords = new daum.maps.LatLng(result.y, result.x);
           // var pmape = paddress.slice(0,4) + "_map";
