@@ -225,8 +225,13 @@
 
 function exit() {
   if(confirm("변경사항이 저장되지 않을수 있습니다.\n등록게시판을 나가시겠습니까?") == true){
-    alert("메인화면으로 이동합니다.")
-    location.href = "/perform" 
+    $.ajax({
+      url : "/nexturl",
+      type : "get"
+    }).done(function(res) {
+      console.log(res)
+      location.href = res.next
+    })
   }
   else {
     return ""
@@ -280,6 +285,7 @@ function addinput () {
       $("#money").val(boardtb.money)
       $("#detail_textarea").val(boardtb.detail_info)
       $("#song_textarea").val(boardtb.song_info)
+      dts();
       if ($("#slt_gd").val(boardtb.costume) == 1) {
         $("#radiobox1").attr("checked", "checked");
         $("#slt_gd").attr("disabled", true)
@@ -825,7 +831,7 @@ function send_all() {
       }
   }
 function fixeddate(datestr){
-  datestr.addClass("col-lg-1.5").addClass("float-right").addClass("mx-3").addClass("mt-2")
+  datestr.addClass("col-lg-1.5").addClass("float-right").addClass("ml-2").addClass("mt-2")
   datestr.css("font-weight","400").css("color", "grey").css("display", "inline-block")
   datestr.text(datestring)
   return;

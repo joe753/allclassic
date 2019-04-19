@@ -24,6 +24,16 @@ app.config.update(
 
 ##### function #######################3\
 
+@app.route('/nexturl')
+def next ():
+    dt = {}
+    next = session.get('next')
+    dt["next"] = next
+    del session['next']
+    return jsonify(dt)
+
+
+
 def check_area(data) :
     
     # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
@@ -75,6 +85,7 @@ def add_pboard():
 
 @app.route('/perform')
 def perform():
+    session['next'] = request.url
     return render_template('perform.html')
 
 
@@ -85,7 +96,7 @@ def board (boardid) :
         print ("GGGGG")
         return render_template('notlogin.html')
     else :    
-        
+        session['next'] = request.url
         return render_template('board01.html', boardid=boardid)
 
 @app.route('/signup_nick', methods=['GET', 'POST'])
@@ -192,6 +203,21 @@ def boards_json () :
     
     
     return jsonify([s.json() for s in boardtb])
+
+@app.route('/boards/<boardid>', methods=["DELETE"])
+def del_board (boardid) : 
+    print (request.form.get('boardid'))
+    try:
+        Board.query.filter(Board.board_id == request.form.get('boardid')).delete()
+        BoardInstrument.query.filter(BoardInstrument.id > 0).filter(BoardInstrument.board_id == request.form.get('boardid')).delete()
+        db_session.commit()
+
+    except SQLAlchemyError as err:
+        db_session.rollback()
+        print("Error!!", err)
+
+    return jsonify({"result": 'OK'})
+
 
 @app.route('/boards/<boardid>', methods=["GET"])
 def board_json (boardid) : 
