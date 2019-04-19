@@ -24,6 +24,7 @@ app.config.update(
 
 ##### function #######################3\
 
+
 def check_area(data) :
     
     # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
@@ -39,6 +40,10 @@ def check_area(data) :
             result = arealist[i]
     return result    
 
+
+@app.route('/testlayout')
+def testlayout():
+    return render_template("testlayout.html")
 
 
 @app.route('/test_pre')

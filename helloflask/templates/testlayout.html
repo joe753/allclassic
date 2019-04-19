@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>All Classic</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{{ url_for('static', filename='css/mdb.min.css') }}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{{ url_for('static', filename='css/style.min.css') }} " rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/handlebars.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{{ url_for('static', filename='js/mdb.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/moment.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/momenttz.js') }}"></script>
+  <!-- Initializations -->
+  
+
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+    .btn-cancel {
+      background-color : #6c757d;
+    }
+    .c_part {
+      font-size : 13px; 
+    }
+
+    .detail_grey {
+      font-size : 13px;
+    }
+    table {
+        border-top : 2px solid rgba(252, 182, 90, 0.438);
+        text-align: center;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        border-bottom: 2px solid rgba(252, 182, 90, 0.438);
+        font-size: 20px;
+        
+    }
+    td:hover{
+        cursor: pointer;
+    }
+    th:nth-child(1), td:nth-child(1){
+        color: rgba(252, 182, 90, 1);
+    }
+    th:nth-child(7), td:nth-child(7){
+        color: rgba(252, 182, 90, 1);
+    }
+    thead {
+        align-content: center;
+    }
+    #lastmonth, #nextmonth {
+      color: rgba(252, 182, 90, 1)
+    }
+    #lastmonth:hover, #nextmonth:hover{
+        color:lightsalmon;
+        cursor: pointer;
+    }
+    .cal {
+      width: 100%
+    }
+
+    thead div {
+      align-content:center;
+    }
+    
+
+  </style>
+</head>
+
+<body>
+
+
+      
+<!-- Navbar -->
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div id="cal">
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script id="calensrc" type="text/x-handlebars-template">
+  {% raw %}
+    <table id="calendar">
+        <thead id="calhead" >
+            <div style="text-align: center">
+                <h2><span id="year">{{thisyear}}</span><span>년</span></h2>
+            </div>
+            <div style="text-align: center">
+              <h3>
+                <div class='row'>
+                  <span class="col-lg-4" id="lastmonth" onclick="lastmonth()"><i class="fas fa-arrow-alt-circle-left"></i></span>
+                  <span class="col-lg-4" id="cmonth">{{thismonth}}월</span>
+                  <span class="col-lg-4" id="nextmonth" onclick="nextmonth()"><i class="fas fa-arrow-alt-circle-right"></i></span>
+                </div>
+              </h3>
+            </div>
+            <br>
+        </thead>
+        <tbody>
+            <tr>
+                <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+            </tr>
+            {{#mod7 days}}{{day}}{{/mod7}}
+        </tbody>
+    </table>
+    {% endraw %}
+</script>
+
+<script>
+    var d = new Date();
+    var tyear = d.getFullYear();
+    var tmonth = d.getMonth() + 1;
+    var caldata = {
+                days:[],
+                thisyear:"",
+                thismonth:""
+        };
+    var monarr = [4, 6, 9, 11];
+    // caldata 만들기
+    function insertdate(thisyear, thismonth){
+        var fir = new Date(thisyear+"-"+thismonth+"-1")
+        caldata.thisyear = thisyear
+        caldata.thismonth = thismonth
+        addnulltd = Number(fir.getDay())
+        // 평년
+        console.log(leafYearCheck(thisyear))
+        if (leafYearCheck(thisyear) == false){
+            if (monarr.includes(thismonth)){
+                for (i=1-addnulltd; i<=30; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            } else if (thismonth == 2){
+                for (i=1-addnulltd; i<=28; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            } else{
+                for (i=1-addnulltd; i<=31; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            }
+        // 윤년
+        }else{
+            if (monarr.includes(thismonth)){
+                for (i=1-addnulltd; i<=30; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            } else if (thismonth == 2){
+                for (i=1-addnulltd; i<=29; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            } else{
+                for (i=1-addnulltd; i<=31; i++){
+                    if (i<=0){
+                        caldata.days.push({day:""})
+                    } else{
+                        caldata.days.push({day: i});
+                    }
+                }
+            }
+        }
+        return caldata
+    }
+    // 연도, 월 반영한 caldata 생성
+    caldata = insertdate(tyear,tmonth)
+    // tbody부분 그리는 helper 등록
+    Handlebars.registerHelper("mod7", function(days, options){
+        var html = ""
+        console.log(days.length)
+        for (var i=0, l=days.length; i<l; i++){
+            if (i % 7 == 0 ){
+                html = html + "<tr>" + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
+            }else if( i % 7 == 6){
+                html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>" + "</tr>"
+            }else{
+                html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
+            }
+        }
+        return html
+    });
+    console.log(caldata)
+    // 윤년체크
+    function leafYearCheck(thisyear){
+        var int_year;
+        int_year = Number(thisyear);
+        var lyc = 0
+        if( int_year%4 == 0 ){
+            if( int_year%100 == 0 ){
+                if( int_year%400 == 0 ){
+                    return true; 
+                }
+                return false;
+            }
+            return true;        
+        }
+        return false;
+    }
+    function calen(sourceId, caldata, resultId){
+        var source = document.getElementById(sourceId).innerHTML
+        var template = Handlebars.compile(source);
+        var html = template(caldata);
+        document.getElementById(resultId).innerHTML = html;
+    }
+    calen("calensrc", caldata, "cal")
+
+    function lastmonth(){
+        caldata.days = []
+        if (tmonth == 1){
+            tmonth = tmonth + 11;
+            tyear = tyear - 1;
+        } else {
+            tmonth = tmonth - 1;
+        }
+        insertdate(tyear, tmonth);
+        calen("calensrc", caldata, "cal")
+        canclick()
+    }
+    function nextmonth(){
+        caldata.days = []
+        if (tmonth == 12){
+            tmonth = tmonth - 11;
+            tyear = tyear + 1;
+        } else {
+            tmonth = tmonth + 1;
+        }
+        insertdate(tyear, tmonth);
+        calen("calensrc", caldata, "cal")
+        canclick()
+    }
+    
+    var seldays = [];
+    function canclick(){
+        $(".cell").click(function(){
+            console.log($(this).attr("value"))
+            $this = $(this)
+            if ($this.attr("value") == '0'){
+                $this.css("background-color", "grey");
+                $this.attr("value", "1");
+                var selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
+                seldays.push(selday);
+                console.log(seldays)
+            } else {
+                $this.css("background-color", "white");
+                $this.attr("value", "0");
+                selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
+                start = Number(seldays.indexOf(selday))
+                seldays.splice(start,start+1); 
+                console.log(seldays)
+            }
+        });
+    }
+    $(document).ready(canclick()
+    );
+</script>
+
+</body>
+  <!--Carousel Wrapper-->
+
+
+  <!--Footer-->
+  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+    <!-- Social icons -->
+    <div class="pb-4">
+      <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+        <i class="fab fa-facebook-f mr-3"></i>
+      </a>
+
+      <a href="https://twitter.com/MDBootstrap" target="_blank">
+        <i class="fab fa-twitter mr-3"></i>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+        <i class="fab fa-youtube mr-3"></i>
+      </a>
+
+      <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
+        <i class="fab fa-google-plus-g mr-3"></i>
+      </a>
+
+      <a href="https://dribbble.com/mdbootstrap" target="_blank">
+        <i class="fab fa-dribbble mr-3"></i>
+      </a>
+
+      <a href="https://pinterest.com/mdbootstrap" target="_blank">
+        <i class="fab fa-pinterest mr-3"></i>
+      </a>
+
+      <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+        <i class="fab fa-github mr-3"></i>
+      </a>
+
+      <a href="http://codepen.io/mdbootstrap/" target="_blank">
+        <i class="fab fa-codepen mr-3"></i>
+      </a>
+    </div>
+    <!-- Social icons -->
+
+    <!--Copyright-->
+    <div class="footer-copyright py-3">
+      © 2018 Copyright:
+      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
+    </div>
+    <!--/.Copyright-->
+
+  </footer>
+  <!--/.Footer-->
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+
+</body>
+
+</html>

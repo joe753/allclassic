@@ -55,13 +55,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <th>일</th>
-                    <th>월</th>
-                    <th>화</th>
-                    <th>수</th>
-                    <th>목</th>
-                    <th>금</th>
-                    <th>토</th>
+                    <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
                 </tr>
                 {{#mod7 days}}{{day}}{{/mod7}}
             </tbody>
@@ -149,11 +143,11 @@
             console.log(days.length)
             for (var i=0, l=days.length; i<l; i++){
                 if (i % 7 == 0 ){
-                    html = html + "<tr>" + "<td class='cell'>" + options.fn(days[i]) + "</td>"
+                    html = html + "<tr>" + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
                 }else if( i % 7 == 6){
-                    html = html + "<td class='cell'>" + options.fn(days[i]) + "</td>" + "</tr>"
+                    html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>" + "</tr>"
                 }else{
-                    html = html + "<td class='cell'>" + options.fn(days[i]) + "</td>"
+                    html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
                 }
             }
             return html
@@ -188,36 +182,49 @@
             if (tmonth == 1){
                 tmonth = tmonth + 11;
                 tyear = tyear - 1;
-                insertdate(tyear, tmonth);
-                calen("calensrc", caldata, "cal")
             } else {
                 tmonth = tmonth - 1;
-                insertdate(tyear, tmonth);
-                calen("calensrc", caldata, "cal")
             }
+            insertdate(tyear, tmonth);
+            calen("calensrc", caldata, "cal")
+            canclick()
         }
         function nextmonth(){
             caldata.days = []
             if (tmonth == 12){
                 tmonth = tmonth - 11;
                 tyear = tyear + 1;
-                insertdate(tyear, tmonth);
-                calen("calensrc", caldata, "cal")
             } else {
                 tmonth = tmonth + 1;
-                insertdate(tyear, tmonth);
-                calen("calensrc", caldata, "cal")
             }
+            insertdate(tyear, tmonth);
+            calen("calensrc", caldata, "cal")
+            canclick()
         }
         
-        $(document).ready(function(){
+        var seldays = [];
+        function canclick(){
             $(".cell").click(function(){
-                $(this).css("background-color", "grey");
-                var selday = ""
-                selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text()
-                console.log(selday)
+                console.log($(this).attr("value"))
+                $this = $(this)
+                if ($this.attr("value") == '0'){
+                    $this.css("background-color", "grey");
+                    $this.attr("value", "1");
+                    var selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
+                    seldays.push(selday);
+                    console.log(seldays)
+                } else {
+                    $this.css("background-color", "white");
+                    $this.attr("value", "0");
+                    selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
+                    start = Number(seldays.indexOf(selday))
+                    seldays.splice(start,start+1); 
+                    console.log(seldays)
+                }
             });
-        });
+        }
+        $(document).ready(canclick()
+        );
     </script>
 </body>
 </html>
