@@ -25,6 +25,19 @@ app.config.update(
 ##### function #######################3\
 
 
+<<<<<<< HEAD
+=======
+@app.route('/nexturl')
+def next ():
+    dt = {}
+    next = session.get('next')
+    dt["next"] = next
+    del session['next']
+    return jsonify(dt)
+
+
+
+>>>>>>> 9514cbabaf5918fccfe8325410fa03c530bd0cc3
 def check_area(data) :
     
     # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
@@ -40,6 +53,10 @@ def check_area(data) :
             result = arealist[i]
     return result    
 
+@app.route('/checksession')
+def cs() :
+    userinfo = session.get('loginUser')
+    return jsonify(userinfo)
 
 @app.route('/testlayout')
 def testlayout():
@@ -60,15 +77,23 @@ def lesson():
 
 @app.route('/addboard/perform')
 def add_pboard():
+    userinfo = session.get('loginUser')
+    s_uid = userinfo["userid"]
+    uid = request.args.get('uid')
     if not session.get('loginUser') :
         session['next'] = request.url
-        print ("GGGGG")
         return render_template('notlogin.html')
+    
+    if request.args.get('cmd') == 'u' and str(s_uid) == str(uid) :
+        userinfo = session.get('loginUser')
+        bid = request.args.get('bid')
+        return render_template('edit_board.html', bid=bid)
 
     return render_template('add_board.html')
 
 @app.route('/perform')
 def perform():
+    session['next'] = request.url
     return render_template('perform.html')
 
 
@@ -79,8 +104,7 @@ def board (boardid) :
         print ("GGGGG")
         return render_template('notlogin.html')
     else :    
-        print ("No")
-        print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
+        session['next'] = request.url
         return render_template('board01.html', boardid=boardid)
 
 @app.route('/signup_nick', methods=['GET', 'POST'])
@@ -130,7 +154,7 @@ def sendboard():
     all_data = request.json
 
     
-
+    board_id = all_data["board_id"]
     userinfo = session.get('loginUser')
     userid = userinfo["userid"]
     title = all_data['title']
@@ -153,59 +177,102 @@ def sendboard():
 
     area_number = check_area(perf_address)
 
-    print ("\n\n\n\n \t\t\t\t\t BOARD BOARD BOARD BOARD", title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
+    print (title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
     
-    b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
-        
-    try:
-        db_session.add(b)
-        db_session.commit()
-        
-        for j in instruments:
-            iid = j['iid']
-            person = j['person']
+    if (board_id != ""):
+        print ("이픈데여 \n\n\n")
+        b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        b.board_id = board_id 
+        print(">>>>>>>>>", b.board_title)
+        try:
+            db_session.merge(b)
+            
+            BoardInstrument.query.filter(BoardInstrument.id > 0).filter(BoardInstrument.board_id == board_id).delete()
+            for j in instruments:
+                iid = j['iid']
+                person = j['person']
 
-            inst = BoardInstrument(b.board_id, iid, person)
-            db_session.add(inst)
+                inst = BoardInstrument(b.board_id, iid, person)
+                db_session.merge(inst)
+            
             db_session.commit()
-        # inst = BoardInstrument(b.board_id, instruments.in)
-    
-    except Exception as err:
-        print (err)
-        db_session.rollback()
+            # inst = BoardInstrument(b.board_id, instruments.in)
+        
+        except Exception as err:
+            print (err)
+            db_session.rollback()
 
-    
-    return str(b.board_id)
+        
+        return str(b.board_id)
+
+    else :
+        print ("엘슨데여 \n\n\n")
+        b = Board(title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        
+        try:
+            # db_session.add(b)
+            
+            for j in instruments:
+                iid = j['iid']
+                person = j['person']
+
+                inst = BoardInstrument(b.board_id, iid, person)
+                db_session.add(inst)
+            
+            db_session.commit()
+            # inst = BoardInstrument(b.board_id, instruments.in)
+        
+        except Exception as err:
+            print (err)
+            db_session.rollback()
+
+        
+        return str(b.board_id)
 
 
 #### DB API ########################################3
 
 @app.route('/boards', methods=["GET"])
 def boards_json () : 
-    # boardtb = Board.query.filter(Board.board_id == boardid).all()
+    users = json_users()
     boardtb = Board.query.order_by(Board.board_id.desc()).all()
     
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json()['upload_time'])
     
     return jsonify([s.json() for s in boardtb])
 
+@app.route('/boards/<boardid>', methods=["DELETE"])
+def del_board (boardid) : 
+    print (request.form.get('boardid'))
+    try:
+        Board.query.filter(Board.board_id == request.form.get('boardid')).delete()
+        BoardInstrument.query.filter(BoardInstrument.id > 0).filter(BoardInstrument.board_id == request.form.get('boardid')).delete()
+        db_session.commit()
+
+    except SQLAlchemyError as err:
+        db_session.rollback()
+        print("Error!!", err)
+
+    return jsonify({"result": 'OK'})
+
+
 @app.route('/boards/<boardid>', methods=["GET"])
 def board_json (boardid) : 
+    users = json_users()
     boardtb = Board.query.filter(Board.board_id == boardid).all()
-        
-    for s in boardtb:
-        print (">>>>>>>>>>>>>>>>", s.json())
+    print (boardtb)
     
     return jsonify([s.json() for s in boardtb])
 
 @app.route('/instrument', methods=["GET"])
 def get_instrument () : 
+    
     instruments = Instrument.query.all()
     return jsonify([inst.json() for inst in instruments])
 
 @app.route('/boardinstruments/<boardid>', methods=["GET"])
 def get_boardinst(boardid) :
+    boardtb = Board.query.filter(Board.board_id == boardid).all()
+    instruments = Instrument.query.all()
     boardinst = BoardInstrument.query.filter(BoardInstrument.board_id == boardid).order_by(BoardInstrument.instrument_id).all()
 
     return jsonify([s.json() for s in boardinst])
