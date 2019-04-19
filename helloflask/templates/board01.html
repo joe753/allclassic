@@ -112,10 +112,18 @@
 
     <!-- Line 9 -->
 
-    <div class="col-lg-4 text-center">
+    <div class="col-lg-2 text-center my-5" style="padding-left:0px; padding-right:0px;">
+        <button id="edit_bt" type="button" class="btn btn-outline-info waves-effect float-left" style="display:none;" onclick="editboard()">
+                수정하기
+        </button>
     </div>
-    <div class="col-lg-3 text-center">
-            
+    <div class="col-lg-2 text-center my-5" style="padding-left:0px;">
+        <button id="del_bt" type="button" class="btn btn-outline-danger waves-effect float-left" style="display:none;">
+                삭제하기
+        </button>
+    </div>
+    <div class="col-lg-3">
+
     </div>
     <div class="col-lg-5 text-center my-5">
         <button type="button" class="btn btn-outline-default waves-effect float-center">
@@ -128,6 +136,12 @@
 </div>
     
 <script>
+function editboard () {
+    location.href = "/addboard/perform?cmd=u&uid=" + board.user_id + "&bid=" + board.board_id 
+}
+
+
+
 function send_ajax(url, method, board, boardType, fn) {
     $.ajax({
         url: url,
@@ -187,13 +201,26 @@ function get_costume (data) {
 }
 
 
+function usershow(data) {
+    $.ajax({
+        url : "/checksession",
+        type : "get"   
+    }).done( function (res) {
+        if (res.userid == data) {
+            $('#edit_bt').css("display", "block")
+            $('#del_bt').css("display", "block")
+        }
+    })
+}
 
 
+var board;
 var board_url = "http://localhost:5000/boards/{{boardid}}"
 function xx() {
     send_ajax(board_url, "GET", "", "", function(res){
         console.log("11111111111111>>", res)
-        var board = res[0]
+        board = res[0]
+        usershow(board.user_id)
         var costume = get_costume(board.costume)
         var gen = gender(board.gen)
         var graduated = qualification(board.qualification)
@@ -205,12 +232,10 @@ function xx() {
             url : "/boardinstruments/" + board.board_id,
             type : "get"   
         }).done(function(res) {
-            console.log("22222222222222222")
             var boardinst = res[1];
             for (i = 0;  i < res.length; i++) {
                 var boardinst = res[i]
                 $('#part').append(boardinst.instrument_name + "(" + boardinst.person +")" + "&emsp;")
-                console.log(boardinst.instrument_name)
             }
         })
 
@@ -229,7 +254,6 @@ function xx() {
         document.getElementById('prac_address').innerHTML = board.practice_address
         document.getElementById('perf_address').innerHTML = board.perform_address
         // $("#user_img").attr("src", "../static/img/user_img/user" + board.user_id + ".jpg")
-        console.log("OOOOOOOOOOOOOOOKKKKKKKKKKK")
 
 
         // console.log(kdue_date.tz('UTC').format('MMMM Do YYYY, h:mm:ss a'))

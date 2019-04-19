@@ -39,6 +39,10 @@ def check_area(data) :
             result = arealist[i]
     return result    
 
+@app.route('/checksession')
+def cs() :
+    userinfo = session.get('loginUser')
+    return jsonify(userinfo)
 
 
 @app.route('/test_pre')
@@ -55,10 +59,17 @@ def lesson():
 
 @app.route('/addboard/perform')
 def add_pboard():
+    userinfo = session.get('loginUser')
+    s_uid = userinfo["userid"]
+    uid = request.args.get('uid')
     if not session.get('loginUser') :
         session['next'] = request.url
-        print ("GGGGG")
         return render_template('notlogin.html')
+    
+    if request.args.get('cmd') == 'u' and str(s_uid) == str(uid) :
+        userinfo = session.get('loginUser')
+        bid = request.args.get('bid')
+        return render_template('edit_board.html', bid=bid)
 
     return render_template('add_board.html')
 
@@ -74,8 +85,7 @@ def board (boardid) :
         print ("GGGGG")
         return render_template('notlogin.html')
     else :    
-        print ("No")
-        print (">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",boardid)
+        
         return render_template('board01.html', boardid=boardid)
 
 @app.route('/signup_nick', methods=['GET', 'POST'])

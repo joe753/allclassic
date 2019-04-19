@@ -1,0 +1,902 @@
+{% extends "layout.html" %}
+
+{% block section -%}
+<!-- Extended default form grid -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0c2d8316831af4631c38bfa7e3fbfc76&libraries=services"></script>
+
+
+ 
+<!-- Modal -->
+
+
+
+
+<div class="col-lg-12 text-center border-bottom">
+<div class="text-center my-5">
+  <h3 class="font-weight-bold"> 게시글 등록하기 </h3>
+</div>
+
+<form id = "addboard"  method="POST" onsubmit="return checkselbar()">
+    <!------- Line 1 ------->
+
+    <div class="form-row my-2">
+        <div class="col-lg-1 mt-2 text-left font-weight-bold">제목</div>
+        <div class="form-group col-lg-11">
+            <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." value="테스트 " required>
+        </div>
+    </div>
+    
+
+     <!------- Line 2 -------->
+    <div class="form-row my-2">
+      <div class="col-lg-1 mt-2 text-left font-weight-bold" >
+          기간
+      </div>
+      <div id="detail" class="form-row my-2">
+        <!-- <span id="datstr"></span> -->
+      </div>
+    </div>
+
+
+    <!----------------- Line 3  ------------------------->
+    <div class="form-row my-2">
+      <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
+          자격요건
+        </div>
+      <div class="col-lg-1.5" id ="slt-graduation">
+        <select id="slt_grad" class="browser-default custom-select">
+          <option value="" selected>-----------</option>
+          <option value="1">무관</option>
+          <option value="2">대학교 재학이상</option>
+          <option value="3">대졸 이상</option>
+        </select>
+      </div>
+      <div class="col-lg-0.5 mt-2 text-center mx-1 font-weight-bold">
+          성별
+      </div>
+      <div class="col-lg-1.5" id="slt-gen">
+        <select id="slt_gen" class="browser-default custom-select required" >
+          <option value="" selected>-----------</option>
+          <option value="1">무관</option>
+          <option value="2">남</option>
+          <option value="3">여</option>
+        </select>
+      </div>
+      <div class="col-lg-1 mt-2 text-center font-weight-bold">
+          금액
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+            <input type="text" value="0" class="form-control" id="money" name="money" placeholder="0원" required> 
+        </div>
+      </div>
+      <div id="paycheck" class="col-lg-3.5 text-left ml-3"></div>
+    </div>
+
+    <!------- Line 4 ------->
+    <div class="form-row my-2">
+        <div class="col-lg-1 mt-2 text-left font-weight-bold">
+            연습
+        </div>
+        <div class="col-lg-1">
+          <div class="form-group">
+            <input type="number" value="3" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
+          </div>
+        </div>
+        <div class="col-lg-1 text-left my-2">
+          <span>회 &nbsp;&nbsp;</span>
+          <span class="font-weight-bold">연주</span>
+        </div>
+        <div class="col-lg-1">
+          <div class="form-group">
+            <input type="number" value="4" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
+          </div>
+        </div>
+        <div class="col-lg-0.5 text-left  my-2">
+          회
+        </div>
+        <div class="col-lg-1.5 text-left">
+              <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">날짜선택</button>
+        </div>
+        <div id="getradio" style="display: inline-flex">
+          <div class="col-lg-0.5 my-2 mx-3 font-weight-bold">
+            복장
+          </div>
+          <div class="col-lg-2.5 my-2 ml-1">
+            <div class="form-check form-check-inline">
+                <input id="radiobox1" onclick="handlegd()" type="radio" class="form-check-input" name="radiogd1" value="1">
+                <label class="form-check-label" for="materialInline1">추후공지</label>
+            </div>
+            <div class="form-check form-check-inline ml-4">
+                <input id="radiobox2" onclick="handlegd()" type="radio" class="form-check-input"  name="radiogd1" checked>
+                <label class="form-check-label" for="materialInline2">복장선택</label>
+            </div>
+          </div>
+          <div class="col-lg-4 ml-2" >
+              <select id="slt_gd" class="browser-default custom-select">
+                  <option value="" selected>-----------</option>
+                  <option value="2">자유</option>
+                  <option value="3">정장(흰셔츠)</option>
+                  <option value="4">정장(올블랙)</option>
+              </select>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <!------- Line 4 ------->
+      <div class="form-row my-2">
+          <div class="col-lg-1 mt-2 text-center font-weight-bold">
+              연습장소
+          </div>
+          <div class="col-lg-3 ml-2">
+            <div class="form-group">
+              <!-- <input type="text" class="form-control" id="prac_address" name="prac_address" required>  -->
+              <input type="text" class="form-control" id="prac_address" name = "prac_address" placeholder="주소" required>
+            </div>
+          </div>
+          <div class="col-lg-1.5">
+              <!-- <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button> -->
+              <input type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold" onclick="sample5_execDaumPostcode('prac_address', 'prac_map')" value="주소 검색">
+          </div>
+
+
+          <div class="col-lg-1 mt-2 text-center font-weight-bold ml-3">
+              연주장소
+          </div>
+          <div class="col-lg-3 ml-2">
+            <div class="form-group">
+              <input  type="text" class="form-control" id="perf_address" name="perf_address" required> 
+            </div>
+          </div>
+          <div class="col-lg-1.5">
+              <!-- <button type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold">주소검색</button> -->
+              <input type="button" class="btn btn-outline-info waves-effect btn-md font-weight-bold" onclick="sample5_execDaumPostcode('perf_address', 'perf_map')" value="주소 검색">
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div id="prac_map" style="width:400px;height:300px;margin-top:10px;display:none"></div>
+        </div>
+        <div class="col-lg-6">
+          <div id="perf_map" style="width:400px;height:300px;margin-top:10px;display:none"></div>
+        </div>
+      </div>
+
+
+
+
+      <div class="row my-4">
+        <div class="col-lg-2 text-left  text-primary" style="font-size : 20px; font-weight:700">
+          선택된 파트
+        </div>
+        <div id="selpart_box" class="col-lg-10">
+        
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-1 text-primary" style="font-size : 30px; font-weight: 700">
+          파트선택
+        </div>
+        <div id="choice_box" class="col-lg-11">
+          
+      
+
+        </div>
+      </div>
+      <div class="form-row mt-4">
+        <div class="col-lg-7">
+          <div class="form-group text-left">
+              <label for="detail_textarea"><h3 class="font-weight-bold ">상세내용</h3></label>
+              <textarea class="form-control" maxlength="999" oninput="control_textlength(this)" id="detail_textarea" name="detail_textarea" rows="7"></textarea>
+          </div>
+        </div>
+        <div class="col-lg-5 ">
+            <div class="form-group text-left">
+                <label for="song_textarea"><h3 class="font-weight-bold ">곡 정보</h3></label>
+                <textarea class="form-control" maxlength="999" oninput="control_textlength(this)" id="song_textarea" name="song_textarea" rows="7"></textarea>
+            </div>
+        </div>
+      </div>
+      
+      <div class="form-row my-4">
+      </div>
+      <div class="form-row my-4">
+        <div class="col-lg-4">
+        </div>
+        <div class="col-lg-4">
+          <button type="button" onclick="exit()" class="btn btn-outline-danger waves-effect mr-3">닫기</button>
+          <button  id="submit" onclick ="send_all()" type="button"  class="btn btn-outline-success waves-effect ml-2">등록하기</button>
+        </div>
+        <div class="col-lg-4">
+        </div>
+        <input action="" type="hidden" id="selist" name="hidden_form" value="">
+      </div>
+  </form>
+
+</div>   
+
+
+<script>
+
+function exit() {
+  if(confirm("변경사항이 저장되지 않을수 있습니다.\n등록게시판을 나가시겠습니까?") == true){
+    alert("메인화면으로 이동합니다.")
+    location.href = "/perform" 
+  }
+  else {
+    return ""
+  } 
+}
+
+
+
+
+$(document).ready(function () {
+  addinput()
+})
+
+function clickinst (instnum, index) {
+  for (i = 0; i < index ; i++) {
+    $('#inst_' + instnum).trigger('click')
+  }
+}
+var instdict =  {}
+var geturl = "/boards/{{bid}}"
+var boardtb;
+var boardinst; 
+function addinput () {
+  $.ajax({
+    url : geturl,
+    type : 'get',
+  }).done(function (res) {
+    boardtb= res[0]
+    $.ajax({
+      url : "/boardinstruments/" + boardtb.board_id
+    }).done(function (res) {
+      boardinst = res
+      moment.locale('ko')
+      var kdue_date = moment(boardtb.due_date)
+      var inputdate = kdue_date.format('YYYY M D h mm').split(" ")
+      console.log(boardtb)
+
+      $("#pyear").val(inputdate[0])
+      $("#pmonth").val(inputdate[1])
+      makeDays();
+      $("#pday").val(inputdate[2])
+      $("#phour").val(inputdate[3])
+      $("#pmin").val(inputdate[4])
+      $("#title").val(boardtb.board_title)
+      $("#slt_grad").val(boardtb.qualification)
+      $("#slt_gen").val(boardtb.gen)
+      $("#practice").val(boardtb.practice_time)
+      $("#perform").val(boardtb.perform_time)
+      $("#prac_address").val(boardtb.practice_address)
+      $("#perf_address").val(boardtb.perform_address)
+      $("#money").val(boardtb.money)
+      $("#detail_textarea").val(boardtb.detail_info)
+      $("#song_textarea").val(boardtb.song_info)
+      if ($("#slt_gd").val(boardtb.costume) == 1) {
+        $("#radiobox1").attr("checked", "checked");
+        $("#slt_gd").attr("disabled", true)
+      }
+      else $("#slt_gd").val(boardtb.costume)
+
+
+      var num = 0
+      for (i = 0; i < boardinst.length; i++) {
+        var inst_id = boardinst[i].instrument_id
+        var clicknum = boardinst[i].person
+        for (j = 0; j < clicknum; j++) {
+          $('#inst_' +inst_id).trigger("click")
+        }
+      }
+    })
+  
+  })
+}
+
+function nth(number){
+  if (number == 1){
+    return '일'
+  } else if (number == 2){
+    return '이'
+  } else if (number == 3){
+    return '삼'
+  } else if (number == 4){
+    return '사'
+  } else if (number == 5){
+    return '오'
+  } else if (number == 6){
+    return '육'
+  } else if (number == 7){
+    return '칠'
+  } else if (number == 8){
+    return '팔'
+  } else if (number == 9){
+    return '구'
+  } else if (number == 0){
+    return ''
+  }
+}
+
+var previous_res;
+$('#money').keyup(function paycheck(){
+  var checknum = /^[0-9]+$/;
+  var paynum = $(this).val();
+  console.log (paynum)
+  // if (checknum.test(paynum) == false) {
+  if (paynum != '' && checknum.test(paynum) == false){
+    alert("숫자를 입력하여 주세요.")
+    $("#money").val(previous_res);
+    $("#money").focus();
+    $("#paycheck").text(paystr)
+  }
+  else {
+  previous_res = $(this).val()
+  var $paycheck = $('#paycheck')
+  var paystr = ' 원'
+  paylen = paynum.length
+  for (i=0; i<paylen; i ++){
+    var pidx = paylen - (i + 1)
+    aa = paynum.charAt(pidx)
+    if (aa != 0){
+      if (i == 0 ){
+        paystr = nth(aa) + paystr
+      }
+      if (i == 1){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 2){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 3){
+        paystr = nth(aa)+ "천" + paystr
+      }
+      if ( i == 4){
+        paystr = nth(aa)+ "만" + paystr
+      }
+      if ( i == 5){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 6){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 7){
+        paystr = nth(aa)+ "천" + paystr
+      }
+      if ( i == 8){
+        paystr = nth(aa)+ "억" + paystr
+      }
+      if ( i == 9){
+        paystr = nth(aa)+ "십" + paystr
+      }
+      if ( i == 10){
+        paystr = nth(aa)+ "백" + paystr
+      }
+      if ( i == 11){
+        paystr = nth(aa)+ "천" + paystr
+      }
+    } else{
+      if ( i == 4){
+        paystr = nth(aa)+ "만" + paystr
+      }
+      if ( i == 8){
+        paystr = nth(aa)+ "억" + paystr
+      }
+    }
+  }
+}
+  $paycheck.text(paystr)
+});
+
+function control_textlength (object){
+  var len = object.value.length
+  if (len == object.maxLength) {
+    object.value = object.value.slice(0, len)
+    alert("글자수를 초과하셨습니다. (최대 " + len + " 자)")
+    $(object).focus()
+  }
+}
+
+function control_lennumber (object){
+  var len = object.value.length
+  if (len > object.maxLength) {
+    object.value = object.value.slice(0, (len - 1))
+    alert("글자수를 초과하셨습니다. (최대 " + (len - 1) + " 자)")
+    $(object).focus()
+  }
+}
+
+function send_all() {
+  if (checkselbar() == false) {
+    return false
+  }
+  var alldata = send_data();
+  alldata["costume"] = radio_value()
+  instruments =  send_hiddenform()
+  alldata["instruments"] = instruments
+
+  $.ajax({
+    url : "http://localhost:5000/sendboard",
+    data : JSON.stringify(alldata),
+    type : 'POST',
+    contentType: 'application/json',
+    dataType : 'json'
+  }).done(function (res) {
+    window.location.href = 'http://localhost:5000/perform/detail/board' + res
+  })
+}
+
+  function handlegd() { 
+    if ($('#radiobox1:checked').length == '1') {
+      $("select[id='slt_gd']").attr("disabled",true);
+    }
+    else $("select[id='slt_gd']").attr("disabled",false);
+  }
+  // a.val() === a[0].options[0].innerText
+
+  function checkselbar() {
+    var slt_gd = $('#slt_gd').val()
+    var slt_gen = $('#slt_gen').val()
+    var slt_grad = $('#slt_grad').val()
+    var isgd = $('#radiobox1:checked').length
+
+    if (slt_grad === "") {
+      alert ("자격요건 항목을 선택하여 주세요.")
+      return false
+    } 
+    if (slt_gen === "") {
+      alert ("성별 항목을 선택하여 주세요.")
+      return false
+    }
+    if (slt_gd === "" && isgd != '1' ) {
+      alert("복장 항목을 선택하여 주세요.")
+      return false
+    }
+      
+  }
+
+  function send_ajax(url, method, data, dataType, fn) {
+    $.ajax({
+        url: url,
+        data: data,
+        type: method,
+        dataType: dataType
+    }).done(function (res) {
+        if (fn)
+            fn(res)
+    }).fail(function (xhr, status, errorThrown) {
+        console.error("Sorry, there was a problem!", xhr, status, errorThrown);
+    }).always(function (xhr, status) {
+        console.log("The request is complete!");
+    });
+  }
+  var inst_url = "http://localhost:5000/instrument"
+
+  send_ajax (inst_url, 'GET', '', '', function (res) {
+    console.log("res>>", res)
+    for (i = 0, len = res.length; i<len; i++){
+      var inst_id = res[i]['instrument_id']
+      var inst_name = res[i]['instrument_name']
+      var choice_inst = $('<button>');
+      
+      choice_inst.attr('id', "inst_" + inst_id);
+      choice_inst.attr("inst_num", inst_id)
+      choice_inst.attr('type','button')
+      choice_inst.addClass("btn").addClass("waves-effect").addClass("float-left").addClass("col-lg-2").addClass("float-left");
+      choice_inst.css('padding', '9px 15px').css('border-style','solid!important').css('border-color','rgb(228, 189, 121)').css('color','rgb(228, 189, 121)').css('border-width', '3px').css('font-size', '17px');;
+      choice_inst.text(inst_name);
+      choice_inst.attr("onclick", "add_part($(this).text(),$(this).attr('inst_num'))");
+      
+      $('#choice_box').append(choice_inst)
+    }     
+    if (!res || !res.length) return;
+  })
+  
+  function add_part (instrument, inst_num){
+    var has_selected = $('<button>')
+    var instrument_name = $("<span>")
+    // var close_button = $('<span>')  
+    var bg_add = $('<span>')
+      
+      // close_button.addClass("float-right").addClass("float-right mr-1 mb-1").css("color", "#e65100")
+      // close_button.css("font-weight","500")
+      // close_button.text('x')
+
+      instrument_name.addClass("get_instrument")
+      instrument_name.text(instrument)
+
+      has_selected.attr("id", "sel_" + instrument);
+      has_selected.attr("name", instrument);
+      has_selected.attr("type", "button");
+      has_selected.attr("data-id", inst_num);
+      has_selected.addClass("badge").addClass("my-1").addClass("btn").addClass("btn-sm").addClass("float-left");
+      has_selected.css('font-size', '17px').css('background-color','rgb(229, 202, 155)').css('height','30px').css('width','163px').css('padding','0px 10px');
+      has_selected.attr("onclick", 'del_part($(this).attr("name"))');
+
+      bg_add.addClass('badge').addClass('mr-1').addClass("float-right").css('background-color','rgb(255, 255, 255)').css('color','rgb(229, 202, 155)').addClass('clicknum');
+      bg_add.attr("id", "bg" + instrument)
+      bg_add.text('1')
+
+    if ( $('#sel_' + instrument).length >= 1) {
+      var before_num = $('#sel_' + instrument).text()
+      // var result = before_num.slice(instrument.length+1 , -2)
+      // num = Number(result) + 1
+      var a = $('#bg' + instrument).text()
+      $('#bg' + instrument).text(Number(a) + 1)
+    }
+    else {
+      $('#selpart_box').append(has_selected)
+      $('#sel_' + instrument).append(instrument_name)
+      // $('#sel_' + instrument).append(close_button)
+      $('#sel_' + instrument).append(bg_add)
+    }
+    
+  
+  }
+
+  function del_part (inst_name) {
+    // var close_button = $('<span>') 
+      
+    //   close_button.addClass("float-right").addClass("float-right mr-1").addClass("text-danger")
+    //   close_button.css("font-weight","500")
+    //   close_button.text('X')
+    
+    var before_num = $('#sel_'+ inst_name).text()
+    var a = $('#bg' + inst_name).text()
+
+    // var result = before_num.slice(inst_name.length+1 , -2)
+    // num = Number(result) - 1
+    
+    if (a == 1) {
+      $('#sel_' + inst_name).remove()
+    }
+    else {
+    $('#bg' + inst_name).text(Number(a) -1)
+    }
+  }
+
+  function send_hiddenform () {
+    var partbox = $("#selpart_box").children()
+    var arr = []
+    
+    partbox.each(i => { var name = partbox.children('.get_instrument')[i].textContent;
+      var data_id =  $("#sel_"+ name).attr("data-id"); 
+      var person = partbox.children('.clicknum')[i].textContent;
+      arr.push ({"iid": data_id, "person" : person})
+    })
+    return arr
+      
+  }
+
+  function radio_value() {
+    if ($('input[name=radiogd1]:checked').val() == '1') {
+      return '1'
+      }
+
+    else {
+      return $('#slt_gd').val();
+    }
+
+  }
+
+  function send_data () {
+    var qualification = $('#slt_grad').val()
+    var gen = $('#slt_gen').val()
+
+    var data = {"title" : $('#title').val(),
+              "duedate" : inputdate,
+              "qualification" :$("#slt_grad").val(),
+              "gen" : $('#slt_gen').val(),
+              "money" : $('#money').val(),
+              "practice_time" : $('#practice').val(),
+              "perform_time" : $('#perform').val(),
+              // "costume" : $('#slt_gd').val(),
+              "practice_address" : $('#prac_address').val(),
+              "perform_address" : $('#perf_address').val(),
+              "detail_info" : $('#detail_textarea').val(),
+              "song_info" : $('#song_textarea').val(),
+              "practice_mapx" : mapdata[0].x,
+              "practice_mapy" : mapdata[0].y,
+              "perform_mapx" : mapdata[1].x,
+              "perform_mapy" : mapdata[1].y
+              }
+    return data
+  }
+  
+  
+</script>
+
+
+<!-- ============================ Handle Bar Year========================================== ========================-->
+<script id="yscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pyear" class="browser-default custom-select mr-2" onchange="makeDays()">
+          <option value="none" selected>----</option>
+          {% raw %}
+          {{#each years}}
+          <option value={{year}}>{{year}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+  <div class="mt-2 mr-1">년</div>
+</script>
+<script id="mscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pmonth" class="browser-default custom-select mr-2" onchange="makeDays()">
+          <option value="none" selected>--</option>
+          {% raw %}
+          {{#each months}}
+          <option value={{month}}>{{month}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+  <div class="mt-2 mr-1">월</div>
+</script>
+<script id="dscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pday" class="browser-default custom-select mr-2">
+          <option value="none" selected>--</option>
+      </select>
+  </div>
+  <div class="mt-2 mr-1">일</div>
+</script>
+<script id="hscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="phour" class="browser-default custom-select mr-2">
+          <option value="none" selected>--</option>
+          {% raw %}
+          {{#each hours}}
+          <option value={{hour}}>{{hour}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+  <div class="mt-2 mr-1">시</div>
+</script>
+<script id="Mscr" type="text/x-handlebars-template">
+  <div class="col-lg-1.5 ml-1" >
+      <select id="pmin" class="browser-default custom-select mr-2">
+          <option value="none" selected>--</option>
+          {% raw %}
+          {{#each minutes}}
+          <option value={{minute}}>{{minute}}</option>
+          {{/each}}
+          {% endraw %}
+      </select>
+  </div>
+  <div class="mt-2 mr-1">분</div>
+  <button type="button" class="col-lg-0.5 ml-1 btn btn-outline-info waves-effect btn-md font-weight-bold mt-0" onclick="dts()">확정</button>
+</script>
+<script id="qscr" type="text/x-handlebars-template">
+  <option value="none" selected>--</option>
+  {% raw %}
+  {{#each days}}
+  <option value={{day}}>{{day}}</option>
+  {{/each}}
+  {% endraw %}
+</script>
+
+
+
+<script>
+  var d = new Date();
+  var thisyear = d.getFullYear()
+  var data = {
+      years: [],
+      months: [],
+      days: [],
+      hours: [],
+      minutes: []
+  };
+  for (i=0; i<3; i++){
+      data.years.push({year: thisyear+i})
+  }
+  for (i=0; i<12; i++){
+      data.months.push({month: i+1})
+  }
+  for (i=0; i<24; i++){
+      data.hours.push({hour:i})
+  }
+  for (i=0; i<4; i++){
+      data.minutes.push({minute: i*15})
+  }
+  function leafYearCheck(){
+      var int_year;
+      var selectyear = document.getElementById('pyear');
+      var selectyvalue = selectyear.options[selectyear.selectedIndex].value;
+      int_year = Number(selectyvalue);
+      console.log(int_year)
+      var lyc = 0
+      if( int_year%4 == 0 )
+      {
+          if( int_year%100 == 0 )
+          {
+              if( int_year%400 == 0 )
+              {
+                  return true; 
+              }
+              return false;
+          }
+          return true;        
+      }
+      return false;
+  }
+  function makeDays (){
+      data.days = []
+      var selectmonth = document.getElementById('pmonth');
+      var selectvalue = selectmonth.options[selectmonth.selectedIndex].value;
+      selectvalue = Number(selectvalue)
+      console.log(selectvalue)
+      var arr1 = [4, 6, 9, 11];
+      leafYearCheck()
+      console.log(">>>>>>>>>>>>>>>>>>>>>>",leafYearCheck())
+      if (leafYearCheck() == false){
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=28; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      } else{
+          if (selectvalue === NaN){
+              return;
+          }
+          if (arr1.includes(selectvalue)){
+              for (i=1; i<=30; i++){
+                  data.days.push({day: i});
+              }
+          } else if (selectvalue == 2){
+              for (i=1; i<=29; i++){
+                  data.days.push({day : i});
+              }
+          } else{
+              for (i=1; i<=31; i++){
+                  data.days.push({day : i});
+              }
+          }
+      }
+      repele("qscr", data, "pday")
+  }
+  function repele(sourceId, data, resultId){
+      var source = document.getElementById(sourceId).innerHTML
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      document.getElementById(resultId).innerHTML = html;
+  }
+  function mkele(sourceId, data, resultId){
+      var source = document.getElementById(sourceId).innerHTML
+      var template = Handlebars.compile(source);
+      var html = template(data);
+      document.getElementById(resultId).innerHTML += html;
+  }
+  mkele("yscr", data, "detail")
+  mkele("mscr", data, "detail")
+  mkele("dscr", data, "detail")
+  mkele("hscr", data, "detail")
+  mkele("Mscr", data, "detail")
+  // selected date => string
+  var inputdate
+  function dts(){
+      var selectyear = selectvalue('pyear');
+      var selectmonth = selectvalue('pmonth');
+      var selectday = selectvalue('pday');
+      var selecthour = selectvalue('phour');
+      var selectmin = selectvalue('pmin');
+      if (selectyear == 'none' || selectmonth == 'none' || selectday == 'none' || selecthour == 'none' || selectmin == 'none'){
+          alert("정확한 시기를 선택해 주세요.")
+      }else{
+          if (selectmin==0){
+            selectmin = "00"
+          }      
+          var datstr = selectyear + "-" + selectmonth + "-" + selectday + "  " + selecthour + ":" +selectmin
+          var dtstr = selectyear + "년 " + selectmonth + "월 " + selectday + "일 " + selecthour + ":" +selectmin
+          var days = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+          datestr = new Date(datstr)
+          inputdate = datstr
+          day = days[datestr.getDay()]
+          datestring = dtstr + " " + day
+          if (document.getElementById('datstr') != null) {
+              var $datstr = $('#datstr') 
+              fixeddate($datstr)
+          } else {
+              html = "<span id='datstr'>" + datestring + "</span>"
+              $('#detail').append(html)
+              $datstr = $('#datstr')
+              fixeddate($datstr)
+          }
+      }
+  }
+function fixeddate(datestr){
+  datestr.addClass("col-lg-1.5").addClass("float-right").addClass("mx-3").addClass("mt-2")
+  datestr.css("font-weight","400").css("color", "grey").css("display", "inline-block")
+  datestr.text(datestring)
+  return;
+}
+function selectvalue(tagid){
+  var selecttag = document.getElementById(tagid);
+  var selectoption = selecttag.options[selecttag.selectedIndex].value;
+  return selectoption
+}
+</script>
+
+
+
+<!-- ============================ End Handle Bar Year ========================-->
+
+
+
+<script>
+
+//주소-좌표 변환 객체를 생성
+var geocoder1 = new daum.maps.services.Geocoder();
+
+
+var mapdata = []
+
+
+function sample5_execDaumPostcode(paddress, pmap) {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      var addr = data.address; // 최종 주소 변수
+
+      // 주소 정보를 해당 필드에 넣는다.
+      document.getElementById(paddress).value = addr;
+      // 주소로 상세 정보를 검색
+      geocoder1.addressSearch(data.address, function(results, status) {
+          // 정상적으로 검색이 완료됐으면
+        if (status === daum.maps.services.Status.OK) {
+
+          var result = results[0]; //첫번째 결과의 값을 활용
+          mapdata.push(result)
+          // 해당 주소에 대한 좌표를 받아서
+          var coords = new daum.maps.LatLng(result.y, result.x);
+          // var pmape = paddress.slice(0,4) + "_map";
+          // console.log(pmape);
+          // 지도를 보여준다.
+          var mapContainer1 = document.getElementById(pmap)
+          var mapOption = {
+              center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+              level: 5 // 지도의 확대 레벨
+          };
+          
+          var map1 = new daum.maps.Map(mapContainer1, mapOption);
+
+          var marker1 = new daum.maps.Marker({
+              position: new daum.maps.LatLng(37.537187, 127.005476),
+              map: map1
+              });
+          // mapContainer1.style.display = "block";
+          mapContainer1.style.display = "block";
+
+          map1.relayout();
+          // 지도 중심을 변경한다.
+          map1.setCenter(coords);
+          // 마커를 결과값으로 받은 위치로 옮긴다.
+          marker1.setPosition(coords)
+          
+        }
+      });
+    }
+  }).open();
+}
+</script>
+
+{%- endblock %}}
