@@ -57,7 +57,7 @@
                       </h5>
 
                         <div class="text-right">
-                            <button type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
+                            <button id="apply{{board_id}}" type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
                                 지원하기
                             </button>
                             <a target="_blank" id="link{{board_id}}">
@@ -126,7 +126,7 @@
   var check_onchange
   var newtb;
   var searchstr;
-
+  var sessioninfo ;
 
 
 
@@ -170,7 +170,7 @@ function select_area (data, sel_area, sel_part) {
 
   if (data == undefined) {
     $.ajax({
-      url : "/alldata",
+      url : "/myboards",
       data : "",
       type : 'GET',
       dataType : ''
@@ -202,7 +202,7 @@ function getall () {
   if (alldata == undefined) {
     $("#loading").css("display","block")
   $.ajax({
-    url : "/alldata",
+    url : "/myboards",
     data : "",
     type : 'GET',
     dataType : ''
@@ -241,6 +241,17 @@ var i = 0;
 var num = 6; 
 var search_click = 0;
 getall()
+getsession()
+
+function getsession () {
+  $.ajax({
+    type : "GET",
+    url : "/checksession"
+  }).done(function (res) {
+    sessioninfo = res
+  })
+}
+
 
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
@@ -293,6 +304,7 @@ function createCard(data, board_len, i){
 }
 function postInst(data, board_len, i, boardinst_json){
   var a = data.boardinst
+  
   var board_table = data.boardtb
   var bid = a.filter( function (t) {
     return t["board_id"] == (board_table[i].board_id)
@@ -305,6 +317,8 @@ function postInst(data, board_len, i, boardinst_json){
   boardinst_json["boardinst"] = bid
   eee("hb_instsrc", boardinst_json, "inst" + (bid[0].board_id))
   $('#link'+(bid[0].board_id)).attr("href", "/perform/detail/board" + (bid[0].board_id) )
+
+  
 }
 
 
@@ -320,6 +334,11 @@ function draw_cards (number, data) {
     createCard(firstdata, board_len, i);
     
     postInst(firstdata, board_len, i, boardinst_json)
+
+    if (firstdata.boardtb[i].user_id == sessioninfo.userid) {
+      $("#apply" + firstdata.boardtb[i].board_id).css("display", "none")
+  }
+    
   }
   num = num + 4
 }

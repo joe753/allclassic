@@ -92,7 +92,7 @@ class Board(Base):
     song_info = Column(String)
     user_id = Column(Integer, ForeignKey('Users.user_no') , nullable=False)
     upload_time = Column(TIMESTAMP)
-    users = relationship("Users")
+    users = relationship("Users" )
 
    
 
@@ -136,8 +136,12 @@ class BoardInstrument(Base):
     person = Column(Integer)
     board = relationship("Board")
     instrument = relationship('Instrument')
+    # board = relationship("Board", lazy = "joined")
+    # instrument = relationship('Instrument', lazy="joined")
 
     def json(self):
         j = {c.name: getattr(self, c.name) for c in self.__table__.columns}
         j['instrument_name'] = self.instrument.instrument_name
+        j['user_id'] = self.board.user_id   
+
         return j
