@@ -27,6 +27,7 @@ app.config.update(
 ##### function #######################3\
 
 
+
 @app.route('/myupboard')
 def upboard() :
     if not session.get('loginUser') :
@@ -60,6 +61,10 @@ def next ():
 def cs() :
     userinfo = session.get('loginUser')
     return jsonify(userinfo)
+
+@app.route('/testlayout')
+def testlayout():
+    return render_template("testlayout.html")
 
 
 @app.route('/test_pre')
