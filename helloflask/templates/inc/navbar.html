@@ -63,7 +63,7 @@
             </li>
 
                 <li class="nav-item showLogin" style="display:{%if session.loginUser%}block{%else%}none{%endif%};">
-                    <a href="" class="nav-link waves-effect">
+                    <a href="/checkpassword" class="nav-link waves-effect">
                         <i class="fas fa-user"></i> <span id="loginUserName" class="font-weight-bold text-primary">{%if session.loginUser %}{{session.loginUser.name}}{%endif%}</span>
                     </a>
                 </li>

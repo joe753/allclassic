@@ -27,6 +27,19 @@ app.config.update(
 ##### function #######################3\
 
 
+@app.route('/sendpwd' , methods=["POST"])
+def sendpwd () :
+    data = request.json
+    u = Users.query.filter(Users.email == email).filter(Users.password == func.sha2(passwd, 256)).first()   
+
+
+@app.route('/checkpassword')
+def checkpwd () :
+    
+    loginuser = session.get('loginUser')
+    userinfo = Users.query.filter(Users.user_no == loginuser['userid']).first()
+    return render_template('checkpassword.html', userinfo = userinfo)
+
 
 @app.route('/myupboard')
 def upboard() :
@@ -61,10 +74,6 @@ def next ():
 def cs() :
     userinfo = session.get('loginUser')
     return jsonify(userinfo)
-
-@app.route('/testlayout')
-def testlayout():
-    return render_template("testlayout.html")
 
 
 @app.route('/test_pre')
@@ -212,13 +221,13 @@ def sendboard():
         try:
             db_session.add(b)
             db_session.commit()
+
             for j in instruments:
                 iid = j['iid']
                 person = j['person']
                 inst = BoardInstrument(b.board_id, iid, person)
             
-            db_session.add(inst)
-            
+                db_session.add(inst)
             db_session.commit()
         
         except Exception as err:
