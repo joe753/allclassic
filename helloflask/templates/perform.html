@@ -57,7 +57,7 @@
                       </h5>
 
                         <div class="text-right">
-                            <button type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
+                            <button id="apply{{board_id}}" type="button" class="btn waves-effect float-left" style="padding : 9px 28px ;border-style: solid!important; border-color: rgb(243, 198, 125); color: rgb(243, 198, 125); border-width: 3px; font-size: 17px">
                                 지원하기
                             </button>
                             <a target="_blank" id="link{{board_id}}">
@@ -126,6 +126,7 @@
   var check_onchange
   var newtb;
   var searchstr;
+  var sessioninfo = {};
 
 
 
@@ -217,6 +218,15 @@ function getall () {
   }
 } 
 
+function getsession () {
+  $.ajax({
+    type : "GET",
+    url : "/checksession"
+  }).done(function (res) {
+    sessioninfo = res
+  })
+}
+
 
 
 function get_area (res) {
@@ -241,6 +251,8 @@ var i = 0;
 var num = 6; 
 var search_click = 0;
 getall()
+getsession()
+
 
 $(document).ready(function(){
   $(window).scroll(function(){   //스크롤이 최하단 으로 내려가면 리스트를 조회하고 page를 증가시킨다.
@@ -310,8 +322,8 @@ function postInst(data, board_len, i, boardinst_json){
 
 function draw_cards (number, data) {
   var newdata = JSON.parse(JSON.stringify(data));
+  
   board_len = newdata.boardtb.length
-  console.log("보들랭", board_len)
     for (i; i < number; i++) {
       if (board_len == i) {
         break;
@@ -320,6 +332,12 @@ function draw_cards (number, data) {
     createCard(firstdata, board_len, i);
     
     postInst(firstdata, board_len, i, boardinst_json)
+    if (sessioninfo == undefined){
+      sessioninfo = {'userid' : ''}
+    }
+    if (firstdata.boardtb[i].user_id == sessioninfo.userid) {
+      $("#apply" + firstdata.boardtb[i].board_id).css("display", "none")
+  }
   }
   num = num + 4
 }

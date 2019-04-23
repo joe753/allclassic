@@ -126,7 +126,7 @@
 
     </div>
     <div class="col-lg-5 text-center my-5">
-        <button type="button" class="btn btn-outline-default waves-effect float-center">
+        <button id="apply" type="button" class="btn btn-outline-default waves-effect float-center">
             지원하기
         </button>
         <button type="button" class="btn btn-outline-primary waves-effect float-right">
@@ -228,6 +228,7 @@ function usershow(data) {
         if (res.userid == data) {
             $('#edit_bt').css("display", "block")
             $('#del_bt').css("display", "block")
+            $('#apply').css("display", "none")
         }
     })
 }

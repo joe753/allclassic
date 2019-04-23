@@ -29,14 +29,14 @@
     
 
      <!------- Line 2 -------->
-    <!-- <div class="form-row my-2">
+    <div class="form-row my-2">
       <div class="col-lg-1 mt-2 text-left font-weight-bold" >
           기간
       </div>
       <div id="detail" class="form-row my-2">
-        <span id="datstr"></span> 
+        <!-- <span id="datstr"></span> -->
       </div>
-    </div> -->
+    </div>
 
 
     <!----------------- Line 3  ------------------------->
@@ -81,7 +81,7 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="number" value="3" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" required> 
+            <input type="number" value="3" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="practice" name="practice" readonly/> 
           </div>
         </div>
         <div class="col-lg-1 text-left my-2">
@@ -90,10 +90,10 @@
         </div>
         <div class="col-lg-1">
           <div class="form-group">
-            <input type="number" value="4" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" required> 
+            <input type="number" value="4" class="form-control" min="0" maxlength="2" oninput="control_lennumber(this)" id="perform" name="perform" readonly/> 
           </div>
         </div>
-        <div class="col-lg-0.5 text-left my-2">
+        <div class="col-lg-0.5 text-left  my-2">
           회
         </div>
         <div class="col-lg-1.5 text-left">
@@ -101,8 +101,31 @@
             날짜선택
           </button>
         </div>
-        
-        
+        <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">날짜선택</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class='row'>
+                  <div id="cal" class="col-lg-6" style="border-right: 1px solid lightgrey ">
+                  </div>
+                  <div id='seltime' class='col-lg-6' style="font-size: 15px; text-align: left">
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="modalClose()">저장</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <div id="getradio" style="display: inline-flex">
           <div class="col-lg-0.5 my-2 mx-3 font-weight-bold">
             복장
@@ -127,28 +150,6 @@
           </div>
         </div>
       </div>
-
-    <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">날짜 선택 </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-              <div id="cal">
-              </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
 
@@ -439,12 +440,15 @@ function send_all() {
         if (fn)
             fn(res)
     }).fail(function (xhr, status, errorThrown) {
+        console.error("Sorry, there was a problem!", xhr, status, errorThrown);
     }).always(function (xhr, status) {
+        console.log("The request is complete!");
     });
   }
   var inst_url = "http://localhost:5000/instrument"
 
   send_ajax (inst_url, 'GET', '', '', function (res) {
+    console.log("res>>", res)
     for (i = 0, len = res.length; i<len; i++){
       var inst_id = res[i]['instrument_id']
       var inst_name = res[i]['instrument_name']
@@ -562,7 +566,9 @@ function send_all() {
               "gen" : $('#slt_gen').val(),
               "money" : $('#money').val(),
               "practice_time" : $('#practice').val(),
+              "practice_date" : lts(selpracdays),
               "perform_time" : $('#perform').val(),
+              "perform_date" : lts(selperfdays),
               // "costume" : $('#slt_gd').val(),
               "practice_address" : $('#prac_address').val(),
               "perform_address" : $('#perf_address').val(),
@@ -581,31 +587,136 @@ function send_all() {
 
 
 <!-- ============================ Handle Bar Year========================================== ========================-->
-<script id="calensrc" type="text/x-handlebars-template">
-  {% raw %}
-  <table id="calendar">
-      <thead id="calhead" >
-          <div>
-              <h2><span id="year">{{thisyear}}</span><span>년</span></h2>
-          </div>
-          <div>
-            <h3>
-                <span id="lastmonth" onclick="lastmonth()"><i class="fas fa-arrow-alt-circle-left"></i></span>
-                <span id="cmonth">{{thismonth}}</span><span>월</span>
-                <span id="nextmonth" onclick="nextmonth()"><i class="fas fa-arrow-alt-circle-right"></i></span>
-            </h3>
-          </div>
-          <br>
-      </thead>
-      <tbody>
-          <tr>
-              <th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
-          </tr>
-          {{#mod7 days}}{{day}}{{/mod7}}
-      </tbody>
-  </table>
+<script id="datesrc" type="text/x-handlebars-template">
+
+  <div id="selpractime" style="border-bottom:1px solid rgb(216, 213, 213);padding-bottom:10px; height:213px">
+    {% raw %}
+    <div>연습날짜</div>
+    {{#each spcd}}
+    <div>
+      <span style="float:left; margin: 5px 0px">
+      {{selpracday}}
+      </span>
+      <span id="{{selpracday}}" style="float:right; margin: 5px 0px">
+      <!-- <select>
+        <option value="none" selected>--</option>
+        {{#each hours}}
+        <option value={{hour}}>{{hour}}</option>
+        {{/each}}
+      </select><b> :</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each minutes}}
+        <option value={{minute}}>{{minute}}</option>
+        {{/each}}
+      </select><b> ~</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each hours}}
+        <option value={{hour}}>{{hour}}</option>
+        {{/each}}
+      </select><b> :</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each minutes}}
+        <option value={{minute}}>{{minute}}</option>
+        {{/each}}
+      </select> -->
+      </span>
+    </div>
+    {{/each}}
+  </div>
+  <div id="selperftime">
+    <div>연주날짜</div>
+    {{#each spfd}}
+    <div>
+      <span style="float:left; margin: 5px 0px">
+      {{selperfday}}
+      </span>
+      <span id="{{selperfday}}" style="float:right; margin: 5px 0px">
+      <!-- <select>
+        <option value="none" selected>--</option>
+        {{#each hours}}
+        <option value={{hour}}>{{hour}}</option>
+        {{/each}}
+      </select><b> :</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each minutes}}
+        <option value={{minute}}>{{minute}}</option>
+        {{/each}}
+      </select><b> ~</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each hours}}
+        <option value={{hour}}>{{hour}}</option>
+        {{/each}}
+      </select><b> :</b>
+      <select>
+        <option value="none" selected>--</option>
+        {{#each minutes}}
+        <option value={{minute}}>{{minute}}</option>
+        {{/each}}
+      </select> -->
+      </span>
+    </div>
+    {{/each}}
+  </div>
   {% endraw %}
 </script>
+<script id="selhmsrc" type="text/x-handlebars-template">
+  {% raw %}
+  <select>
+    <option value="none" selected>--</option>
+    {{#each hours}}
+    <option value={{hour}}>{{hour}}</option>
+    {{/each}}
+  </select><b> :</b>
+  <select>
+    <option value="none" selected>--</option>
+    {{#each minutes}}
+    <option value={{minute}}>{{minute}}</option>
+    {{/each}}
+  </select><b> ~</b>
+  <select>
+    <option value="none" selected>--</option>
+    {{#each hours}}
+    <option value={{hour}}>{{hour}}</option>
+    {{/each}}
+  </select><b> :</b>
+  <select>
+    <option value="none" selected>--</option>
+    {{#each minutes}}
+    <option value={{minute}}>{{minute}}</option>
+    {{/each}}
+  </select>
+  {% endraw %}
+</script>
+<script id="calensrc" type="text/x-handlebars-template">
+  <table id="calendar"  style="width:100%; height:350px;">
+    {% raw %}
+    <thead id="calhead">
+        <div>
+            <h3><span id="year">{{thisyear}}</span><span>년</span></h3>
+        </div>
+        <div>
+          <h4>
+            <span id="lastmonth" onclick="lastmonth()"><i class="fas fa-chevron-left"></i>&emsp;</span>
+            <span id="cmonth">{{thismonth}}</span><span>월 &emsp;</span>
+            <span id="nextmonth" onclick="nextmonth()"><i class="fas fa-chevron-right"></i></span>
+          </h4>
+        </div>
+    </thead>
+    <tbody >
+        <tr style="margin: 5px 0px">
+            <th style="margin: 5px 0px">일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>
+        </tr>
+        {{#mod7 days}}{{day}}{{/mod7}}
+    </tbody>
+    {% endraw %}
+  </table>
+</script>
+
 <script>
   var d = new Date();
   var tyear = d.getFullYear();
@@ -615,7 +726,19 @@ function send_all() {
                   thismonth:"",
                   thisyear:""
       };
-
+  var hm = {
+    hours: [],
+    minutes: [],
+    spcd: [],
+    spfd: []
+  };
+  for (i=0; i<24; i++){
+      hm.hours.push({hour:i})
+  }
+  for (i=0; i<12; i++){
+      hm.minutes.push({minute: i*5})
+  }
+  console.log(hm)
   
   var monarr = [4, 6, 9, 11];
   // caldata 만들기
@@ -694,7 +817,7 @@ function send_all() {
             rdate = rdate.substr(1,1)
           }
           if (i % 7 == 0 ){
-              html = html + "<tr>" + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
+              html = html + "<tr style='margin: 20px 0px'>" + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
           }else if( i % 7 == 6){
               html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>" + "</tr>"
           }else{
@@ -726,6 +849,7 @@ function send_all() {
       document.getElementById(resultId).innerHTML = html;
   }
   calen("calensrc", caldata, "cal")
+  calen("datesrc", hm, "seltime")
 
   function lastmonth(){
     caldata.days = []
@@ -759,33 +883,58 @@ function send_all() {
   var selperfdays = [];
   function canclick(){
     $(".cell").click(function(){
-        console.log($(this).attr("value"))
-        $this = $(this)
-        $year = $("#year")
-        $month = $("#cmonth")
-        
-        if ($this.attr("value") == '0'){
-            $this.css("background-color", 'LightGray');
-            $this.attr("value", "1");
-            selday = getDateForm($year.text(),$month.text(), $this.text())
-            selpracdays.push(selday);
-            console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
-        } else if ($this.attr("value") == '1') {
-            $this.css("background-color", 'Gray');
-            $this.attr("value", "2");
-            selday = getDateForm($year.text(),$month.text(), $this.text())
-            selperfdays.push(selday)
-            delday = Number(selpracdays.indexOf(selday))
-            selpracdays.splice(delday, 1); 
-            console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
-        } else {
-          $this.css("background-color", 'white');
-          $this.attr("value", "0");
-          selday = getDateForm($year.text(),$month.text(), $this.text())
-          delday = Number(selpracdays.indexOf(selday))
-          selperfdays.splice(delday, 1); 
-          console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
-        }
+      console.log($(this).attr("value"))
+      $this = $(this)
+      $year = $("#year")
+      $month = $("#cmonth")
+      
+      if ($this.attr("value") == '0'){
+        $this.css("background-color", 'DodgerBlue');
+        $this.attr("value", "1");
+        selday = getDateForm($year.text(),$month.text(), $this.text())
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        selpracdays.push(selday);
+        hm.spcd.push({selpracday:hselday})
+        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+      } else if ($this.attr("value") == '1') {
+        $this.css("background-color", 'Tomato');
+        $this.attr("value", "2");
+        selday = getDateForm($year.text(),$month.text(), $this.text())
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        selperfdays.push(selday)
+        delday = Number(selpracdays.indexOf(selday))
+        jsondelday = hm.spcd.findIndex(function(item, i){
+          return item.selpracday === hselday
+        });
+        selpracdays.splice(delday, 1); 
+        hm.spcd.splice(jsondelday,1);
+        hm.spfd.push({selperfday:hselday})
+        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+      } else {
+        $this.css("background-color", 'white');
+        $this.attr("value", "0");
+        selday = getDateForm($year.text(),$month.text(), $this.text())
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        delday = Number(selpracdays.indexOf(selday))
+        jsondelday = hm.spcd.findIndex(function(item, i){
+          return item.selpracday === hselday
+        });
+        hm.spfd.splice(jsondelday,1);
+        selperfdays.splice(delday, 1); 
+        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+      }
+      calen("datesrc", hm, "seltime")
+      hcl = hm.spcd.length
+      hfl = hm.spfd.length
+      console.log(hm)
+      for (i=0;i<hcl;i++){
+        calen("selhmsrc", hm, hm.spcd[i].selpracday)
+      };
+      for (j=0; j<hfl;j++){
+        calen("selhmsrc", hm, hm.spfd[j].selperfday)
+        console.log(">>>>>>>>",hm.spfd[j].selperfday)
+      }
+      // calen("selhmsrc", hm, "selhm" )
     });
   }
 
@@ -796,13 +945,13 @@ function send_all() {
       pdid = selpracdays[i];
       $pdid = $(`#${pdid}`);
       $pdid.attr('value', '1');
-      $pdid.css('background-color', 'LightGray');
+      $pdid.css('background-color', 'DodgerBlue');
     }
     for (j=0;j<fl;j++){
       fdid = selperfdays[j];
       $fdid = $(`#${fdid}`);
       $fdid.attr('value', '2');
-      $fdid.css('background-color', 'Gray')
+      $fdid.css('background-color', 'Tomato')
     }
   }
 
@@ -822,8 +971,18 @@ function send_all() {
     }
     return selday
   }
-
-
+  function modalClose(){
+    cl = selpracdays.length
+    fl = selperfdays.length
+    $("#practice").attr('value', `${cl}`);
+    $("#perform").attr('value', `${fl}`);
+  }
+  function lts(lst){
+    var nlst =[]
+    str = lst.join(", ")
+    nlst.push(str)
+    return nlst
+  }
 
   $(document).ready(canclick()
   );

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>All Classic</title>
+  <title>People Classic</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
   <!-- Bootstrap core CSS -->
@@ -55,15 +55,14 @@
       font-size : 13px;
     }
     table {
-        border-top : 2px solid rgba(252, 182, 90, 0.438);
-        text-align: center;
-        border-collapse: collapse;
-        width: 100%;
+            border-top : 2px solid rgba(252, 182, 90, 0.438);
+            text-align: center;
+            border-collapse: collapse;
     }
-    th, td {
+
+    table th, table td {
         border-bottom: 2px solid rgba(252, 182, 90, 0.438);
         font-size: 20px;
-        
     }
     td:hover{
         cursor: pointer;
@@ -77,20 +76,15 @@
     thead {
         align-content: center;
     }
-    #lastmonth, #nextmonth {
-      color: rgba(252, 182, 90, 1)
-    }
     #lastmonth:hover, #nextmonth:hover{
         color:lightsalmon;
         cursor: pointer;
     }
-    .cal {
-      width: 100%
+    select {
+      border: 2px solid rgb(224, 224, 174); 
+      border-radius:3px;
     }
 
-    thead div {
-      align-content:center;
-    }
 
   </style>
 </head>
@@ -127,7 +121,7 @@
               </h1>
 
               <p class="my-5">
-                <strong class="font-weight-bold">All Classic은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
+                <strong class="font-weight-bold">P.Cl은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
               </p>
 
              
@@ -159,7 +153,7 @@
               </h1>
 
               <p class="my-5">
-                <strong class="font-weight-bold">All Classic은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
+                <strong class="font-weight-bold">P.Cl은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
               </p>
 
              
@@ -191,7 +185,7 @@
               </h1>
 
               <p class="my-5">
-                <strong class="font-weight-bold">All Classic은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
+                <strong class="font-weight-bold">P.Cl은 인맥, 학벌에서 벗어나 모두에게 최소한의 연주기회를 최고의 가치로 음악인들에게 제공하고자 합니다.</strong>
               </p>
 
              
@@ -328,7 +322,7 @@
                     <a class="nav-link active grey-text" href="#" style="font-size: 13px;">
                       - &nbsp 내가 지원한 연주
                     </a>
-                    <a class="nav-link active grey-text" href="#" style="font-size: 13px;">
+                    <a class="nav-link active grey-text" href="/myupboard" style="font-size: 13px;">
                       - &nbsp 내가 올린 공고문
                     </a>
                     <a class="nav-link active grey-text" href="#" style="font-size: 13px;">
@@ -378,11 +372,13 @@
 
   
   <script>
+
     function enterbt() {
       if (window.event.keyCode == 13) {
           filtering(alldata, 'area_number', $('#sel_area').val() , 'instrument_id', $('#sel_part').val())
       }
     }
+
 
     function searchtitle(data, search_input) {
       searchstr = $("#search_input").val()

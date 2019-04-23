@@ -24,6 +24,50 @@ app.config.update(
 
 ##### function #######################3\
 
+@app.route('/edituserinfo')
+def edituserinfo() :
+    return render_template ("edit_userinfo.html")
+
+
+@app.route('/sendpwd' , methods=["POST"])
+def sendpwd () :
+    data = request.json
+    print (data)
+    u = Users.query.filter(Users.email == data['id']).filter(Users.password == func.sha2(data['pwd'], 256)).first()   
+    if u is not None:
+        return jsonify("ok")
+    else :
+        print ("NOPE")
+        return jsonify("error")
+
+
+@app.route('/checkpassword')
+def checkpwd () :
+    
+    loginuser = session.get('loginUser')
+    userinfo = Users.query.filter(Users.user_no == loginuser['userid']).first()
+    return render_template('checkpassword.html', userinfo = userinfo)
+
+
+@app.route('/myupboard')
+def upboard() :
+    if not session.get('loginUser') :
+        session['next'] = request.url
+        return render_template('notlogin.html')
+    else : 
+       
+        return render_template('myupboard.html')
+
+
+@app.route('/myboards')
+def myboards () :
+    loginUser = session.get('loginUser')
+    userid = loginUser["userid"]
+    board = json_boards()
+    instrument = Instrument.query.all()
+    boardtb = db_session.query(Board).filter(Board.user_id == userid).order_by(Board.board_id.desc())
+    boardinst = db_session.query(BoardInstrument).join(Board, Board.board_id == BoardInstrument.board_id).filter(Board.user_id == userid)
+    return jsonify({'boardinst' : [t.json() for t in boardinst], 'instruments' : [i.json() for i in instrument], 'boardtb' : [b.json() for b in boardtb]})
 
 @app.route('/nexturl')
 def next ():
@@ -34,30 +78,10 @@ def next ():
     return jsonify(dt)
 
 
-
-def check_area(data) :
-    
-    # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
-    
-    area = data.split(" ")[0]
-
-    arealist = {'서울' : 1, '경기' : 2, '인천' : 3, '강원' : 4, '충북' : 5, '세종' : 5,
-                '충남' : 6, '대전' : 6, '경북' : 7, '대구' : 7, '경남' : 8, '부산' : 8,
-                '울산' : 8, '전북' : 9, '전남' : 10, '광주' : 10, '제주' : 11}
-
-    for i in arealist.keys() :
-        if i in area :
-            result = arealist[i]
-    return result    
-
 @app.route('/checksession')
 def cs() :
     userinfo = session.get('loginUser')
     return jsonify(userinfo)
-
-@app.route('/testlayout')
-def testlayout():
-    return render_template("testlayout.html")
 
 
 @app.route('/test_pre')
@@ -98,7 +122,6 @@ def perform():
 def board (boardid) : 
     if not session.get('loginUser') :
         session['next'] = request.url
-        print ("GGGGG")
         return render_template('notlogin.html')
     else :    
         session['next'] = request.url
@@ -177,10 +200,8 @@ def sendboard():
     print (title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
     
     if (board_id != ""):
-        print ("이픈데여 \n\n\n")
         b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
         b.board_id = board_id 
-        print(">>>>>>>>>", b.board_title)
         try:
             db_session.merge(b)
             
@@ -203,21 +224,19 @@ def sendboard():
         return str(b.board_id)
 
     else :
-        print ("엘슨데여 \n\n\n")
         b = Board(title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
-        
+        print ("else>>>>")
         try:
-            # db_session.add(b)
-            
+            db_session.add(b)
+            db_session.commit()
+
             for j in instruments:
                 iid = j['iid']
                 person = j['person']
-
                 inst = BoardInstrument(b.board_id, iid, person)
-                db_session.add(inst)
             
+                db_session.add(inst)
             db_session.commit()
-            # inst = BoardInstrument(b.board_id, instruments.in)
         
         except Exception as err:
             print (err)
@@ -262,9 +281,16 @@ def board_json (boardid) :
 
 @app.route('/instrument', methods=["GET"])
 def get_instrument () : 
-    
     instruments = Instrument.query.all()
     return jsonify([inst.json() for inst in instruments])
+
+@app.route('/boardinstrument', methods=["GET"])
+def get_boardinsts() :
+    users = json_users()
+    boardtb = Board.query.all()
+    instruments = Instrument.query.all()
+
+    return jsonify([s.json() for s in boardinst])
 
 @app.route('/boardinstruments/<boardid>', methods=["GET"])
 def get_boardinst(boardid) :
@@ -314,7 +340,6 @@ def logout():
 
 @app.route('/alldata')
 def alldata():
-    data = {}
     users = json_users()
     instruments = json_instruments()
     boardtb = json_boards()    
@@ -344,4 +369,18 @@ def json_boards () :
     return boardtb
 
 
+def check_area(data) :
+    
+    # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
+    
+    area = data.split(" ")[0]
+
+    arealist = {'서울' : 1, '경기' : 2, '인천' : 3, '강원' : 4, '충북' : 5, '세종' : 5,
+                '충남' : 6, '대전' : 6, '경북' : 7, '대구' : 7, '경남' : 8, '부산' : 8,
+                '울산' : 8, '전북' : 9, '전남' : 10, '광주' : 10, '제주' : 11}
+
+    for i in arealist.keys() :
+        if i in area :
+            result = arealist[i]
+    return result    
     # return jsonify([s.json() for s in boardtb])
