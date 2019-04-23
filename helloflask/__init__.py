@@ -26,11 +26,21 @@ app.config.update(
 
 ##### function #######################3\
 
+@app.route('/edituserinfo')
+def edituserinfo() :
+    return render_template ("edit_userinfo.html")
+
 
 @app.route('/sendpwd' , methods=["POST"])
 def sendpwd () :
     data = request.json
-    u = Users.query.filter(Users.email == email).filter(Users.password == func.sha2(passwd, 256)).first()   
+    print (data)
+    u = Users.query.filter(Users.email == data['id']).filter(Users.password == func.sha2(data['pwd'], 256)).first()   
+    if u is not None:
+        return jsonify("ok")
+    else :
+        print ("NOPE")
+        return jsonify("error")
 
 
 @app.route('/checkpassword')
