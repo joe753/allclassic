@@ -614,7 +614,6 @@ function send_all() {
                   days:[],
                   thismonth:"",
                   thisyear:""
-                  
       };
 
   
@@ -633,7 +632,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           } else if (thismonth == 2){
@@ -641,7 +640,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           } else{
@@ -649,7 +648,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           }
@@ -660,7 +659,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           } else if (thismonth == 2){
@@ -668,7 +667,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           } else{
@@ -676,7 +675,7 @@ function send_all() {
                   if (i<=0){
                       caldata.days.push({day:""})
                   } else{
-                      caldata.days.push({day: i});
+                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
                   }
               }
           }
@@ -689,12 +688,17 @@ function send_all() {
   Handlebars.registerHelper("mod7", function(days, options){
       var html = ""
       for (var i=0, l=days.length; i<l; i++){
+          fdate = options.fn(days[i])
+          rdate = fdate.substr(8,2)
+          if (rdate < 10){
+            rdate = rdate.substr(1,1)
+          }
           if (i % 7 == 0 ){
-              html = html + "<tr>" + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
+              html = html + "<tr>" + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
           }else if( i % 7 == 6){
-              html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>" + "</tr>"
+              html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>" + "</tr>"
           }else{
-              html = html + "<td class='cell' value='0'>" + options.fn(days[i]) + "</td>"
+              html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
           }
       }
       return html
@@ -724,89 +728,99 @@ function send_all() {
   calen("calensrc", caldata, "cal")
 
   function lastmonth(){
-      caldata.days = []
-      if (tmonth == 1){
-          tmonth = tmonth + 11;
-          tyear = tyear - 1;
-      } else {
-          tmonth = tmonth - 1;
-      }
-      insertdate(tyear, tmonth);
-      calen("calensrc", caldata, "cal")
-      canclick()
-      sl = seldays.length
-      cdl = caldata.days.length
-      
-      for (var i=0;i<sl;i++){
-        ymdchecks = seldays[i].split('-')
-        // console.log("tyear>>", tyear, "tmonth>>", tmonth,"\nymdchecks[0]",ymdchecks[0],"ymdchecks[1]",ymdchecks[1] )
-        // console.log(tyear == ymdchecks[0], tmonth == ymdchecks[1])
-        if (tyear == ymdchecks[0] && tmonth == ymdchecks[1]){
-          for( j=0; j<cdl; j++){
-            // console.log("ymdchecks[2]", ymdchecks[2], "caldata.days[j]", caldata.days[j])
-            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", ymdchecks[2] == caldata.days[j].day)
-            if (ymdchecks[2] == caldata.days[j].day){
-              console.log("caldata.days[j].day", caldata.days[j].day)
-            }
-          }
-
-        }
-      }
-      
+    caldata.days = []
+    if (tmonth == 1){
+        tmonth = tmonth + 11;
+        tyear = tyear - 1;
+    } else {
+        tmonth = tmonth - 1;
+    }
+    insertdate(tyear, tmonth);
+    calen("calensrc", caldata, "cal")
+    canclick()
+    selectCheck(selpracdays, selperfdays)
   }
-  function nextmonth(){
-      caldata.days = []
-      if (tmonth == 12){
-          tmonth = tmonth - 11;
-          tyear = tyear + 1;
-      } else {
-          tmonth = tmonth + 1;
-      }
-      insertdate(tyear, tmonth);
-      calen("calensrc", caldata, "cal")
-      canclick()
-      sl = seldays.length
-      cdl = caldata.days.length
-      
-      for (var i=0;i<sl;i++){
-        ymdchecks = seldays[i].split('-')
-        // console.log("tyear>>", tyear, "tmonth>>", tmonth,"\nymdchecks[0]",ymdchecks[0],"ymdchecks[1]",ymdchecks[1] )
-        // console.log(tyear == ymdchecks[0], tmonth == ymdchecks[1])
-        if (tyear == ymdchecks[0] && tmonth == ymdchecks[1]){
-          for( j=0; j<cdl; j++){
-            // console.log("ymdchecks[2]", ymdchecks[2], "caldata.days[j]", caldata.days[j])
-            // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", ymdchecks[2] == caldata.days[j].day)
-            if (ymdchecks[2] == caldata.days[j].day){
-              console.log("caldata.days[j].day", caldata.days[j].day)
-            }
-          }
 
-        }
-      }
-        
-      
+  function nextmonth(){
+    caldata.days = []
+    if (tmonth == 12){
+        tmonth = tmonth - 11;
+        tyear = tyear + 1;
+    } else {
+        tmonth = tmonth + 1;
+    }
+    insertdate(tyear, tmonth);
+    calen("calensrc", caldata, "cal")
+    canclick()
+    selectCheck(selpracdays, selperfdays)
   }
   
-  var seldays = [];
+  var selpracdays = [];
+  var selperfdays = [];
   function canclick(){
-      $(".cell").click(function(){
-          console.log($(this).attr("value"))
-          $this = $(this)
-          if ($this.attr("value") == '0'){
-              $this.css("background-color", "grey");
-              $this.attr("value", "1");
-              var selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
-              seldays.push(selday);
-              console.log(seldays)
-          } else {
-              $this.css("background-color", "white");
-              $this.attr("value", "0");
-              selday = $("#year").text() + "-" + $("#cmonth").text() + "-" + $(this).text();
-              delday = Number(seldays.indexOf(selday))
-              seldays.splice(delday, 1); 
-              console.log(seldays)
-          }
-      });
+    $(".cell").click(function(){
+        console.log($(this).attr("value"))
+        $this = $(this)
+        $year = $("#year")
+        $month = $("#cmonth")
+        
+        if ($this.attr("value") == '0'){
+            $this.css("background-color", 'LightGray');
+            $this.attr("value", "1");
+            selday = getDateForm($year.text(),$month.text(), $this.text())
+            selpracdays.push(selday);
+            console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+        } else if ($this.attr("value") == '1') {
+            $this.css("background-color", 'Gray');
+            $this.attr("value", "2");
+            selday = getDateForm($year.text(),$month.text(), $this.text())
+            selperfdays.push(selday)
+            delday = Number(selpracdays.indexOf(selday))
+            selpracdays.splice(delday, 1); 
+            console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+        } else {
+          $this.css("background-color", 'white');
+          $this.attr("value", "0");
+          selday = getDateForm($year.text(),$month.text(), $this.text())
+          delday = Number(selpracdays.indexOf(selday))
+          selperfdays.splice(delday, 1); 
+          console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+        }
+    });
+  }
+
+  function selectCheck(selpracdays, selperfdays){
+    pl = selpracdays.length
+    fl = selperfdays.length
+    for (i=0;i<pl;i++){
+      pdid = selpracdays[i];
+      $pdid = $(`#${pdid}`);
+      $pdid.attr('value', '1');
+      $pdid.css('background-color', 'LightGray');
+    }
+    for (j=0;j<fl;j++){
+      fdid = selperfdays[j];
+      $fdid = $(`#${fdid}`);
+      $fdid.attr('value', '2');
+      $fdid.css('background-color', 'Gray')
+    }
+  }
+
+  function getDateForm(year, month, date){
+    if (month < 10){
+      if (date < 10){
+        selday = year + "-0" + month + "-0" + date
+      } else {
+        selday = year + "-0" + month + "-" + date
+      }
+    } else {
+      if (date < 10){
+        selday = year + "-" + month + "-0" + date
+      } else {
+        selday = year + "-" + month + "-" + date
+      }
+    }
+    return selday
   }
 
 

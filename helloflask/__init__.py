@@ -25,8 +25,6 @@ app.config.update(
 ##### function #######################3\
 
 
-<<<<<<< HEAD
-=======
 @app.route('/nexturl')
 def next ():
     dt = {}
@@ -37,7 +35,6 @@ def next ():
 
 
 
->>>>>>> 9514cbabaf5918fccfe8325410fa03c530bd0cc3
 def check_area(data) :
     
     # 대전 = 충남 // 세종 = 충북 // 대구 = 경북 // 부산, 울산 == 경남, 광주 = 전남
@@ -77,13 +74,13 @@ def lesson():
 
 @app.route('/addboard/perform')
 def add_pboard():
-    userinfo = session.get('loginUser')
-    s_uid = userinfo["userid"]
     uid = request.args.get('uid')
     if not session.get('loginUser') :
         session['next'] = request.url
         return render_template('notlogin.html')
     
+    userinfo = session.get('loginUser')
+    s_uid = userinfo["userid"]
     if request.args.get('cmd') == 'u' and str(s_uid) == str(uid) :
         userinfo = session.get('loginUser')
         bid = request.args.get('bid')
