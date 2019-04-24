@@ -389,6 +389,7 @@ function send_all() {
   alldata["costume"] = radio_value()
   instruments =  send_hiddenform()
   alldata["instruments"] = instruments
+  
 
   $.ajax({
     url : "http://localhost:5000/sendboard",
@@ -561,13 +562,14 @@ function send_all() {
 
     var data = {"board_id" : "",
               "title" : $('#title').val(),
-              "duedate" : inputdate,
               "qualification" :$("#slt_grad").val(),
               "gen" : $('#slt_gen').val(),
               "money" : $('#money').val(),
               "practice_time" : $('#practice').val(),
+              "practice_sche" : psch.csch,
               "practice_date" : lts(selpracdays),
               "perform_time" : $('#perform').val(),
+              "perform_sche" : psch.fsch,
               "perform_date" : lts(selperfdays),
               // "costume" : $('#slt_gd').val(),
               "practice_address" : $('#prac_address').val(),
@@ -594,10 +596,8 @@ function send_all() {
     <div>연습날짜</div>
     {{#each spcd}}
     <div class="row" >
-      <span class="col-lg-5" style="float:left; margin: 5px 0px">
-      {{selpracday}}
-      </span>
-      <span class="col-lg-7" id="{{selpracday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-5" id="{{nselday}}_" style="float:left; margin: 5px 0px">{{selpracday}}</span>
+      <span class="col-lg-7" id="{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -606,10 +606,8 @@ function send_all() {
     <div>연주날짜</div>
     {{#each spfd}}
     <div class="row" >
-      <span class="col-lg-5" style="float:left; margin: 5px 0px">
-      {{selperfday}}
-      </span>
-      <span class="col-lg-7" id="{{selpracday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-5" id="{{nselday}}_" style="float:left; margin: 5px 0px">{{selperfday}}</span>
+      <span class="col-lg-7" id="{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -618,25 +616,25 @@ function send_all() {
 </script>
 <script id="selhmsrc" type="text/x-handlebars-template">
   {% raw %}
-  <select>
+  <select class="starthour">
     <option value="none" selected>--</option>
     {{#each hours}}
     <option value={{hour}}>{{hour}}</option>
     {{/each}}
   </select><b> :</b>
-  <select>
+  <select class="startminute">
     <option value="none" selected>--</option>
     {{#each minutes}}
     <option value={{minute}}>{{minute}}</option>
     {{/each}}
   </select><b> ~</b>
-  <select>
+  <select class="endhour">
     <option value="none" selected>--</option>
     {{#each hours}}
     <option value={{hour}}>{{hour}}</option>
     {{/each}}
   </select><b> :</b>
-  <select>
+  <select class="endminute">
     <option value="none" selected>--</option>
     {{#each minutes}}
     <option value={{minute}}>{{minute}}</option>
@@ -690,7 +688,6 @@ function send_all() {
   for (i=0; i<12; i++){
       hm.minutes.push({minute: i*5})
   }
-  console.log(hm)
   
   var monarr = [4, 6, 9, 11];
   // caldata 만들기
@@ -700,14 +697,13 @@ function send_all() {
     caldata.thismonth = thismonth
     addnulltd = Number(fir.getDay())
     // 평년
-    console.log(leafYearCheck(thisyear))
     if (leafYearCheck(thisyear) == false){
       if (monarr.includes(thismonth)){
         for (i=1-addnulltd; i<=30; i++){
           if (i<=0){
             caldata.days.push({day:""})
           } else{
-            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
        }
       } else if (thismonth == 2){
@@ -715,7 +711,7 @@ function send_all() {
           if (i<=0){
             caldata.days.push({day:""})
           } else {
-            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
         }
       } else {
@@ -723,7 +719,7 @@ function send_all() {
           if (i<=0){
             caldata.days.push({day:""})
           } else {
-            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
         }
       }
@@ -734,7 +730,7 @@ function send_all() {
           if (i<=0){
               caldata.days.push({day:""})
           } else {
-              caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+              caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
         }
       } else if (thismonth == 2){
@@ -742,7 +738,7 @@ function send_all() {
           if (i<=0){
             caldata.days.push({day:""})
           } else {
-            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
         }
       } else {
@@ -750,7 +746,7 @@ function send_all() {
           if (i<=0){
             caldata.days.push({day:""})
           } else {
-            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i, 0)});
           }
         }
       }
@@ -835,7 +831,6 @@ function send_all() {
   var selperfdays = [];
   function canclick(){
     $(".cell").click(function(){
-      console.log($(this).attr("value"))
       $this = $(this)
       $year = $("#year")
       $month = $("#cmonth")
@@ -843,16 +838,19 @@ function send_all() {
       if ($this.attr("value") == '0'){
         $this.css("background-color", 'DodgerBlue');
         $this.attr("value", "1");
-        selday = getDateForm($year.text(),$month.text(), $this.text())
-        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        nselday = getDateForm($year.text(),$month.text(), $this.text(), 1)
+        selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
+        sday = new Date(selday)
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
         selpracdays.push(selday);
-        hm.spcd.push({selpracday:hselday})
-        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+        hm.spcd.push({selpracday:hselday, nselday:nselday, sd:selday})
       } else if ($this.attr("value") == '1') {
         $this.css("background-color", 'Tomato');
         $this.attr("value", "2");
-        selday = getDateForm($year.text(),$month.text(), $this.text())
-        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        nselday = getDateForm($year.text(),$month.text(), $this.text(), 1)
+        selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
+        sday = new Date(selday)
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
         selperfdays.push(selday)
         delday = Number(selpracdays.indexOf(selday))
         jsondelday = hm.spcd.findIndex(function(item, i){
@@ -860,33 +858,38 @@ function send_all() {
         });
         selpracdays.splice(delday, 1); 
         hm.spcd.splice(jsondelday,1);
-        hm.spfd.push({selperfday:hselday})
-        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
+        hm.spfd.push({selperfday:hselday, nselday:nselday, sd:selday})
       } else {
         $this.css("background-color", 'white');
         $this.attr("value", "0");
-        selday = getDateForm($year.text(),$month.text(), $this.text())
-        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 "
+        selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
+        sday = new Date(selday)
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
         delday = Number(selpracdays.indexOf(selday))
         jsondelday = hm.spcd.findIndex(function(item, i){
           return item.selpracday === hselday
         });
         hm.spfd.splice(jsondelday,1);
         selperfdays.splice(delday, 1); 
-        console.log("selpracdays>>>>>>",selpracdays, "selperfdays>>>>>>" ,selperfdays)
       }
+      hm.spcd = hm.spcd.sort(function(a,b){return a.nselday-b.nselday} )
+      hm.spfd = hm.spfd.sort(function(a,b){return a.nselday-b.nselday} )
       calen("datesrc", hm, "seltime")
       hcl = hm.spcd.length
       hfl = hm.spfd.length
-      console.log(hm)
       for (i=0;i<hcl;i++){
-        calen("selhmsrc", hm, hm.spcd[i].selpracday)
+        calen("selhmsrc", hm, hm.spcd[i].nselday)
       };
       for (j=0; j<hfl;j++){
-        calen("selhmsrc", hm, hm.spfd[j].selperfday)
-        console.log(">>>>>>>>",hm.spfd[j].selperfday)
+        calen("selhmsrc", hm, hm.spfd[j].nselday)
       }
-      // calen("selhmsrc", hm, "selhm" )
+      for (k=0; k<hcl;k++){
+        bnselday = hm.spcd[k].nselday
+        if (bnselday != nselday){
+          
+        }
+      }
+      console.log($(`#${nselday}.starthour`))
     });
   }
 
@@ -907,27 +910,64 @@ function send_all() {
     }
   }
 
-  function getDateForm(year, month, date){
-    if (month < 10){
-      if (date < 10){
-        selday = year + "-0" + month + "-0" + date
+  function getDateForm(year, month, date, i){
+    if (i==0){
+      if (month < 10){
+        if (date < 10){
+          selday = year + "-0" + month + "-0" + date
+        } else {
+          selday = year + "-0" + month + "-" + date
+        }
       } else {
-        selday = year + "-0" + month + "-" + date
+        if (date < 10){
+          selday = year + "-" + month + "-0" + date
+        } else {
+          selday = year + "-" + month + "-" + date
+        }
       }
     } else {
-      if (date < 10){
-        selday = year + "-" + month + "-0" + date
+      if (month < 10){
+        if (date < 10){
+          selday = year + "0" + month + "0" + date
+        } else {
+          selday = year + "0" + month + date
+        }
       } else {
-        selday = year + "-" + month + "-" + date
+        if (date < 10){
+          selday = year + month + "0" + date
+        } else {
+          selday = year + month + date
+        }
       }
     }
     return selday
   }
+  function ntd(daynum){
+    var daynums = {0:"일", 1:"월", 2:"화", 3:"수", 4:"목", 5:"금", 6:"토"}
+    return daynums[daynum]
+  }
+  var psch ={}
   function modalClose(){
     cl = selpracdays.length
     fl = selperfdays.length
     $("#practice").attr('value', `${cl}`);
     $("#perform").attr('value', `${fl}`);
+    spcd = hm.spcd
+    spfd = hm.spfd
+    var pracschlst =[]
+    var perfschlst =[]
+    for (i=0;i<spcd.length;i++){
+      pracsch = spcd[i].sd + "  " + $('.starthour').eq(i).val() + ":" + $('.startminute').eq(i).val() + "~" + $('.endhour').eq(i).val() + ":" + $('.endminute').eq(i).val()
+      pracschlst.push(pracsch)
+    }
+    for (j=spcd.length;j<spcd.length +spfd.length;j++){
+      perfsch = spfd[j-spcd.length].sd + "  " + $('.starthour').eq(j).val() + ":" + $('.startminute').eq(j).val() + "~" + $('.endhour').eq(j).val() + ":" + $('.endminute').eq(j).val()
+      perfschlst.push(perfsch)
+    }
+    pracschlst = lts(pracschlst)
+    perfschlst = lts(perfschlst)
+    psch={csch:pracschlst, fsch:perfschlst}
+    console.log(psch)    
   }
   function lts(lst){
     var nlst =[]
