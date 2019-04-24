@@ -113,9 +113,9 @@
               </div>
               <div class="modal-body">
                 <div class='row'>
-                  <div id="cal" class="col-lg-6" style="border-right: 1px solid lightgrey ">
+                  <div id="cal" class="col-lg-7" style="border-right: 1px solid lightgrey ">
                   </div>
-                  <div id='seltime' class='col-lg-6' style="font-size: 15px; text-align: left">
+                  <div id='seltime' class='col-lg-5' style="font-size: 15px; text-align: left">
                   </div>
                 </div>
               </div>
@@ -593,11 +593,11 @@ function send_all() {
     {% raw %}
     <div>연습날짜</div>
     {{#each spcd}}
-    <div>
-      <span style="float:left; margin: 5px 0px">
+    <div class="row" >
+      <span class="col-lg-5" style="float:left; margin: 5px 0px">
       {{selpracday}}
       </span>
-      <span id="{{selpracday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-7" id="{{selpracday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -605,11 +605,11 @@ function send_all() {
   <div id="selperftime">
     <div>연주날짜</div>
     {{#each spfd}}
-    <div>
-      <span style="float:left; margin: 5px 0px">
+    <div class="row" >
+      <span class="col-lg-5" style="float:left; margin: 5px 0px">
       {{selperfday}}
       </span>
-      <span id="{{selperfday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-7" id="{{selpracday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -695,107 +695,107 @@ function send_all() {
   var monarr = [4, 6, 9, 11];
   // caldata 만들기
   function insertdate(thisyear, thismonth){
-      var fir = new Date(thisyear+"-"+thismonth+"-1")
-      caldata.thisyear = thisyear
-      caldata.thismonth = thismonth
-      addnulltd = Number(fir.getDay())
-      // 평년
-      console.log(leafYearCheck(thisyear))
-      if (leafYearCheck(thisyear) == false){
-          if (monarr.includes(thismonth)){
-              for (i=1-addnulltd; i<=30; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
-          } else if (thismonth == 2){
-              for (i=1-addnulltd; i<=28; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
+    var fir = new Date(thisyear+"-"+thismonth+"-1")
+    caldata.thisyear = thisyear
+    caldata.thismonth = thismonth
+    addnulltd = Number(fir.getDay())
+    // 평년
+    console.log(leafYearCheck(thisyear))
+    if (leafYearCheck(thisyear) == false){
+      if (monarr.includes(thismonth)){
+        for (i=1-addnulltd; i<=30; i++){
+          if (i<=0){
+            caldata.days.push({day:""})
           } else{
-              for (i=1-addnulltd; i<=31; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
           }
-      // 윤년
-      }else{
-          if (monarr.includes(thismonth)){
-              for (i=1-addnulltd; i<=30; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
-          } else if (thismonth == 2){
-              for (i=1-addnulltd; i<=29; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
-          } else{
-              for (i=1-addnulltd; i<=31; i++){
-                  if (i<=0){
-                      caldata.days.push({day:""})
-                  } else{
-                      caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
-                  }
-              }
+       }
+      } else if (thismonth == 2){
+        for (i=1-addnulltd; i<=28; i++){
+          if (i<=0){
+            caldata.days.push({day:""})
+          } else {
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
           }
+        }
+      } else {
+        for (i=1-addnulltd; i<=31; i++){
+          if (i<=0){
+            caldata.days.push({day:""})
+          } else {
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+          }
+        }
       }
-      return caldata
+// 윤년
+    }else{
+      if (monarr.includes(thismonth)){
+        for (i=1-addnulltd; i<=30; i++){
+          if (i<=0){
+              caldata.days.push({day:""})
+          } else {
+              caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+          }
+        }
+      } else if (thismonth == 2){
+        for (i=1-addnulltd; i<=29; i++){
+          if (i<=0){
+            caldata.days.push({day:""})
+          } else {
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+          }
+        }
+      } else {
+        for (i=1-addnulltd; i<=31; i++){
+          if (i<=0){
+            caldata.days.push({day:""})
+          } else {
+            caldata.days.push({day: getDateForm(thisyear, thismonth, i)});
+          }
+        }
+      }
+    }
+    return caldata
   }
   // 연도, 월 반영한 caldata 생성
   caldata = insertdate(tyear,tmonth)
   // tbody부분 그리는 helper 등록
   Handlebars.registerHelper("mod7", function(days, options){
-      var html = ""
-      for (var i=0, l=days.length; i<l; i++){
-          fdate = options.fn(days[i])
-          rdate = fdate.substr(8,2)
-          if (rdate < 10){
-            rdate = rdate.substr(1,1)
-          }
-          if (i % 7 == 0 ){
-              html = html + "<tr style='margin: 20px 0px'>" + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
-          }else if( i % 7 == 6){
-              html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>" + "</tr>"
-          }else{
-              html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
-          }
+    var html = ""
+    for (var i=0, l=days.length; i<l; i++){
+      fdate = options.fn(days[i])
+      rdate = fdate.substr(8,2)
+      if (rdate < 10){
+        rdate = rdate.substr(1,1)
       }
-      return html
+      if (i % 7 == 0 ){
+        html = html + "<tr style='margin: 20px 0px'>" + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
+      }else if( i % 7 == 6){
+        html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>" + "</tr>"
+      }else{
+        html = html + "<td id='" + fdate + "'class='cell' value='0'>" + rdate + "</td>"
+      }
+    }
+    return html
   });
   // 윤년체크
   function leafYearCheck(thisyear){
-      var int_year;
-      int_year = Number(thisyear);
-      var lyc = 0
-      if( int_year%4 == 0 ){
-          if( int_year%100 == 0 ){
-              if( int_year%400 == 0 ){
-                  return true; 
-              }
-              return false;
-          }
-          return true;        
+    var int_year;
+    int_year = Number(thisyear);
+    var lyc = 0
+    if( int_year%4 == 0 ){
+      if( int_year%100 == 0 ){
+        if( int_year%400 == 0 ){
+          return true; 
+        }
+        return false;
       }
-      return false;
+      return true;        
+    }
+    return false;
   }
   function calen(sourceId, caldata, resultId){
-      var source = document.getElementById(sourceId).innerHTML
+      var source = document.getElementById(sourceId).innerHTML;
       var template = Handlebars.compile(source);
       var html = template(caldata);
       document.getElementById(resultId).innerHTML = html;
