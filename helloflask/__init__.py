@@ -7,12 +7,10 @@ from helloflask.init_db import db_session
 from sqlalchemy.orm import subqueryload, joinedload, relationship, backref
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import ForeignKey, func
-from flask_caching import Cache
 
 
 
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 app.debug = True
 app.config['JSON_AS_ASCII'] = False
 # app.jinja_env.trim_blocks = True
@@ -100,13 +98,13 @@ def lesson():
 
 @app.route('/addboard/perform')
 def add_pboard():
-    userinfo = session.get('loginUser')
-    s_uid = userinfo["userid"]
     uid = request.args.get('uid')
     if not session.get('loginUser') :
         session['next'] = request.url
         return render_template('notlogin.html')
     
+    userinfo = session.get('loginUser')
+    s_uid = userinfo["userid"]
     if request.args.get('cmd') == 'u' and str(s_uid) == str(uid) :
         userinfo = session.get('loginUser')
         bid = request.args.get('bid')
