@@ -596,8 +596,8 @@ function send_all() {
     <div>연습날짜</div>
     {{#each spcd}}
     <div class="row" >
-      <span class="col-lg-5" id="{{nselday}}_" style="float:left; margin: 5px 0px">{{selpracday}}</span>
-      <span class="col-lg-7" id="{{nselday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-5" id="prac{{nselday}}_" style="float:left; margin: 5px 0px">{{selpracday}}</span>
+      <span class="col-lg-7" id="prac{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -606,8 +606,8 @@ function send_all() {
     <div>연주날짜</div>
     {{#each spfd}}
     <div class="row" >
-      <span class="col-lg-5" id="{{nselday}}_" style="float:left; margin: 5px 0px">{{selperfday}}</span>
-      <span class="col-lg-7" id="{{nselday}}" style="float:right; margin: 5px 0px">
+      <span class="col-lg-5" id="perf{{nselday}}_" style="float:left; margin: 5px 0px">{{selperfday}}</span>
+      <span class="col-lg-7" id="perf{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -616,25 +616,25 @@ function send_all() {
 </script>
 <script id="selhmsrc" type="text/x-handlebars-template">
   {% raw %}
-  <select class="starthour">
+  <select class="starthour" onchange="savetime(this,0)">
     <option value="none" selected>--</option>
     {{#each hours}}
     <option value={{hour}}>{{hour}}</option>
     {{/each}}
   </select><b> :</b>
-  <select class="startminute">
+  <select class="startminute" onchange="savetime(this,1)">
     <option value="none" selected>--</option>
     {{#each minutes}}
     <option value={{minute}}>{{minute}}</option>
     {{/each}}
   </select><b> ~</b>
-  <select class="endhour">
+  <select class="endhour" onchange="savetime(this,2)">
     <option value="none" selected>--</option>
     {{#each hours}}
     <option value={{hour}}>{{hour}}</option>
     {{/each}}
   </select><b> :</b>
-  <select class="endminute">
+  <select class="endminute" onchange="savetime(this,3)">
     <option value="none" selected>--</option>
     {{#each minutes}}
     <option value={{minute}}>{{minute}}</option>
@@ -680,13 +680,22 @@ function send_all() {
     hours: [],
     minutes: [],
     spcd: [],
-    spfd: []
+    spfd: [],
+    time: []
   };
   for (i=0; i<24; i++){
+    if (i<10){
+      hm.hours.push({hour:"0"+i})
+    } else {
       hm.hours.push({hour:i})
+    }
   }
   for (i=0; i<12; i++){
+    if (i<2){
+      hm.minutes.push({minute: "0" + i*5})
+    } else {
       hm.minutes.push({minute: i*5})
+    }
   }
   
   var monarr = [4, 6, 9, 11];
@@ -836,7 +845,7 @@ function send_all() {
       $month = $("#cmonth")
       
       if ($this.attr("value") == '0'){
-        $this.css("background-color", 'DodgerBlue');
+        $this.addClass("prac");
         $this.attr("value", "1");
         nselday = getDateForm($year.text(),$month.text(), $this.text(), 1)
         selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
@@ -845,23 +854,20 @@ function send_all() {
         selpracdays.push(selday);
         hm.spcd.push({selpracday:hselday, nselday:nselday, sd:selday})
       } else if ($this.attr("value") == '1') {
-        $this.css("background-color", 'Tomato');
+        $this.removeClass("prac");
+        $this.addClass("pracperf");
         $this.attr("value", "2");
         nselday = getDateForm($year.text(),$month.text(), $this.text(), 1)
         selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
         sday = new Date(selday)
         hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
         selperfdays.push(selday)
-        delday = Number(selpracdays.indexOf(selday))
-        jsondelday = hm.spcd.findIndex(function(item, i){
-          return item.selpracday === hselday
-        });
-        selpracdays.splice(delday, 1); 
-        hm.spcd.splice(jsondelday,1);
         hm.spfd.push({selperfday:hselday, nselday:nselday, sd:selday})
-      } else {
-        $this.css("background-color", 'white');
-        $this.attr("value", "0");
+      } else if ($this.attr("value") == '2') {
+        $this.removeClass("pracperf");
+        $this.addClass('perf');
+        $this.attr("value", "3");
+        nselday = getDateForm($year.text(),$month.text(), $this.text(), 1)
         selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
         sday = new Date(selday)
         hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
@@ -869,8 +875,22 @@ function send_all() {
         jsondelday = hm.spcd.findIndex(function(item, i){
           return item.selpracday === hselday
         });
+        selpracdays.splice(delday, 1); 
+        hm.spcd.splice(jsondelday,1);
+      } else {
+        $this.removeClass("perf");
+        $this.attr("value", "0");
+        selday = getDateForm($year.text(),$month.text(), $this.text(), 0)
+        sday = new Date(selday)
+        hselday = $year.text() + "년 " + $month.text() + "월 " + $this.text() + "일 " + " (" + ntd(sday.getDay()) + ")"
+        delday = Number(selperfdays.indexOf(selday))
+        jsondelday = hm.spfd.findIndex(function(item, i){
+          return item.selperfday === hselday
+        });
+        console.log(jsondelday)
         hm.spfd.splice(jsondelday,1);
-        selperfdays.splice(delday, 1); 
+        selperfdays.splice(delday, 1);
+        console.log(hm)
       }
       hm.spcd = hm.spcd.sort(function(a,b){return a.nselday-b.nselday} )
       hm.spfd = hm.spfd.sort(function(a,b){return a.nselday-b.nselday} )
@@ -878,18 +898,29 @@ function send_all() {
       hcl = hm.spcd.length
       hfl = hm.spfd.length
       for (i=0;i<hcl;i++){
-        calen("selhmsrc", hm, hm.spcd[i].nselday)
+        ckey = "prac" + hm.spcd[i].nselday
+        calen("selhmsrc", hm, ckey)
+        $ckey = $(`#${ckey}`)
+        if (hm.time[ckey] == undefined){
+        } else {
+          $ckey.children('.starthour').val(hm.time[ckey][0]);
+          $ckey.children('.startminute').val(hm.time[ckey][1]);
+          $ckey.children('.endhour').val(hm.time[ckey][2]);
+          $ckey.children('.endminute').val(hm.time[ckey][3]);
+        }
       };
       for (j=0; j<hfl;j++){
-        calen("selhmsrc", hm, hm.spfd[j].nselday)
-      }
-      for (k=0; k<hcl;k++){
-        bnselday = hm.spcd[k].nselday
-        if (bnselday != nselday){
-          
+        fkey = "perf" + hm.spfd[j].nselday
+        calen("selhmsrc", hm, fkey)
+        $fkey = $(`#${fkey}`)
+        if (hm.time[fkey] == undefined){
+        } else {
+          $fkey.children('.starthour').val(hm.time[fkey][0]);
+          $fkey.children('.startminute').val(hm.time[fkey][1]);
+          $fkey.children('.endhour').val(hm.time[fkey][2]);
+          $fkey.children('.endminute').val(hm.time[fkey][3]);
         }
       }
-      console.log($(`#${nselday}.starthour`))
     });
   }
 
@@ -946,6 +977,27 @@ function send_all() {
     var daynums = {0:"일", 1:"월", 2:"화", 3:"수", 4:"목", 5:"금", 6:"토"}
     return daynums[daynum]
   }
+  function savetime(sel,i){
+    theday = $(sel).parent().attr('id');
+    console.log(hm.time[theday])
+    if (hm.time[theday] == undefined){
+      hm.time[theday]={0:'--',1:'--',2:'--',3:'--'}  
+    }
+    if (i == 0){
+      hm.time[theday][0]=sel.value;
+      console.log("this.val0",hm.time[theday][0]);
+    } else if (i == 1) {
+      hm.time[theday][1]=sel.value;
+      console.log("this.val0",hm.time[theday][1]);
+    } else if (i == 2) {
+      hm.time[theday][2]=sel.value;
+      console.log("this.val0",hm.time[theday][2]);
+    } else {
+      hm.time[theday][3]=sel.value;
+      console.log("this.val0",hm.time[theday][3]);
+    }
+    console.log(hm.time[theday])
+  }
   var psch ={}
   function modalClose(){
     cl = selpracdays.length
@@ -957,11 +1009,11 @@ function send_all() {
     var pracschlst =[]
     var perfschlst =[]
     for (i=0;i<spcd.length;i++){
-      pracsch = spcd[i].sd + "  " + $('.starthour').eq(i).val() + ":" + $('.startminute').eq(i).val() + "~" + $('.endhour').eq(i).val() + ":" + $('.endminute').eq(i).val()
+      pracsch = spcd[i].sd + " " + $('.starthour').eq(i).val() + ":" + $('.startminute').eq(i).val() + "~" + $('.endhour').eq(i).val() + ":" + $('.endminute').eq(i).val()
       pracschlst.push(pracsch)
     }
     for (j=spcd.length;j<spcd.length +spfd.length;j++){
-      perfsch = spfd[j-spcd.length].sd + "  " + $('.starthour').eq(j).val() + ":" + $('.startminute').eq(j).val() + "~" + $('.endhour').eq(j).val() + ":" + $('.endminute').eq(j).val()
+      perfsch = spfd[j-spcd.length].sd + " " + $('.starthour').eq(j).val() + ":" + $('.startminute').eq(j).val() + "~" + $('.endhour').eq(j).val() + ":" + $('.endminute').eq(j).val()
       perfschlst.push(perfsch)
     }
     pracschlst = lts(pracschlst)
