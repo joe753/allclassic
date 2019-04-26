@@ -26,19 +26,7 @@
             <input type="text" class="form-control" maxlength="35" oninput="control_textlength(this)" id="title" name ="title" placeholder="제목을 입력하여 주세요." value="테스트 " required>
         </div>
     </div>
-    
-
-     <!------- Line 2 -------->
-    <div class="form-row my-2">
-      <div class="col-lg-1 mt-2 text-left font-weight-bold" >
-          기간
-      </div>
-      <div id="detail" class="form-row my-2">
-        <!-- <span id="datstr"></span> -->
-      </div>
-    </div>
-
-
+  
     <!----------------- Line 3  ------------------------->
     <div class="form-row my-2">
       <div class="col-lg-1.5 text-center my-2 mx-1 font-weight-bold">
@@ -113,9 +101,9 @@
               </div>
               <div class="modal-body">
                 <div class='row'>
-                  <div id="cal" class="col-lg-7" style="border-right: 1px solid lightgrey ">
+                  <div id="cal" class="col-lg-6" style="border-right: 1px solid lightgrey ">
                   </div>
-                  <div id='seltime' class='col-lg-5' style="font-size: 15px; text-align: left">
+                  <div id='seltime' class='col-lg-6' style="font-size: 15px; text-align: left">
                   </div>
                 </div>
               </div>
@@ -567,10 +555,10 @@ function send_all() {
               "money" : $('#money').val(),
               "practice_time" : $('#practice').val(),
               "practice_sche" : psch.csch,
-              "practice_date" : lts(selpracdays),
+              // "practice_date" : lts(selpracdays),
               "perform_time" : $('#perform').val(),
               "perform_sche" : psch.fsch,
-              "perform_date" : lts(selperfdays),
+              // "perform_date" : lts(selperfdays),
               // "costume" : $('#slt_gd').val(),
               "practice_address" : $('#prac_address').val(),
               "perform_address" : $('#perf_address').val(),
@@ -590,23 +578,27 @@ function send_all() {
 
 <!-- ============================ Handle Bar Year========================================== ========================-->
 <script id="datesrc" type="text/x-handlebars-template">
-
-  <div id="selpractime" style="border-bottom:1px solid rgb(216, 213, 213);padding-bottom:10px; height:213px">
+<!-- 모달 오른쪽 위 -->
+  <div id="selpractime" style="border-bottom:1px solid rgb(216, 213, 213);padding-bottom:10px; height:auto;">
     {% raw %}
     <div>연습날짜</div>
     {{#each spcd}}
     <div class="row" >
-      <span class="col-lg-5" id="prac{{nselday}}_" style="float:left; margin: 5px 0px">{{selpracday}}</span>
+      <button id="cancel{{nselday}}" class="btn btn-outline-danger" style="padding:0px 6px; color:grey; border:1px solid grey;">X</button>
+      <span class="col-lg-4" id="prac{{nselday}}_" style="float:left; margin: 7px 0px 5px 0px;">{{selpracday}}</span>
       <span class="col-lg-7" id="prac{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
   </div>
+
+<!-- 모달 오른쪽 아래 -->
   <div id="selperftime">
     <div>연주날짜</div>
     {{#each spfd}}
     <div class="row" >
-      <span class="col-lg-5" id="perf{{nselday}}_" style="float:left; margin: 5px 0px">{{selperfday}}</span>
+      <button class="btn btn-outline-danger" style="padding:0px 6px; ">X</button>
+      <span class="col-lg-4" id="perf{{nselday}}_" style="float:left; margin: 7px 0px 5px 0px;">{{selperfday}}</span>
       <span class="col-lg-7" id="perf{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
@@ -614,6 +606,8 @@ function send_all() {
   </div>
   {% endraw %}
 </script>
+
+<!-- 날짜 확정 후 시간선택 셀렉트박스 삽입 -->
 <script id="selhmsrc" type="text/x-handlebars-template">
   {% raw %}
   <select class="starthour" onchange="savetime(this,0)">
@@ -642,6 +636,8 @@ function send_all() {
   </select>
   {% endraw %}
 </script>
+
+<!-- 모달 왼쪽 -->
 <script id="calensrc" type="text/x-handlebars-template">
   <table id="calendar"  style="width:100%; height:350px;">
     {% raw %}
@@ -931,13 +927,18 @@ function send_all() {
       pdid = selpracdays[i];
       $pdid = $(`#${pdid}`);
       $pdid.attr('value', '1');
-      $pdid.css('background-color', 'DodgerBlue');
+      $pdid.addClass('prac');
     }
     for (j=0;j<fl;j++){
       fdid = selperfdays[j];
       $fdid = $(`#${fdid}`);
-      $fdid.attr('value', '2');
-      $fdid.css('background-color', 'Tomato')
+      if ($fdid.attr('value') == 1){
+        $fdid.addClass('pracperf');
+        $fdid.attr('value', '2')
+      } else {
+        $fdid.attr('value', '3');
+        $fdid.addClass('perf')
+      }
     }
   }
 
