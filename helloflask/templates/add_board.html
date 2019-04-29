@@ -101,9 +101,9 @@
               </div>
               <div class="modal-body">
                 <div class='row'>
-                  <div id="cal" class="col-lg-6" style="border-right: 1px solid lightgrey ">
+                  <div id="cal" class="col-lg-6 col-md-6" style="border-right: 1px solid lightgrey ">
                   </div>
-                  <div id='seltime' class='col-lg-6' style="font-size: 15px; text-align: left">
+                  <div id='seltime' class='col-lg-6 col-md-6' style="font-size: 15px; text-align: left">
                   </div>
                 </div>
               </div>
@@ -579,14 +579,14 @@ function send_all() {
 <!-- ============================ Handle Bar Year========================================== ========================-->
 <script id="datesrc" type="text/x-handlebars-template">
 <!-- 모달 오른쪽 위 -->
-  <div id="selpractime" style="border-bottom:1px solid rgb(216, 213, 213);padding-bottom:10px; height:auto;">
+  <div id="selpractime" style="border-bottom:1px solid rgb(216, 213, 213);padding-bottom:10px; height:50%;">
     {% raw %}
     <div>연습날짜</div>
     {{#each spcd}}
     <div class="row" >
-      <button id="cancel{{nselday}}" class="btn btn-outline-danger" style="padding:0px 6px; color:grey; border:1px solid grey;">X</button>
-      <span class="col-lg-4" id="prac{{nselday}}_" style="float:left; margin: 7px 0px 5px 0px;">{{selpracday}}</span>
-      <span class="col-lg-7" id="prac{{nselday}}" style="float:right; margin: 5px 0px">
+      <button id="cancelprac{{nselday}}" class="btn btn-outline-danger" onclick="removeDay(this.id, 0)" style="padding:0px 6px; color:grey; border:1px solid grey;">X</button>
+      <span class="col-lg-4 " id="prac{{nselday}}_" style="float:left; margin: 7px 0px 5px 0px;">{{selpracday}}</span>
+      <span class="col-lg-7 " id="prac{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
     </div>
     {{/each}}
@@ -597,7 +597,7 @@ function send_all() {
     <div>연주날짜</div>
     {{#each spfd}}
     <div class="row" >
-      <button class="btn btn-outline-danger" style="padding:0px 6px; ">X</button>
+      <button id="cancelperf{{nselday}}" class="btn btn-outline-danger" onclick="removeDay(this.id, 1)"style="padding:0px 6px; color:grey; border:1px solid grey;">X</button>
       <span class="col-lg-4" id="perf{{nselday}}_" style="float:left; margin: 7px 0px 5px 0px;">{{selperfday}}</span>
       <span class="col-lg-7" id="perf{{nselday}}" style="float:right; margin: 5px 0px">
       </span>
@@ -920,6 +920,87 @@ function send_all() {
     });
   }
 
+  function removeDay(id, i){
+    selday = id.substr(10,4) + "-" + id.substr(14,2) + "-" + id.substr(16,2);
+    sday = new Date(selday)
+    nselday = id.substr(10,8);
+    hselday = id.substr(10,4) + "년 " + id.substr(14,2) + "월 " + id.substr(16,2) + "일 " + " (" + ntd(sday.getDay()) + ")"
+    $tid = $(`#${selday}`)
+    $tid.attr('value', '0');
+    whatclass = $tid.attr('class').slice(5)
+    if (whatclass == 'prac'){
+      $tid.removeClass('prac')
+      $tid.attr('value','0')
+      delday = Number(selpracdays.indexOf(selday))
+      jsondelday = hm.spcd.findIndex(function(item, i){
+        return item.sd === selday
+      });
+      selpracdays.splice(delday, 1); 
+      hm.spcd.splice(jsondelday,1);
+      console.log($tid.attr('class'))
+    } else if ( whatclass == 'pracperf'){
+      if (i == 0){
+        $tid.removeClass('pracperf')
+        $tid.addClass('perf')
+        $tid.attr('value','3')
+        delday = Number(selpracdays.indexOf(selday))
+        jsondelday = hm.spcd.findIndex(function(item, i){
+          return item.sd === selday
+        });
+        selpracdays.splice(delday, 1); 
+        hm.spcd.splice(jsondelday,1);
+      } else {
+        $tid.removeClass('pracperf')
+        $tid.addClass('prac')
+        $tid.attr('value','1')
+        delday = Number(selperfdays.indexOf(selday))
+        jsondelday = hm.spfd.findIndex(function(item, i){
+          return item.sd === selday
+        });
+        selperfdays.splice(delday, 1); 
+        hm.spfd.splice(jsondelday,1);
+      }
+    } else {
+      $tid.removeClass('perf')
+      $tid.attr('value','0')
+      delday = Number(selperfdays.indexOf(selday))
+      jsondelday = hm.spfd.findIndex(function(item, i){
+        return item.sd === selday
+      });
+      selperfdays.splice(delday, 1); 
+      hm.spfd.splice(jsondelday,1);
+    }
+    hm.spcd = hm.spcd.sort(function(a,b){return a.nselday-b.nselday} )
+    hm.spfd = hm.spfd.sort(function(a,b){return a.nselday-b.nselday} )
+    calen("datesrc", hm, "seltime")
+    hcl = hm.spcd.length
+    hfl = hm.spfd.length
+    for (i=0;i<hcl;i++){
+      ckey = "prac" + hm.spcd[i].nselday
+      calen("selhmsrc", hm, ckey)
+      $ckey = $(`#${ckey}`)
+      if (hm.time[ckey] == undefined){
+      } else {
+        $ckey.children('.starthour').val(hm.time[ckey][0]);
+        $ckey.children('.startminute').val(hm.time[ckey][1]);
+        $ckey.children('.endhour').val(hm.time[ckey][2]);
+        $ckey.children('.endminute').val(hm.time[ckey][3]);
+      }
+    };
+    for (j=0; j<hfl;j++){
+      fkey = "perf" + hm.spfd[j].nselday
+      calen("selhmsrc", hm, fkey)
+      $fkey = $(`#${fkey}`)
+      if (hm.time[fkey] == undefined){
+      } else {
+        $fkey.children('.starthour').val(hm.time[fkey][0]);
+        $fkey.children('.startminute').val(hm.time[fkey][1]);
+        $fkey.children('.endhour').val(hm.time[fkey][2]);
+        $fkey.children('.endminute').val(hm.time[fkey][3]);
+      }
+    }
+  }
+
   function selectCheck(selpracdays, selperfdays){
     pl = selpracdays.length
     fl = selperfdays.length
@@ -978,27 +1059,23 @@ function send_all() {
     var daynums = {0:"일", 1:"월", 2:"화", 3:"수", 4:"목", 5:"금", 6:"토"}
     return daynums[daynum]
   }
+
   function savetime(sel,i){
     theday = $(sel).parent().attr('id');
-    console.log(hm.time[theday])
     if (hm.time[theday] == undefined){
       hm.time[theday]={0:'--',1:'--',2:'--',3:'--'}  
     }
     if (i == 0){
       hm.time[theday][0]=sel.value;
-      console.log("this.val0",hm.time[theday][0]);
     } else if (i == 1) {
       hm.time[theday][1]=sel.value;
-      console.log("this.val0",hm.time[theday][1]);
     } else if (i == 2) {
       hm.time[theday][2]=sel.value;
-      console.log("this.val0",hm.time[theday][2]);
     } else {
       hm.time[theday][3]=sel.value;
-      console.log("this.val0",hm.time[theday][3]);
     }
-    console.log(hm.time[theday])
   }
+
   var psch ={}
   function modalClose(){
     cl = selpracdays.length
