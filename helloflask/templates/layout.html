@@ -239,7 +239,7 @@
     <div id="main" class="container" style="padding-left : 0px; padding-right: 0px;">
 
       <!--Navbar-->
-    <div class="row  my-3 mb-4" style="background-color:  rgb(247, 225, 167)">
+    <div id="middlebar" class="row  my-3 mb-4" style="background-color:  rgb(247, 225, 167)">
       <div class=" mt-3 ml-3 text-white font-weight-bold" style="font-size:18px; width: 7.833333%">
         상세검색
       </div>
@@ -324,9 +324,12 @@
  
       
       <!--/.Navbar-->
+      {% block mypage %}
+      {% endblock %}
       <section class="text-center mb-4">
-          <div class=" row wow fadeIn ">
-              <div class="col-lg-2 text-left" style="padding-left : 0px;">
+          <div id="section" class=" row wow fadeIn ">
+            
+              <div id="sidebar" class="col-lg-2 text-left" style="padding-left : 0px;">
                 <nav class="nav flex-column  lighten-3 py-4 mb-r font-weight-bold z-depth-1 ">
                   
                   <h5>
@@ -367,8 +370,7 @@
                     </a>
                 </nav>
               </div>
-              <div class="col-lg-10">
-                
+              <div id="mainblock" class="col-lg-10">
                   {% block section %}
 
                   {% endblock %}

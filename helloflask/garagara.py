@@ -4,13 +4,12 @@ from random import randrange
 import datetime, time
 
 def random_date():
-    random_days = randrange(int_delta)
+    random_days = randrange(day_delta)
     return d1 + datetime.timedelta(days=random_days)
 
-d1 = datetime.datetime.strptime('2019/4/16', '%Y/%m/%d')
-d2 = datetime.datetime.strptime('2021/12/31', '%Y/%m/%d')
-int_delta = (d2 - d1).days
-
+d1 = datetime.datetime.strptime('2019-4-16 00:00', '%Y-%m-%d')
+d2 = datetime.datetime.strptime('2021-12-31 11:59', '%Y-%m-%d')
+day_delta = (d2 - d1).days
 places = ["서울","경기","인천","강원","충북", "세종","충남", "대전", "대구", "경북", "경남", "부산", "울산", "전북", "전남","광주","제주"]
 perftitles = ["유치원", "예술의 전당", "웨딩", "워커힐 호텔", "기업행사", "양재 엘타워", "서울스프링페스티벌", "엘지아트센터", "롯데콘서트홀", "라움아트센터", "대구 콘서트하우스","인천아트센터"]
 gens = ["0","1","2","3"]

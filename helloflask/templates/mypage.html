@@ -1,0 +1,223 @@
+{% extends "layout.html" %}
+
+{% block mypage %}
+<div class="container" style="width:80%">
+<div id="input_stbar" class="row my-3"></div>
+
+<div class="row">
+    <div class="col-lg-6" style="padding: 0px 12px 0px 0px; margin-top : 20px;">
+        <div class="card" style="height: 18rem; ">
+            <div style="width:100%">
+                <div style="width:35%; float:left;">
+                    <div class="my-3 font-weight-bold" style="font-size : 20px; margin-left:30px;">
+                        기본 프로필
+                    </div>
+                    <div class="mt-4" style="margin-left : 30px;">
+                        <img src="../static/img/user_img/no_img.png" class= "rounded-circle" style="height:100px;" >
+                    </div>
+                    <div class="ml-4 mt-5">
+                        <button class="btn font-weight-bold" type="button" style="border : 2px solid ;border-color: rgb(85, 85, 85); color : rgb(0, 0, 0); background-color : white; font-size:14px;">수정</button>
+                    </div>
+                </div>
+                <div style="width:65%; float:right">
+                    <div class="row ml-2">
+                        <div style="width : 30%">
+                            <div style="height:60px;">
+                            </div>
+                            <div class="my-3 ml-4 font-weight-bold" style="font-size : 14px;">
+                                아이디
+                            </div>
+                            <div class="my-3 ml-4 font-weight-bold" style="font-size : 14px;">
+                                닉네임
+                            </div>
+                            <div class="my-3 ml-4 font-weight-bold" style="font-size : 14px;">
+                                휴대전화
+                            </div>
+                            <div class="my-3 ml-4 font-weight-bold" style="font-size : 14px;">
+                                주소
+                            </div>
+                        </div>
+                        <div style="width : 70%">
+                            <div style="height:60px;">
+                            </div>
+                            <div class="my-3 ml-4 " style="font-size : 14px;">
+                                joe753@naver.com
+                            </div>
+                            <div class="my-3 ml-4 " style="font-size : 14px;">
+                                운영자새끼
+                            </div>
+                            <div class="my-3 ml-4 " style="font-size : 14px;">
+                                010-4669-****
+                            </div>
+                            <div class="my-3 ml-4 " style="font-size : 14px;">
+                                서울
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6" style="padding: 0px 0px 0px 12px; margin-top : 20px;">
+        <div class="card" style="height: 18rem; ">
+            <div style="width:100%">
+                <div class="row my-3 font-weight-bold" style="font-size : 20px; margin-left:30px;">
+                    연주자 회원정보
+                </div>
+                <div class="row" style="margin-top : 35px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        전용 계좌
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        신한 &nbsp; 110-35*-******
+                    </div>
+                </div>
+                <div class="row" style="margin-top : 12px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        최종 학력
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        대학교 졸업
+                    </div>
+                </div>
+                <div class="row" style="margin-top : 12px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        경력 &nbsp;/ &emsp; 수상내역
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        2014 한양대학교 음악대학 콩쿠르 입상 &emsp; ...
+                    </div>
+                </div>
+                <div class="row mt-4 float-right mr-4">
+                    <button class="btn font-weight-bold" type="button" style="border : 2px solid ;border-color: rgb(85, 85, 85); color : rgb(0, 0, 0); background-color : white; font-size:14px;">연주자정보 수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6" style="padding: 0px 12px 0px 0px; margin-top : 20px;">
+        <div class="card" style="height: 18rem; ">
+            <div style="width:100%">
+                <div class="row ml-3">
+                    <div class="my-3 font-weight-bold" style="font-size : 20px; margin-left:30px;">
+                        비밀번호 변경
+                    </div>
+                </div>
+                <div class="row ml-4">
+                    <div class="mt-5" style="font-size : 15px;">
+                        <strong style="font-size:20px;">·</strong> &nbsp; 안전한 비밀번호로 내 개인정보를 보호하세요.
+                    </div>
+                </div>
+                <div class="row float-right mr-4" style="margin-top: 55px;">
+                    <button class="btn font-weight-bold " type="button" style="border : 2px solid ;border-color: rgb(85, 85, 85); color : rgb(0, 0, 0); background-color : white; font-size:14px;">비밀번호 변경</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <div class="col-lg-6" style="padding: 0px 0px 0px 12px; margin-top : 20px;">
+        <div class="card" style="height: 18rem; ">
+            <div style="width:100%">
+                <div class="row my-3 font-weight-bold" style="font-size : 20px; margin-left:30px;">
+                    팀 목록 및 수정
+                </div>
+                <div class="row" style="margin-top : 36px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        팀 1
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        브라스 비상
+                    </div>
+                </div>
+                <div class="row" style="margin-top : 12px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        팀 2
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        관악구 모임
+                    </div>
+                </div>
+                <div class="row" style="margin-top : 12px; margin-left : 45px; font-size:14px;">
+                    <div class="col-lg-3 font-weight-bold">
+                        팀 3
+                    </div>
+                    <div class="col-lg-8  ml-3 text-left" style="letter-spacing: 3px; font-size:14px;">
+                        해당없음
+                    </div>
+                </div>
+                <div class="row mt-4 float-right mr-4">
+                    <button class="btn font-weight-bold" type="button" style="border : 2px solid ;border-color: rgb(85, 85, 85); color : rgb(0, 0, 0); background-color : white; font-size:14px;">팀 정보 수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+
+<script id="status_bar" type="text/x-handlebars-template">
+    <div class="col-lg-2" style="background-color:  rgb(247, 225, 167) ; border-right : 2px solid rgb(245, 198, 105)">
+        <div class="font-weight-bold text-default" style="margin-top : 10px; font-size:24px; height:35%">내 피클</div>
+        <div class="font-weight-bold text-default " style="margin-top : 15px; font-size:16px; height:65%">등급 </div>
+    </div>
+    <div class="col-lg-2 border-right" style="background-color:  rgb(247, 225, 167); border-right : 2px solid rgb(245, 198, 105)" >
+        <div class="text-center font-weight-bold light-green-text" style="margin-top: 12px; font-size: 19px;">즐겨찾기</div>
+        <div class="text-right mr-3">
+            <span class="text-primary" style="font-size : 50px;">0</span>
+            <span class="text-primary" style="font-size : 16px;">개</span>
+        </div>
+    </div>
+    <div class="col-lg-2 border-right" style="background-color:  rgb(247, 225, 167); border-right : 2px solid rgb(245, 198, 105)" >
+        <div class="text-right font-weight-bold light-green-text" style="margin-top: 12px; font-size: 19px;">진행중인 연주</div>
+        <div class="text-right mr-3">
+            <span class="text-primary" style="font-size : 50px;">0</span>
+            <span class="text-primary" style="font-size : 16px;">개</span>
+        </div>
+    </div>    
+    <div class="col-lg-2 border-right" style="background-color:  rgb(247, 225, 167); border-right : 2px solid rgb(245, 198, 105)" >
+        <div class="text-center  font-weight-bold light-green-text" style="margin-top: 12px; font-size: 19px;">완료된 연주</div>
+        <div class="text-right mr-3">
+            <span class="text-primary" style="font-size : 50px;">2</span>
+            <span class="text-primary" style="font-size : 16px;">개</span>
+        </div>
+    </div>    
+    <div class="" style="background-color:  rgb(247, 225, 167); width:33.3%" >
+        <div class="font-weight-bold light-green-text" style="display:flex; align-items: center;  height:50%; border-bottom : 2px solid grey">
+            <span class="text-left ml-3" style="width:50% ;">미수령 금액</span>
+            <span class="text-right mr-3" style="width:50%;"> 1,400,000원</span>
+        </div>
+        <div class="font-weight-bold light-green-text" style="display:flex; align-items: center;  height:50%; ">
+            <span class="text-left ml-3" style="width:50% ;">수령 금액</span>
+            <span class="text-right mr-3" style="width:50%;"> 200,000원</span>
+        </div>
+    </div>
+</script>
+
+
+<script>
+data = {"datum" : ["a"]}
+function eee(sourceId, data, resultId){
+  var source = document.getElementById(sourceId).innerHTML
+  console.log(source)
+  var template = Handlebars.compile(source);
+  var html = template(data);
+  document.getElementById(resultId).innerHTML = html;
+}
+
+$(document).ready(function (){
+    $("#middlebar").remove();
+    $("#sidebar").remove();
+    $("#mainblock").remove();
+    $("#input_stbar").addClass("border").addClass("my-3")
+    $("#input_stbar").css("height", "130px").css("border", "2px solid rgb(245, 198, 105)")
+    eee("status_bar", data, "input_stbar" )
+})
+
+</script>
+{% endblock %}

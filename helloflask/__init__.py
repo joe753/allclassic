@@ -24,6 +24,10 @@ app.config.update(
 
 ##### function #######################3\
 
+@app.route('/testmp')
+def mypage() :
+    return render_template ("mypage.html")
+
 @app.route('/edituserinfo')
 def edituserinfo() :
     return render_template ("edit_userinfo.html")
@@ -172,13 +176,15 @@ def signup_modal():
 @app.route('/sendboard', methods=['POST'])
 def sendboard():
     all_data = request.json
-
+    print (all_data)
     
+    practice_sche = all_data["practice_sche"]
+    perform_sche = all_data["perform_sche"]
     board_id = all_data["board_id"]
     userinfo = session.get('loginUser')
     userid = userinfo["userid"]
     title = all_data['title']
-    duedate = all_data['duedate']
+    # duedate = all_data['duedate']
     money = all_data['money']
     practice = all_data['practice_time']
     perform = all_data['perform_time']
@@ -194,13 +200,13 @@ def sendboard():
     practice_mapy = all_data["practice_mapy"]
     perform_mapx = all_data["perform_mapx"]
     perform_mapy = all_data["perform_mapy"]
-
+    isdone = 0
     area_number = check_area(perf_address)
 
-    print (title, duedate, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
+    print (title, money, practice, perform, prac_address, perf_address, detail_textarea, song_textarea, costume, qualification, gender, instruments, practice_mapx, practice_mapy, perform_mapx, perform_mapy, area_number)
     
     if (board_id != ""):
-        b = Board( title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        b = Board( title, qualification , gender, money, practice_sche, practice, perform_sche, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid, isdone)
         b.board_id = board_id 
         try:
             db_session.merge(b)
@@ -224,7 +230,7 @@ def sendboard():
         return str(b.board_id)
 
     else :
-        b = Board(title, duedate, qualification , gender, money, practice, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid)
+        b = Board( title, qualification , gender, money, practice_sche, practice, perform_sche, perform, costume, prac_address, practice_mapx, practice_mapy, perf_address, area_number, perform_mapx, perform_mapy, detail_textarea, song_textarea, userid, isdone)
         print ("else>>>>")
         try:
             db_session.add(b)

@@ -369,15 +369,15 @@ function send_all() {
   if (checkselbar() == false) {
     return false
   }
-  if (inputdate == undefined) {
-    alert ("날짜가 확정되지 않았습니다.")
-    return ""
-  }
+  // if (inputdate == undefined) {
+  //   alert ("날짜가 확정되지 않았습니다.")
+  //   return ""
+  // }
   var alldata = send_data();
   alldata["costume"] = radio_value()
   instruments =  send_hiddenform()
   alldata["instruments"] = instruments
-  
+  console.log(alldata)
 
   $.ajax({
     url : "http://localhost:5000/sendboard",
@@ -554,10 +554,10 @@ function send_all() {
               "gen" : $('#slt_gen').val(),
               "money" : $('#money').val(),
               "practice_time" : $('#practice').val(),
-              "practice_sche" : psch.csch,
+              "practice_sche" : psch.csch[0],
               // "practice_date" : lts(selpracdays),
               "perform_time" : $('#perform').val(),
-              "perform_sche" : psch.fsch,
+              "perform_sche" : psch.fsch[0],
               // "perform_date" : lts(selperfdays),
               // "costume" : $('#slt_gd').val(),
               "practice_address" : $('#prac_address').val(),
@@ -567,7 +567,8 @@ function send_all() {
               "practice_mapx" : mapdata[0].x,
               "practice_mapy" : mapdata[0].y,
               "perform_mapx" : mapdata[1].x,
-              "perform_mapy" : mapdata[1].y
+              "perform_mapy" : mapdata[1].y,
+              "isDone": '0'
               }
     return data
   }
@@ -691,7 +692,8 @@ function send_all() {
       hm.minutes.push({minute: "0" + i*5})
     } else {
       hm.minutes.push({minute: i*5})
-    }
+    } 
+
   }
   
   var monarr = [4, 6, 9, 11];
