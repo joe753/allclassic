@@ -24,13 +24,44 @@ app.config.update(
 
 ##### function #######################3\
 
-@app.route('/testmp')
+@app.route('/dbchangepwd', methods=["POST"])
+def dbchangepwd() :
+    pwd = request.json
+    loginuser = session.get('loginUser')
+    userinfo = Users.query.filter(Users.user_no == loginuser['userid']).first()
+    print (">>>>>>>>>>>>>>", pwd['pwd'])
+    u = Users( userinfo.email, pwd['pwd'], userinfo.name, userinfo.phone_number, userinfo.nickname, userinfo.address)
+    u.user_no = loginuser["userid"]
+    # u.email = userinfo.email
+    # u.password = pwd
+    # u.name = userinfo.name
+    # u.phone_number = userinfo.phone_number
+    # u.nickname = userinfo.nickname
+    # u.address = userinfo.address
+    print (u)
+    try:
+        db_session.merge(u)
+        db_session.commit()
+    
+    except Exception as err:
+        print (err)
+        db_session.rollback()
+        if "Duplicate" in str(err) :
+            data = {}
+            data['error'] = 'error'
+            return jsonify(data)
+
+    return jsonify("OK")
+
+@app.route('/mypage')
 def mypage() :
     return render_template ("mypage.html")
 
-@app.route('/edituserinfo')
+@app.route('/changepwd')
 def edituserinfo() :
-    return render_template ("edit_userinfo.html")
+    loginuser = session.get('loginUser')
+    userinfo = Users.query.filter(Users.user_no == loginuser['userid']).first()
+    return render_template ("changepwd.html", userinfo=userinfo)
 
 
 @app.route('/sendpwd' , methods=["POST"])

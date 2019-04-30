@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block section %}
+<div class="container">
+    <div class="row" >
+        <div class="col-lg-12 text-center my-2 font-weight-bold" style="font-size : 28px; margin-top:18px">
+            비밀번호 변경
+        </div>
+    </div>
+    <div class="row" style="margin-top : 65px; font-size : 20px;">
+        <div class="mr-5 mt-2 text-right font-weight-bold" style="width:35%;">
+            아이디 
+        </div>
+        <div id="formid" class="mt-1" style="font-size:20px;">
+            {{userinfo.email}}
+        </div>
+    </div>
+    <div class="row my-4" style="font-size : 20px;" >
+        <div class="text-right mr-5 mt-1 font-weight-bold" style="width:35%;">
+            새 비밀번호
+        </div>
+        <div>
+            <input id="pwd" type="password" class="form-control" style="width : 300px;">
+        </div>
+    </div>
+    <div class="row my-4" style="font-size : 20px;" >
+        <div class="text-right mr-5 mt-1  font-weight-bold" style="width:35%;">
+            새 비밀번호 확인
+        </div>
+        <div>
+            <input id="check_pwd" type="password" class="form-control" style="width : 300px;">
+        </div>
+    </div>
+    <div class="row" style="margin-top : 120px;">
+        <div class="col-lg-6 text-right">
+            <button id="closebt" type="button" class="btn btn-outline-danger" >나가기</button>
+        </div>
+        <div class="col-lg-6 text-left">
+            <button id="checkbt" type="button" class="btn btn-outline-primary" onclick="changepassword()" >변경</button>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+function changepassword() {
+    if ($("#pwd").val() != $("#check_pwd").val()) {
+        alert("비밀번호가 일치하지 않습니다.")
+        $("#check_pwd").val("");
+        $("#check_pwd").focus();
+        return 
+        }
+    
+    var data = {"pwd" : $("#pwd").val()}
+    $.ajax ({
+        url : "/dbchangepwd",
+        data : JSON.stringify(data),
+        type : 'POST',
+        contentType: 'application/json',
+        dataType : 'json'
+    }).done(function (res) {
+        if (res == "OK") {
+            alert("비밀번호가 변경되었습니다.\n다시 로그인해주세요.")
+            location.href = "/logout"
+        }
+        else {
+            alert("알수없는 오류입니다.")
+        }
+    })
+}
+
+</script>
+{% endblock %}

@@ -205,7 +205,6 @@ function show_login (){
     // },error:function(request, status, error) {
     // }
     }).done(function (res) {
-      console.log(res)
       if (res.error) {
         alert("이미 가입되어있는 이메일주소 입니다.")
         $('#email').val("")

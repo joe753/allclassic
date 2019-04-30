@@ -109,7 +109,9 @@
                     </div>
                 </div>
                 <div class="row float-right mr-4" style="margin-top: 55px;">
+                    <a href="/checkpassword">
                     <button class="btn font-weight-bold " type="button" style="border : 2px solid ;border-color: rgb(85, 85, 85); color : rgb(0, 0, 0); background-color : white; font-size:14px;">비밀번호 변경</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -204,7 +206,6 @@
 data = {"datum" : ["a"]}
 function eee(sourceId, data, resultId){
   var source = document.getElementById(sourceId).innerHTML
-  console.log(source)
   var template = Handlebars.compile(source);
   var html = template(data);
   document.getElementById(resultId).innerHTML = html;
