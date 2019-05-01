@@ -10,111 +10,71 @@
     <!-- First Row -->
 
     <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size : 20px">
-            아이디
+        <div class="col-lg-4 text-right font-weight-bold" style="font-size : 20px; border: 2px solid black; margin:0px 20px 0px 45px; padding:0px; height:334px; width:310.984px;">
+            <input type="file" id="getfile" accept="image/*" style="display:none;">
+            <img id="preview" src="../static/img/user_img/no_img.png" style="cursor:pointer; width:310.984px; height:330px;" onclick="saveimg()">
         </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            joe753@naver.com
-        </div>
-    </div>
-
-    <!-- Second Row -->
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <!-- Third Row -->
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            닉네임
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            운영자새끼
-        </div>
-    </div>
-
-    <!-- Fourth Row -->
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            주소
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            서울
-        </div>
-    </div>
-
-    <!-- Fifth Row -->
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
+        <div class="col-lg-7 text-left" style="font-size : 20px;">
+            <div class="row mt-4">
+                <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
+                    아이디
+                </div>
+                <div class="col-lg-8 text-left" style="font-size : 20px;">
+                    joe753@naver.com
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
+                    휴대전화
+                </div>
+                <div class="col-lg-8 text-left" style="font-size : 20px;">
+                    010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
+                    주소
+                </div>
+                <div class="col-lg-8 text-left" style="font-size : 20px;">
+                    서울
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
+                    닉네임
+                </div>
+                <div class="col-lg-8 text-left" style="font-size : 20px;">
+                    운영자새끼
+                </div>
+            </div>
         </div>
     </div>
 
-
-    <!-- Premium User -->
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
-
-    <div class="row my-5">
-        <div class="col-lg-3 mr-2 text-right font-weight-bold" style="font-size:20px;">
-            휴대전화
-        </div>
-        <div class="col-lg-8 text-left" style="font-size : 20px;">
-            010&nbsp;-&nbsp;4669&nbsp;-&nbsp;****
-        </div>
-    </div>
 
 
 </div>
+
+<script>
+function saveimg () {
+    $("#getfile").trigger("click")
+}
+
+
+
+var file = document.querySelector('#getfile');
+
+file.onchange = function () {
+    var fileList = file.files ;
+
+    // 읽기
+    var reader = new FileReader();
+    reader.readAsDataURL(fileList [0]);
+
+    //로드 한 후
+    reader.onload = function  () {
+        document.querySelector('#preview').src = reader.result ;
+    };
+};
+</script>
 
 {% endblock %}

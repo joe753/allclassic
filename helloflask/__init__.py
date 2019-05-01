@@ -17,12 +17,18 @@ app.config['JSON_AS_ASCII'] = False
 
 
 app.config.update(
-	SECRET_KEY='ABCDEFG!@#$%^&',
+	SECRET_KEY='ABCDEFG!@gn#$%^&',
 	SESSION_COOKIE_NAME='pyweb_flask_session',
 	PERMANENT_SESSION_LIFETIME=timedelta(31)      # 31 days
 )
 
 ##### function #######################3\
+
+
+@app.route ('/userinfo')
+def userinfo () :
+    return render_template("edit_userinfo.html")
+
 
 @app.route('/dbchangepwd', methods=["POST"])
 def dbchangepwd() :
